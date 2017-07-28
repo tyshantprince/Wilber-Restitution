@@ -26,4 +26,13 @@ class State extends Model
     {
         return $this->hasMany(Note::class);
     }
+
+    public function addNote(array $data)
+    {
+        $note = new Note($data);
+
+        $this->notes()->save($note);
+
+        return $note;
+    }
 }
