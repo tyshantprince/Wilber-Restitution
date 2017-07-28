@@ -34,6 +34,6 @@ $factory->define(App\Note::class, function (Faker\Generator $faker) {
 
     return [
         'state_id' => 1,
-        'note' => $faker->paragraph(5),
+        'body' => $faker->paragraph(5),
     ];
 });

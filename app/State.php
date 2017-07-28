@@ -11,7 +11,6 @@ class State extends Model
         'abbr', 'name', 'url',
     ];
 
-
     public function contacts()
     {
         return $this->hasManyThrough(Contact::class, County::class);
@@ -33,6 +32,14 @@ class State extends Model
 
         $this->notes()->save($note);
 
+        return $note;
+    }
+
+    public function updateNote(Note $note, array $data)
+    {
+        dd($data);
+        $note->body = $data;
+        $note->save();
         return $note;
     }
 }

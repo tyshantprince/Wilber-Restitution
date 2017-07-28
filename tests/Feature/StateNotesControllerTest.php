@@ -21,11 +21,9 @@ class StateNotesControllerTest extends TestCase
         $user = factory(User::class)->create();
         $state = factory(State::class)->create();
         $notes = factory(Note::class, 10)->create(['state_id' => $state->id]);
-
         $response = $this->actingAs($user)->get(route('state.notes.index', $state))->assertSuccessful();
 
         $this->assertEquals(10, $state->notes->count());
-
     }
 
     /** @test */
@@ -35,13 +33,29 @@ class StateNotesControllerTest extends TestCase
         $state = factory(State::class)->create();
 
         $response = $this->actingAs($user)->post(route('state.notes.store', $state), [
-            'note'     => 'This is a test'
+            'body' => 'initial note'
         ])
-        ->assertSuccessful();
+            ->assertSuccessful();
 
-        tap(Note::first(), function($note) {
-            $this->assertEquals('This is a test', $note->note);
+        tap(Note::first(), function ($note) {
+            $this->assertEquals('initial note', $note->body);
         });
 
+    }
+
+    /** @test */
+    public function can_edit_a_note()
+    {
+        $user = factory(User::class)->create();
+        $state = factory(State::class)->create();
+        $note = $state->addNote(['body' => 'hey']);
+
+        $this->actingAs($user)->patch(route('state.notes.update', [$state, $note]), [
+            'body' => 'updated note',
+        ])->assertSuccessful();
+
+        tap($state->notes->first(), function ($note) {
+            $this->assertEquals('updated note', $note->body);
+        });
     }
 }

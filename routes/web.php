@@ -14,6 +14,11 @@
 Route::get('/', 'RestitutionController@index');
 
 
-Route::get('state/{state}/notes', 'StateNotesController@index')->name('state.notes.index');
+Route::get('state/{state}/notes',           'StateNotesController@index')->name('state.notes.index');
 
-Route::post('/state/{state}/notes', 'StateNotesController@store')->name('state.notes.store');
+Route::post('/state/{state}/notes',         'StateNotesController@store')->name('state.notes.store');
+
+Route::patch('/state/{state}/notes/{note}', 'StateNotesController@update')->name('state.notes.update');
+
+
+

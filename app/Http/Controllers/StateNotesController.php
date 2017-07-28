@@ -16,9 +16,24 @@ class StateNotesController extends Controller
 
     public function store(State $state)
     {
-        $this->validateWith(['note' => 'required']);
+        $this->validateWith(['body' => 'required']);
 
-        return $state->addNote(request(['note']));
+        return $state->addNote(request(['body']));
     }
+
+    public function update(State $state, Note $note)
+    {
+        $note = $state->notes()->findOrFail($note->id);
+
+        $this->validateWith(['body' => 'required']);
+
+        $note->update(request(['body']));
+
+        return $note;
+    }
+
+
+
+
 
 }
