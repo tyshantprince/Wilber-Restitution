@@ -2,10 +2,13 @@
 
 namespace App;
 
+use Iatstuti\Database\Support\OwnsModels;
 use Illuminate\Database\Eloquent\Model;
 
 class State extends Model
 {
+    use OwnsModels;
+
     protected $fillable = [
         'abbr', 'name', 'url',
     ];
@@ -37,6 +40,7 @@ class State extends Model
     public function addCounty(array $data)
     {
         $county = new County($data);
+        $county->state_id = $this->id;
         $this->counties()->save($county);
         return $county;
     }

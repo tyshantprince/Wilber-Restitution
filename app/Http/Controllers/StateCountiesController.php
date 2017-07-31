@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Contact;
 use App\County;
 use App\State;
-use Illuminate\Http\Request;
 
 class StateCountiesController extends Controller
 {
@@ -14,19 +12,12 @@ class StateCountiesController extends Controller
         return $state->counties;
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(State $state)
     {
         $this->validateWith([
-            'state_id' => 'required',
             'name' => 'required'
         ]);
-
-        return $state->addCounty(request(['state_id', 'name']));
+        return $state->addCounty(request(['name']));
     }
 
     public function show($id)
@@ -41,20 +32,17 @@ class StateCountiesController extends Controller
 
     public function update(State $state, County $county)
     {
-        $county = $state->counties()->findOrFail($county->id);
-
+        abort_unless($state->owns($county), 404);
         $this->validateWith([
             'name' => 'required'
         ]);
-
         $county->update(request(['name']));
-
         return $county;
     }
 
     public function destroy(State $state, County $county)
     {
-        $county = $state->counties()->findOrFail($county->id);
+        abort_unless($state->owns($county), 404);
         $county->delete();
         return $county;
     }

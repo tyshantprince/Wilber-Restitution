@@ -44,9 +44,9 @@ class CountyContactsControllerTest extends TestCase
             'city' => 'Chicago',
             'zip' => '60612',
             'fax' => '321',
-            'email'=> 'tprince@wilbergroup.com',
-            'website' => 'google.com',
-            'fee' => '321',
+            'email'=> 'tprin@gmail.com',
+            'website' => 'www.google.com',
+            'fee' => '56456',
             'notes' => 'dges'
         ])
             ->assertSuccessful();
@@ -73,8 +73,8 @@ class CountyContactsControllerTest extends TestCase
             'city' => 'Chicago',
             'zip' => '60612',
             'fax' => '321',
-            'email'=> 'BGates@microsoft.com',
-            'website' => 'google.com',
+            'email'=> 'BGates@gmail.com',
+            'website' => 'www.google.com',
             'fee' => '321',
             'notes' => 'dges'
         ])

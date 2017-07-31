@@ -2,15 +2,19 @@
 
 namespace App;
 
+use Iatstuti\Database\Support\OwnsModels;
 use Illuminate\Database\Eloquent\Model;
 
 class County extends Model
 {
+    use OwnsModels;
+
     protected $table = 'counties';
 
     protected $fillable = [
-        'state_id', 'name',
+        'name',
     ];
+
 
 
     public function contacts()

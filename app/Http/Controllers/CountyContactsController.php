@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use App\County;
-use App\State;
 
 class CountyContactsController extends Controller
 {
@@ -17,17 +16,6 @@ class CountyContactsController extends Controller
     {
         $this->validateWith([
             'contact_name' => 'required',
-            'phone' => 'nullable',
-            'ext' => 'nullable',
-            'address1' => 'nullable',
-            'address2' => 'nullable',
-            'city' => 'nullable',
-            'zip' => 'nullable',
-            'fax' => 'nullable',
-            'email' => 'nullable',
-            'website' => 'nullable',
-            'fee' => 'nullable',
-            'notes' => 'nullable',
         ]);
 
         return $county->addContact(request([
@@ -48,22 +36,9 @@ class CountyContactsController extends Controller
 
     public function update(County $county, Contact $contact)
     {
-//        abort_unless($county->owns($contact));
-        $contact = $county->contacts()->findOrFail($contact->id);
-
+        abort_unless($county->owns($contact), 404);
         $this->validateWith([
             'contact_name' => 'required',
-            'phone' => 'nullable',
-            'ext' => 'nullable',
-            'address1' => 'nullable',
-            'address2' => 'nullable',
-            'city' => 'nullable',
-            'zip' => 'nullable',
-            'fax' => 'nullable',
-            'email' => 'nullable',
-            'website' => 'nullable',
-            'fee' => 'nullable',
-            'notes' => 'nullable',
         ]);
 
         $contact->fill(request([
@@ -88,7 +63,7 @@ class CountyContactsController extends Controller
 
     public function destroy(County $county, Contact $contact)
     {
-        $contact = $county->contacts()->findOrFail($contact->id);
+        abort_unless($county->owns($contact), 404);
         $contact->delete();
         return response('Contact Deleted', 204);
     }

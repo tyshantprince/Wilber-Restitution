@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\State;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class RestitutionController extends Controller
 {
