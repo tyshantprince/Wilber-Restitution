@@ -26,6 +26,7 @@ class County extends Model
     public function addContact(array $data)
     {
         $contact = new Contact($data);
+        $contact->user_id = auth()->id();
         $this->contacts()->save($contact);
         return $contact;
     }

@@ -34,4 +34,11 @@ class State extends Model
         return $note;
     }
 
+    public function addCounty(array $data)
+    {
+        $county = new County($data);
+        $this->counties()->save($county);
+        return $county;
+    }
+
 }

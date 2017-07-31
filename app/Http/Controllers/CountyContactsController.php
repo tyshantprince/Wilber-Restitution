@@ -5,37 +5,32 @@ namespace App\Http\Controllers;
 use App\Contact;
 use App\County;
 use App\State;
-use Illuminate\Http\Request;
 
 class CountyContactsController extends Controller
 {
-    public function index(State $state, County $county)
+    public function index(County $county)
     {
-        return $state->counties()->findOrFail($county->id)->contacts;
+        return $county->contacts;
     }
 
-    public function store(State $state, County $county)
+    public function store(County $county)
     {
         $this->validateWith([
-            'user_id' => 'required|',
-            'county_id'  => 'required|',
-            'contact_name'  => 'required|',
-            'phone' => 'nullable|',
-            'ext' => 'nullable|',
-            'address1' => 'nullable|',
-            'address2' => 'nullable|',
-            'city' => 'nullable|',
-            'zip' => 'nullable|',
-            'fax' => 'nullable|',
+            'contact_name' => 'required',
+            'phone' => 'nullable',
+            'ext' => 'nullable',
+            'address1' => 'nullable',
+            'address2' => 'nullable',
+            'city' => 'nullable',
+            'zip' => 'nullable',
+            'fax' => 'nullable',
             'email' => 'nullable',
             'website' => 'nullable',
-            'fee' => 'nullable|',
-            'notes' => 'nullable|',
+            'fee' => 'nullable',
+            'notes' => 'nullable',
         ]);
 
-        return $state->counties()->findOrFail($county->id)->addContact(request([
-            'user_id',
-            'county_id',
+        return $county->addContact(request([
             'contact_name',
             'phone',
             'ext',
@@ -51,32 +46,27 @@ class CountyContactsController extends Controller
         ]));
     }
 
-    public function update(State $state, County $county, Contact $contact)
+    public function update(County $county, Contact $contact)
     {
-        $contact = $state->counties()->findOrFail($county->id)->contacts()->findOrFail($contact->id);
+//        abort_unless($county->owns($contact));
+        $contact = $county->contacts()->findOrFail($contact->id);
 
         $this->validateWith([
-            'user_id' => 'required|',
-            'county_id'  => 'required|',
-            'contact_name'  => 'required|',
-            'phone' => 'nullable|',
-            'ext' => 'nullable|',
-            'address1' => 'nullable|',
-            'address2' => 'nullable|',
-            'city' => 'nullable|',
-            'zip' => 'nullable|',
-            'fax' => 'nullable|',
+            'contact_name' => 'required',
+            'phone' => 'nullable',
+            'ext' => 'nullable',
+            'address1' => 'nullable',
+            'address2' => 'nullable',
+            'city' => 'nullable',
+            'zip' => 'nullable',
+            'fax' => 'nullable',
             'email' => 'nullable',
             'website' => 'nullable',
-            'fee' => 'nullable|',
-            'notes' => 'nullable|',
+            'fee' => 'nullable',
+            'notes' => 'nullable',
         ]);
 
-
-
-        $contact->update(request([
-            'user_id',
-            'county_id',
+        $contact->fill(request([
             'contact_name',
             'phone',
             'ext',
@@ -90,14 +80,16 @@ class CountyContactsController extends Controller
             'fee',
             'notes',
         ]));
+        $contact->user_id = auth()->id();
+        $contact->save();
 
         return $contact;
     }
 
-    public function destroy(State $state, County $county, Contact $contact)
+    public function destroy(County $county, Contact $contact)
     {
-        $contact = $state->counties()->findOrFail($county->id)->contacts()->findOrFail($contact->id);
+        $contact = $county->contacts()->findOrFail($contact->id);
         $contact->delete();
-        return $contact;
+        return response('Contact Deleted', 204);
     }
 }

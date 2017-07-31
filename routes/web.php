@@ -20,10 +20,16 @@ Route::patch('/state/{state}/notes/{note}', 'StateNotesController@update')->name
 Route::delete('/state/{state}/notes/{note}', 'StateNotesController@destroy')->name('state.notes.destroy');
 
 
-Route::get('state/{state}/{county}/contacts', 'CountyContactsController@index')->name('county.contacts.index');
-Route::post('state/{state}/{county}/contacts/', 'CountyContactsController@store')->name('county.contacts.store');
-Route::patch('state/{state}/{county}/contacts/{contact}', 'CountyContactsController@update')->name('county.contacts.update');
-Route::delete('state/{state}/{county}/contacts/{contact}', 'CountyContactsController@destroy')->name('county.contacts.destroy');
+Route::get('county/{county}/contacts', 'CountyContactsController@index')->name('county.contacts.index');
+Route::post('county/{county}/contacts/', 'CountyContactsController@store')->name('county.contacts.store');
+Route::patch('county/{county}/contacts/{contact}', 'CountyContactsController@update')->name('county.contacts.update');
+Route::delete('county/{county}/contacts/{contact}', 'CountyContactsController@destroy')->name('county.contacts.destroy');
+
+
+Route::get('state/{state}/counties',           'StateCountiesController@index')->name('state.counties.index');
+Route::post('/state/{state}/counties',         'StateCountiesController@store')->name('state.counties.store');
+Route::patch('/state/{state}/counties/{county}', 'StateCountiesController@update')->name('state.counties.update');
+Route::delete('/state/{state}/counties/{county}', 'StateCountiesController@destroy')->name('state.counties.destroy');
 
 
 
