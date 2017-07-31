@@ -58,4 +58,18 @@ class StateNotesControllerTest extends TestCase
             $this->assertEquals('updated note', $note->body);
         });
     }
+
+    /** @test */
+    public function can_delete_a_note()
+    {
+        $user = factory(User::class)->create();
+        $state = factory(State::class)->create();
+        $note = $state->addNote(['body' => 'hey']);
+
+        $this->assertEquals(1, Note::all()->count());
+
+        $this->actingAs($user)->delete(route('state.notes.destroy', [$state, $note]))->assertSuccessful();
+
+        $this->assertEquals(0, Note::all()->count());
+    }
 }

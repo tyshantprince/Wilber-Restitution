@@ -37,3 +37,32 @@ $factory->define(App\Note::class, function (Faker\Generator $faker) {
         'body' => $faker->paragraph(5),
     ];
 });
+
+$factory->define(App\County::class, function (Faker\Generator $faker) {
+
+    return [
+        'state_id' => 1,
+        'name' => 'Cook',
+    ];
+});
+
+$factory->define(App\Contact::class, function (Faker\Generator $faker) {
+
+    return [
+        'user_id' => 1,
+        'county_id' => 1,
+        'contact_name' => $faker->name,
+        'phone'  => $faker->phoneNumber,
+        'ext' => '8675',
+        'address1' => $faker->streetAddress,
+        'address2' => $faker->streetAddress,
+        'city' => $faker->city,
+        'zip' => $faker->postcode,
+        'fax' => $faker->phoneNumber,
+        'email' => $faker->email,
+        'website' => $faker->url,
+        'fee' => 50.00,
+        'notes' => $faker->paragraph(2)
+        ];
+});
+

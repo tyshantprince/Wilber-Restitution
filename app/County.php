@@ -23,4 +23,11 @@ class County extends Model
         return $this->belongsTo(State::class);
     }
 
+    public function addContact(array $data)
+    {
+        $contact = new Contact($data);
+        $this->contacts()->save($contact);
+        return $contact;
+    }
+
 }

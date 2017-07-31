@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Mockery\Matcher\Not;
 
 class State extends Model
 {
@@ -35,11 +34,4 @@ class State extends Model
         return $note;
     }
 
-    public function updateNote(Note $note, array $data)
-    {
-        dd($data);
-        $note->body = $data;
-        $note->save();
-        return $note;
-    }
 }

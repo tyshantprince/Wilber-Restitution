@@ -32,7 +32,12 @@ class StateNotesController extends Controller
         return $note;
     }
 
-
+    public function destroy(State $state, Note $note)
+    {
+        $note = $state->notes()->findOrFail($note->id);
+        $note->delete();
+        return $note;
+    }
 
 
 
