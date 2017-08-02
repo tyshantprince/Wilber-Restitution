@@ -1,0 +1,31 @@
+/*
+* === TYPOGRAPHY ===
+*/
+
+.font-stack {
+	font-family: 'Helvetica Neue', 'Arial' !important;
+}
+
+h1, h2, h3, h4, h5, h6 { color: $heading-color; text-transform: uppercase;}
+
+.lighter {color: $heading-color-light;}
+
+h6.detail {
+	margin: 0;
+	padding: 0;
+	color: $heading-color-light;
+
+	&.top {
+		margin-bottom: -0.75em;
+	}
+
+	&.bottom {
+		margin-top: -0.75em;
+	}
+}
+
+small.claim-number {font-family: "Helvetica", "Arial";}
+
+.massive {font-size: 6em;}
+
+p.large {font-size: 1.5em;}

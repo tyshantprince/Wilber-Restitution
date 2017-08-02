@@ -1,0 +1,25 @@
+$body-color: #7f8c8d;
+
+$heading-color: #34495E;
+$heading-color-light: #ccc;
+
+
+// BUTTON COLORS
+$button-success: #5cb85c;
+$button-danger: #d9534f;
+
+
+// ALERT COLORS
+
+$alert-blue: #6898EB;
+
+$alert-success: #DFF0DB;
+$alert-success-dark: darken( $alert-success, 5% );
+$alert-success-darker: darken( $alert-success, 15% );
+
+$alert-danger: #f2dede;
+$alert-danger-dark: darken( $alert-danger, 5% );
+$alert-danger-darker: darken( $alert-danger, 15% );
+
+
+$alert-warning: #FCF8E3;
