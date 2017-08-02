@@ -4,6 +4,11 @@
 
 // Variables
 @import "variables";
+@import "atomic";
+@import "colors";
+@import "typography";
+
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import 'node_modules/bootstrap-vue/dist/bootstrap-vue';
