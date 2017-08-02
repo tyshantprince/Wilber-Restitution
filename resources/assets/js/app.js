@@ -23,6 +23,8 @@ Vue.component('restitution', require('./components/restitution.vue'));
 Vue.component('state-notes', require('./components/statenotes.vue'));
 Vue.component('state-counties', require('./components/statecounties.vue'));
 Vue.component('contacts', require('./components/contacts.vue'));
+Vue.component('edit-note', require('./components/edit-note.vue'));
+Vue.component('delete-note', require('./components/delete-note.vue'));
 
 Vue.use('BootstrapVue');
 

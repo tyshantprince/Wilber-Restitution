@@ -7,69 +7,47 @@
         max-height: 75vh;
         overflow-y: scroll;
     }
+
+    .collapse {
+        height: 0;
+    }
 </style>
 
 <template>
     <div>
     	<span class="state-notes-header">
-		<h3 id="head" class="text-center header"><small>State</small> <span class="weight-normal"> Counties</span></h3>
-
-	</span>
+		    <h3 id="head" class="text-center header"><small>State</small> <span class="weight-normal"> Counties</span></h3>
+	    </span>
 
         <div id="notes-container">
 
             <div v-if="counties.length > 0" v-for="county in counties">
-                <div class="flex">
-                    <button @click="countyClicked" class="btn btn-primary fl1" data-toggle="modal" :data-target="'#contact' + county.id" style="margin-bottom: 10px">{{ county.name}}</button>
+                    <button @click="countyClicked(county)" class="btn btn-primary block mb075 w100p">{{ county.name}}</button>
+                <div class="contacts-container" :class="{collapse: county.id !== selectedCounty}">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
                 </div>
+            </div>
 
 
-                <div class="modal fade contacts" :id="'contact' + selectedCounty.id" tabindex="-2">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">{{selectedCounty.name}} County Contacts</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="panel panel-default">
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th>Contact Name</th>
-                                            <th>Phone Number</th>
-                                            <th>Address</th>
-                                            <th>City</th>
-                                            <th>Zip</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr v-for="contact in contacts">
-                                            <th scope="row">{{contact.contact_name}}</th>
-                                            <td>{{contact.phone}}</td>
-                                            <td>{{contact.address1}}</td>
-                                            <td>{{contact.city}}</td>
-                                            <td>{{contact.zip}}</td>
-                                            <td><span class="glyphicon glyphicon-pencil"></span></td>
-                                            <td><span class="glyphicon glyphicon-remove"></span></td>
 
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="modal-footer" >
+            <a class="btn-large" data-toggle="modal" data-target="#newCounty"><span class="btn-add">New County</span></a>
 
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
+            <div class="modal fade" id="newCounty" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="">Create New County</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input class="center-block" type="text" name="county" v-model="createdCounty" placeholder="Enter County Name">
+                        </div>
+                        <div class="modal-footer" >
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button @click="newCounty" type="button" class="btn btn-primary" data-dismiss="modal">Create County</button>
                         </div>
                     </div>
                 </div>
-
-            </div>
-            <div class="add-field right">
-                <a href="#" class="btn-large" data-type="note" data-state="<?php echo $state; ?>"><span class="btn-add">New Note</span></a>
             </div>
         </div>
     </div>
@@ -82,25 +60,30 @@
         data() {
             return{
                 selectedCounty: '',
+                createdCounty: '',
                 contacts: ''
             }
         },
         methods: {
-            countyClicked(event){
-                this.selectedCounty = this.counties.filter((county) => {
-                    return county.name == event.target.innerHTML;
-                })[0];
+            countyClicked(county){
+                this.selectedCounty = this.selectedCounty === county.id ? '' : county.id;
                 this.getContacts();
                 this.$emit('county')
             },
             getContacts(){
-                axios.get('/county/' + this.selectedCounty.id + '/contacts')
-                    .then((response) => {
-                        this.contacts = response.data;
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                if(this.selectedCounty != '')
+                {
+                    axios.get('/county/' + this.selectedCounty + '/contacts')
+                        .then((response) => {
+                            this.contacts = response.data;
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
+            },
+            newCounty(){
+                this.$emit('newCounty', this.createdCounty)
             }
 
         }

@@ -8,7 +8,8 @@ class RestitutionController extends Controller
 {
     public function index()
     {
-        $states = State::all()->toArray();
-        return view('index', compact('states'));
+        return view('index', [
+            'states' => State::with('notes', 'counties', 'counties.contacts')->get(),
+        ]);
     }
 }

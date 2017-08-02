@@ -19,7 +19,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <state-notes @save="saveNotes(this.stateObj)" v-if="selectedState != ''" :notes="notes"></state-notes>
+                                <state-notes @noteDeleted="deleteNote" @new="createNote" v-if="selectedState != ''" :notes="notes"></state-notes>
                                 <h1 v-else>Please Select a State</h1>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <state-counties  v-if="selectedState != ''" :counties="counties"></state-counties>
+                                <state-counties @newCounty="createCounty"  v-if="selectedState != ''" :counties="counties"></state-counties>
                                 <h1 v-else>Please Select a State</h1>
                             </div>
                         </div>
@@ -74,10 +74,14 @@
                         console.log(error);
                     });
                 },
-            saveNotes(){
-                axios.get('state/' + this.stateObj.id + '/notes')
+            deleteNote(note){
+                this.notes = _.without(this.notes, note)
+            },
+
+            createNote(note){
+                axios.post('state/' + this.stateObj.id + '/notes', {body: note})
                     .then((response) => {
-                        this.notes = response.data;
+                        this.notes.push(response.data);
                     })
                     .catch((error) => {
                         console.log(error);
@@ -87,6 +91,15 @@
                 axios.get('state/' + this.stateObj.id + '/counties')
                     .then((response) => {
                         this.counties = response.data;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            },
+            createCounty(county){
+                axios.post('state/' + this.stateObj.id + '/counties', {name: county})
+                    .then((response) => {
+                        this.counties.push(response.data);
                     })
                     .catch((error) => {
                         console.log(error);
