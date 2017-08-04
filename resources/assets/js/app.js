@@ -9,9 +9,6 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import BootstrapVue from 'bootstrap-vue';
-
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -26,9 +23,11 @@ Vue.component('contacts', require('./components/contacts.vue'));
 Vue.component('edit-note', require('./components/edit-note.vue'));
 Vue.component('delete-note', require('./components/delete-note.vue'));
 
-Vue.use('BootstrapVue');
+import store from './store';
+
 
 
 const app = new Vue({
+    store,
     el: '#app'
 });
