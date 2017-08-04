@@ -9,8 +9,6 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import BootstrapVue from 'bootstrap-vue';
-
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -18,17 +16,18 @@ import BootstrapVue from 'bootstrap-vue';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+import store from './store/index'
 
 Vue.component('restitution', require('./components/restitution.vue'));
-Vue.component('state-notes', require('./components/statenotes.vue'));
-Vue.component('state-counties', require('./components/statecounties.vue'));
+Vue.component('state-notes', require('./components/state-notes/statenotes.vue'));
+Vue.component('state-counties', require('./components/state-counties/statecounties.vue'));
 Vue.component('contacts', require('./components/contacts.vue'));
-Vue.component('edit-note', require('./components/edit-note.vue'));
-Vue.component('delete-note', require('./components/delete-note.vue'));
-
-Vue.use('BootstrapVue');
+Vue.component('edit-note', require('./components/state-notes/edit-note.vue'));
+Vue.component('delete-note', require('./components/state-notes/delete-note.vue'));
+Vue.component('add-note', require('./components/state-notes/add-note.vue'));
 
 
 const app = new Vue({
+    store,
     el: '#app'
 });

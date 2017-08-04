@@ -23,14 +23,7 @@
         props: ['note'],
         methods:{
             deleteNote(){
-                axios.delete('state/' + this.note.state_id + '/notes/' + this.note.id)
-                    .then((response) => {
-                    console.log('success');
-                    this.$emit('noteDeleted', this.note)
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                this.$store.commit('deleteNote', this.note);
             },
         },
 

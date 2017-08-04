@@ -23,13 +23,7 @@
         props:['note'],
         methods:{
             editNote(){
-                axios.patch('state/' + this.note.state_id + '/notes/' + this.note.id, {body: this.note.body})
-                    .then((response) => {
-                        this.$emit('noteDeleted', this.note);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+               this.$store.commit('updateNote', this.note)
             },
         }
     }
