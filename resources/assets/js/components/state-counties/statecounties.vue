@@ -20,41 +20,42 @@
 	    </span>
 
         <div id="notes-container">
-
             <div v-for="county in currentStateObj.counties">
-                    <button @click="countyClicked(county)" class="btn btn-primary block mb075 w100p">{{ county.name}}</button>
+                <button @click="countyClicked(county)" class="btn btn-primary block mb075 w100p">{{ county.name}}</button>
                 <div v-if="county.contacts.length > 0" class="contacts-container" :class="{collapse: county.id !== selectedCounty}">
+                    <hr>
                     <div v-for="contact in county.contacts">
-                        <div class="panel panel-default">
                             <div class="row">
                                 <div class="col-sm-12">
-                                        <div class="card">
-                                            <div class="card-block" style="display: flex; align-items: flex-start; flex-wrap: wrap; justify-content: space-between; align-items: flex-end">
-                                                <div v-for="(key, val) in contact" class="card-text" >
-                                                    <div v-if="key != '' && val != 'id' && val != 'user_id' && val != 'county_id' " class="">
-                                                        <div class="panel panel-default">
-                                                            <div class="panel-heading">
-                                                                {{val}}
-                                                            </div>
-                                                            <div class="panel-body">
-                                                                {{key}}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                    <div style="display: flex; flex-direction: column">
+                                        <div class="panel panel-default text-center">
+                                            <div class="panel-heading flex" style="align-items: baseline">
+                                                <h5 class="panel-heading" style="flex: 3;">{{contact.contact_name}}</h5>
+                                                <a @click="currentContact(contact)" data-toggle="modal" :data-target="'#edit' + contact.id" style="margin-right: auto; padding-right: 8px"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                <a @click="currentContact(contact)" data-toggle="modal" :data-target="'#delete' + contact.id"  style="margin-right: auto"><span class="glyphicon glyphicon-remove"></span></a>
                                             </div>
+                                            <p v-if="contact.phone" >Phone Number: {{contact.phone}}</p>
+                                            <p v-if="contact.address1" >Address: {{contact.address1}}</p>
+                                            <p v-if="contact.city" >City: {{contact.city}}</p>
+                                            <p v-if="contact.zip" >ZipCode: {{contact.zip}}</p>
+                                            <p v-if="contact.fax" >Fax: {{contact.fax}}</p>
+                                            <p v-if="contact.email" >Email: {{contact.email}}</p>
+                                            <p v-if="contact.website" >website: <a :href="contact.website">{{contact.city}}</a></p>
+                                            <p v-if="contact.notes" style="">Notes: {{contact.notes}}</p>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
                 <div v-else :class="{collapse: county.id !== selectedCounty}">
                     No Contacts For This County
                 </div>
             </div>
+            <delete-contact :contact="selectedContact"></delete-contact>
+            <edit-contact :contact="selectedContact"></edit-contact>
+            <add-county></add-county>
         </div>
-        <add-county></add-county>
     </div>
 
 </template>
@@ -67,12 +68,16 @@
         data() {
             return{
                 selectedCounty: {},
+                selectedContact:{},
             }
         },
         methods: {
             countyClicked(county){
                 this.selectedCounty = this.selectedCounty === county.id ? '' : county.id;
             },
+            currentContact(contact){
+                this.selectedContact = contact;
+            }
 //            newCounty(){
 //                this.$emit('newCounty', this.createdCounty)
 //            }

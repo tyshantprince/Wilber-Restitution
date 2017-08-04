@@ -17,6 +17,7 @@ const mutations = {
         state.currentState = state.stateList.filter((stateInList) => {
            return stateInList.name == name;
         })[0];
+        // TODO: make request to get state attributes;
     },
     updateNote(state, note)
     {
@@ -55,6 +56,44 @@ const mutations = {
             .catch((error) => {
                 console.log(error);
             });
+    },
+    updateContact(state, contact){
+        console.log(contact);
+      axios.patch('county/' + contact.county_id + '/contacts/' + contact.id, {
+          contact_name: contact.contact_name,
+          phone: contact.phone,
+          ext: contact.ext,
+          address1: contact.address1,
+          address2: contact.address2,
+          city: contact.city,
+          zip: contact.zip,
+          fax: contact.fax,
+          email: contact.email,
+          website: contact.website,
+          fee: contact.fee,
+          notes: contact.notes,
+          })
+          .then(response => {
+                console.log('success')
+              }
+          )
+          .catch((error) => {
+              console.log(error);
+          });
+
+    },
+    deleteContact(state, contact){
+      axios.delete('county/' + contact.county_id + '/contacts/' + contact.id)
+          .then((response) => {
+            state.currentState.counties.map((county) => {
+                if (county.id === contact.county_id){
+                    county.contacts = _.without(county.contacts, contact);
+                }
+            })
+          })
+          .catch((error) => {
+              console.log(error);
+          });
     },
 
 }

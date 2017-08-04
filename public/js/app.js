@@ -906,6 +906,8 @@ Vue.component('contacts', __webpack_require__(51));
 Vue.component('edit-note', __webpack_require__(75));
 Vue.component('delete-note', __webpack_require__(78));
 Vue.component('add-note', __webpack_require__(81));
+Vue.component('delete-contact', __webpack_require__(92));
+Vue.component('edit-contact', __webpack_require__(95));
 
 var app = new Vue({
   store: __WEBPACK_IMPORTED_MODULE_0__store_index__["a" /* default */],
@@ -43393,6 +43395,7 @@ var mutations = {
         state.currentState = state.stateList.filter(function (stateInList) {
             return stateInList.name == name;
         })[0];
+        // TODO: make request to get state attributes;
     },
     updateNote: function updateNote(state, note) {
         axios.patch('state/' + note.state_id + '/notes/' + note.id, { body: note.body }).then(function (response) {
@@ -43418,6 +43421,38 @@ var mutations = {
     createCounty: function createCounty(state, county) {
         axios.post('state/' + state.currentState.id + '/counties', { name: county }).then(function (response) {
             state.currentState.counties.push(response.data);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    },
+    updateContact: function updateContact(state, contact) {
+        console.log(contact);
+        axios.patch('county/' + contact.county_id + '/contacts/' + contact.id, {
+            contact_name: contact.contact_name,
+            phone: contact.phone,
+            ext: contact.ext,
+            address1: contact.address1,
+            address2: contact.address2,
+            city: contact.city,
+            zip: contact.zip,
+            fax: contact.fax,
+            email: contact.email,
+            website: contact.website,
+            fee: contact.fee,
+            notes: contact.notes
+        }).then(function (response) {
+            console.log('success');
+        }).catch(function (error) {
+            console.log(error);
+        });
+    },
+    deleteContact: function deleteContact(state, contact) {
+        axios.delete('county/' + contact.county_id + '/contacts/' + contact.id).then(function (response) {
+            state.currentState.counties.map(function (county) {
+                if (county.id === contact.county_id) {
+                    county.contacts = _.without(county.contacts, contact);
+                }
+            });
         }).catch(function (error) {
             console.log(error);
         });
@@ -44245,6 +44280,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 Vue.component('add-county', __webpack_require__(89));
 
@@ -44252,14 +44288,23 @@ Vue.component('add-county', __webpack_require__(89));
     props: ['currentStateObj'],
     data: function data() {
         return {
-            selectedCounty: {}
+            selectedCounty: {},
+            selectedContact: {}
         };
     },
 
     methods: {
         countyClicked: function countyClicked(county) {
             this.selectedCounty = this.selectedCounty === county.id ? '' : county.id;
+        },
+        currentContact: function currentContact(contact) {
+            this.selectedContact = contact;
         }
+        //            newCounty(){
+        //                this.$emit('newCounty', this.createdCounty)
+        //            }
+        //
+
     }
 });
 
@@ -44272,7 +44317,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "notes-container"
     }
-  }, _vm._l((_vm.currentStateObj.counties), function(county) {
+  }, [_vm._l((_vm.currentStateObj.counties), function(county) {
     return _c('div', [_c('button', {
       staticClass: "btn btn-primary block mb075 w100p",
       on: {
@@ -44285,40 +44330,78 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: {
         collapse: county.id !== _vm.selectedCounty
       }
-    }, _vm._l((county.contacts), function(contact) {
+    }, [_c('hr'), _vm._v(" "), _vm._l((county.contacts), function(contact) {
       return _c('div', [_c('div', {
-        staticClass: "panel panel-default"
-      }, [_c('div', {
         staticClass: "row"
       }, [_c('div', {
         staticClass: "col-sm-12"
       }, [_c('div', {
-        staticClass: "card"
-      }, [_c('div', {
-        staticClass: "card-block",
         staticStyle: {
           "display": "flex",
-          "align-items": "flex-end",
-          "flex-wrap": "wrap",
-          "justify-content": "space-between"
+          "flex-direction": "column"
         }
-      }, _vm._l((contact), function(key, val) {
-        return _c('div', {
-          staticClass: "card-text"
-        }, [(key != '' && val != 'id' && val != 'user_id' && val != 'county_id') ? _c('div', {}, [_c('div', {
-          staticClass: "panel panel-default"
-        }, [_c('div', {
-          staticClass: "panel-heading"
-        }, [_vm._v("\n                                                                " + _vm._s(val) + "\n                                                            ")]), _vm._v(" "), _c('div', {
-          staticClass: "panel-body"
-        }, [_vm._v("\n                                                                " + _vm._s(key) + "\n                                                            ")])])]) : _vm._e()])
-      }))])])])])])
-    })) : _c('div', {
+      }, [_c('div', {
+        staticClass: "panel panel-default text-center"
+      }, [_c('div', {
+        staticClass: "panel-heading flex",
+        staticStyle: {
+          "align-items": "baseline"
+        }
+      }, [_c('h5', {
+        staticClass: "panel-heading",
+        staticStyle: {
+          "flex": "3"
+        }
+      }, [_vm._v(_vm._s(contact.contact_name))]), _vm._v(" "), _c('a', {
+        staticStyle: {
+          "margin-right": "auto",
+          "padding-right": "8px"
+        },
+        attrs: {
+          "data-toggle": "modal",
+          "data-target": '#edit' + contact.id
+        },
+        on: {
+          "click": function($event) {
+            _vm.currentContact(contact)
+          }
+        }
+      }, [_c('span', {
+        staticClass: "glyphicon glyphicon-pencil"
+      })]), _vm._v(" "), _c('a', {
+        staticStyle: {
+          "margin-right": "auto"
+        },
+        attrs: {
+          "data-toggle": "modal",
+          "data-target": '#delete' + contact.id
+        },
+        on: {
+          "click": function($event) {
+            _vm.currentContact(contact)
+          }
+        }
+      }, [_c('span', {
+        staticClass: "glyphicon glyphicon-remove"
+      })])]), _vm._v(" "), (contact.phone) ? _c('p', [_vm._v("Phone Number: " + _vm._s(contact.phone))]) : _vm._e(), _vm._v(" "), (contact.address1) ? _c('p', [_vm._v("Address: " + _vm._s(contact.address1))]) : _vm._e(), _vm._v(" "), (contact.city) ? _c('p', [_vm._v("City: " + _vm._s(contact.city))]) : _vm._e(), _vm._v(" "), (contact.zip) ? _c('p', [_vm._v("ZipCode: " + _vm._s(contact.zip))]) : _vm._e(), _vm._v(" "), (contact.fax) ? _c('p', [_vm._v("Fax: " + _vm._s(contact.fax))]) : _vm._e(), _vm._v(" "), (contact.email) ? _c('p', [_vm._v("Email: " + _vm._s(contact.email))]) : _vm._e(), _vm._v(" "), (contact.website) ? _c('p', [_vm._v("website: "), _c('a', {
+        attrs: {
+          "href": contact.website
+        }
+      }, [_vm._v(_vm._s(contact.city))])]) : _vm._e(), _vm._v(" "), (contact.notes) ? _c('p', {}, [_vm._v("Notes: " + _vm._s(contact.notes))]) : _vm._e()])])])])])
+    })], 2) : _c('div', {
       class: {
         collapse: county.id !== _vm.selectedCounty
       }
     }, [_vm._v("\n                    No Contacts For This County\n                ")])])
-  })), _vm._v(" "), _c('add-county')], 1)
+  }), _vm._v(" "), _c('delete-contact', {
+    attrs: {
+      "contact": _vm.selectedContact
+    }
+  }), _vm._v(" "), _c('edit-contact', {
+    attrs: {
+      "contact": _vm.selectedContact
+    }
+  }), _vm._v(" "), _c('add-county')], 2)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
     staticClass: "state-notes-header"
@@ -44521,6 +44604,576 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-17de69df", module.exports)
+  }
+}
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(93),
+  /* template */
+  __webpack_require__(94),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/county-contacts/delete-contact.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] delete-contact.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-449f6c89", Component.options)
+  } else {
+    hotAPI.reload("data-v-449f6c89", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 93 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['contact'],
+    methods: {
+        deleteContact: function deleteContact() {
+            this.$store.commit('deleteContact', this.contact);
+        }
+    }
+});
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal fade",
+    attrs: {
+      "id": 'delete' + _vm.contact.id,
+      "tabindex": "-1",
+      "role": "dialog",
+      "aria-labelledby": ""
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog",
+    attrs: {
+      "role": "document"
+    }
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-danger",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    },
+    on: {
+      "click": _vm.deleteContact
+    }
+  }, [_vm._v("Yes I am")])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-label": "Close"
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._v("Delete State Note")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-body"
+  }, [_c('p', [_vm._v("Are you sure you want to delete this contact?")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-449f6c89", module.exports)
+  }
+}
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(96),
+  /* template */
+  __webpack_require__(97),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/county-contacts/edit-contact.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] edit-contact.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-e03a41b0", Component.options)
+  } else {
+    hotAPI.reload("data-v-e03a41b0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 96 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['contact'],
+    methods: {
+        editContact: function editContact() {
+            this.$store.commit('updateContact', this.contact);
+        }
+    }
+});
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal fade",
+    attrs: {
+      "id": 'edit' + _vm.contact.id,
+      "tabindex": "-1",
+      "role": "dialog",
+      "aria-labelledby": "myModalLabel"
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog",
+    attrs: {
+      "role": "document"
+    }
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "modal-body "
+  }, [_c('label', {
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v("Name")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.name),
+      expression: "contact.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "name",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.name = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "phone"
+    }
+  }, [_vm._v("Phone")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.phone),
+      expression: "contact.phone"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "phone",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.phone)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.phone = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "address1"
+    }
+  }, [_vm._v("Address")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.address1),
+      expression: "contact.address1"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "address1",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.address1)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.address1 = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "city"
+    }
+  }, [_vm._v("City")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.city),
+      expression: "contact.city"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "city",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.city)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.city = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "zip"
+    }
+  }, [_vm._v("Zipcode")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.zip),
+      expression: "contact.zip"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "zip",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.zip)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.zip = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "fax"
+    }
+  }, [_vm._v("Fax")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.fax),
+      expression: "contact.fax"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "fax",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.fax)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.fax = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "email"
+    }
+  }, [_vm._v("Email")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.email),
+      expression: "contact.email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "email",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.email)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.email = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "website"
+    }
+  }, [_vm._v("Website")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.website),
+      expression: "contact.website"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "website",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.website)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.website = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "fee"
+    }
+  }, [_vm._v("Fee")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.fee),
+      expression: "contact.fee"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "fee",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.fee)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.fee = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "notes"
+    }
+  }, [_vm._v("Notes")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.notes),
+      expression: "contact.notes"
+    }],
+    staticClass: "form-control",
+    staticStyle: {
+      "min-width": "100%"
+    },
+    attrs: {
+      "id": "notes",
+      "cols": "30",
+      "rows": "4"
+    },
+    domProps: {
+      "value": (_vm.contact.notes)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.notes = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    },
+    on: {
+      "click": _vm.editContact
+    }
+  }, [_vm._v("Save changes")])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-label": "Close"
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._v("Edit County Contact")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-e03a41b0", module.exports)
   }
 }
 
