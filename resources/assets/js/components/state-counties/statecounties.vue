@@ -20,10 +20,13 @@
 	    </span>
 
         <div id="notes-container">
-            <div v-for="county in currentStateObj.counties">
-                <button @click="countyClicked(county)" class="btn btn-primary block mb075 w100p">{{ county.name}}</button>
-                <div v-if="county.contacts.length > 0" class="contacts-container" :class="{collapse: county.id !== selectedCounty}">
+            <div v-for="county in currentState.counties">
+                <button @click="countyClicked(county.id)" class="btn btn-primary block mb075 w100p">{{ county.name}}</button>
+
+                <div v-if="county.contacts" class="contacts-container" :class="{collapse: county.id !== selectedCounty}">
                     <hr>
+                    <!--<a @click="countyClicked(county)" class="btn btn-primary mb075 w100p" data-toggle="modal" :data-target="'#create' + county.id">Add Contact</a>-->
+                    <a @click="selectedCounty = county.id" data-toggle="modal" :data-target="'#create' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
                     <div v-for="contact in county.contacts">
                             <div class="row">
                                 <div class="col-sm-12">
@@ -48,12 +51,14 @@
                             </div>
                     </div>
                 </div>
-                <div v-else :class="{collapse: county.id !== selectedCounty}">
-                    No Contacts For This County
+                <div v-else="county.contacts == ''" :class="{collapse: county.id !== selectedCounty}">
+                    <a @click="selectedCounty = county.id" data-toggle="modal" :data-target="'#create' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
+                    <h3>No Contacts For This County</h3>
                 </div>
             </div>
             <delete-contact :contact="selectedContact"></delete-contact>
             <edit-contact :contact="selectedContact"></edit-contact>
+            <add-contact :county-id="selectedCounty"></add-contact>
             <add-county></add-county>
         </div>
     </div>
@@ -62,22 +67,28 @@
 
 <script>
     Vue.component('add-county', require('./add-county.vue'));
+    Vue.component('add-contact', require('../county-contacts/create.vue'));
 
     export default {
-        props: ['currentStateObj'],
         data() {
             return{
-                selectedCounty: {},
-                selectedContact:{},
+                selectedCounty: '',
+                selectedContact: {},
             }
         },
+        computed:{
+            currentState(){
+                        return this.$store.getters.getSelectedState;
+            },
+        },
         methods: {
-            countyClicked(county){
-                this.selectedCounty = this.selectedCounty === county.id ? '' : county.id;
+            countyClicked(id){
+                this.$store.commit('setSelectedCounty', id);
+                this.selectedCounty = this.selectedCounty === id ? '' : id;
             },
             currentContact(contact){
                 this.selectedContact = contact;
-            }
+            },
 //            newCounty(){
 //                this.$emit('newCounty', this.createdCounty)
 //            }

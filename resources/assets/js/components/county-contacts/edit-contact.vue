@@ -9,7 +9,7 @@
                 <div class="modal-body ">
 
                     <label for="name">Name</label>
-                    <input id="name" class="form-control" type="text" v-model="contact.name">
+                    <input id="name" class="form-control" type="text" v-model="contact.contact_name">
 
                     <label for="phone">Phone</label>
                     <input id="phone" class="form-control" type="text" v-model="contact.phone">

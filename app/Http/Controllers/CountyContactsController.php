@@ -41,6 +41,7 @@ class CountyContactsController extends Controller
             'contact_name' => 'required',
         ]);
 
+
         $contact->fill(request([
             'contact_name',
             'phone',
@@ -55,7 +56,8 @@ class CountyContactsController extends Controller
             'fee',
             'notes',
         ]));
-        $contact->user_id = auth()->id();
+
+//        $contact->user_id = auth()->id();
         $contact->save();
 
         return $contact;
@@ -65,6 +67,7 @@ class CountyContactsController extends Controller
     {
         abort_unless($county->owns($contact), 404);
         $contact->delete();
+
         return response('Contact Deleted', 204);
     }
 }

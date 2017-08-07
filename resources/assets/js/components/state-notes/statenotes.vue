@@ -6,7 +6,7 @@
 
         <div id="notes-container">
 
-            <div v-for="note in currentStateObj.notes" class="panel panel-default">
+            <div v-for="note in currentState.notes" class="panel panel-default">
                 <div class="panel-body">
                     <p>{{note.body}}
                         <span class="text-right">
@@ -29,10 +29,14 @@
 
 <script>
     export default {
-        props:['currentStateObj'],
         data() {
             return{
                 currentNote: {}
+            }
+        },
+        computed:{
+            currentState(){
+                return this.$store.getters.getSelectedState;
             }
         },
         methods: {

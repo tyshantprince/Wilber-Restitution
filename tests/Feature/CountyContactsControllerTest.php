@@ -63,8 +63,7 @@ class CountyContactsControllerTest extends TestCase
         $contact = factory(Contact::class)->create(['county_id'=> $county->id]);
 
         $this->actingAs($user)->patch(route('county.contacts.update', [$county, $contact]), [
-            'user_id' => 1,
-            'county_id' => $county->id,
+            'county_id'    => $county->id,
             'contact_name' => 'Bill Gates',
             'phone' => '773-123-4567',
             'ext' => '3662',
@@ -73,7 +72,7 @@ class CountyContactsControllerTest extends TestCase
             'city' => 'Chicago',
             'zip' => '60612',
             'fax' => '321',
-            'email'=> 'BGates@gmail.com',
+            'email' => 'BGates@gmail.com',
             'website' => 'www.google.com',
             'fee' => '321',
             'notes' => 'dges'

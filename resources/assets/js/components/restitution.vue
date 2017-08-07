@@ -8,7 +8,7 @@
                         <label class="pr1">State</label>
                         <select class="form-control" v-model="selectedState">
                             <option></option>
-                            <option v-for="state in data" v-bind:value="state.name" >{{state.name}}</option>
+                            <option v-for="state in data" v-bind:value="state.id" >{{state.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -19,7 +19,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <state-notes :currentStateObj="currentStateObj" v-if="selectedState"></state-notes>
+                                <state-notes v-if="selectedState"></state-notes>
                                 <h1 v-else>Please Select a State</h1>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <state-counties :currentStateObj="currentStateObj" v-if="selectedState"></state-counties>
+                                <state-counties v-if="selectedState"></state-counties>
                                 <h1 v-else>Please Select a State</h1>
                             </div>
                         </div>
@@ -52,13 +52,9 @@
         },
         watch: {
             selectedState(){
-                this.$store.commit('updateCurrentState', this.selectedState)
+                this.$store.commit('setSelectedState', this.selectedState)
+
             },
-        },
-        computed:{
-            currentStateObj(){
-                return this.$store.state.states.currentState;
-            }
         },
         created(){
             this.$store.commit('init', this.data);

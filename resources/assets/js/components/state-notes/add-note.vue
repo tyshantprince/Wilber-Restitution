@@ -14,7 +14,7 @@
                     </div>
                     <div class="modal-footer" >
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button @click="create" type="button" class="btn btn-primary" data-dismiss="modal">Create Note</button>
+                        <button @click="addNote" type="button" class="btn btn-primary" data-dismiss="modal">Create Note</button>
                     </div>
                 </div>
             </div>
@@ -30,8 +30,9 @@
             }
         },
         methods:{
-            create(){
+            addNote(){
                 this.$store.commit('createNote', this.createdNote);
+                this.createdNote = '';
             }
         }
 

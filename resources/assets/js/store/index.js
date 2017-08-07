@@ -7,6 +7,7 @@ import states from './modules/states';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+    strict: true,
     modules:{
         states,
     },
