@@ -30,7 +30,7 @@
         },
         methods:{
           newCounty(){
-              this.$store.commit('createCounty', this.createdCounty);
+              this.$store.dispatch('createCounty', this.createdCounty);
           }
         }
     }

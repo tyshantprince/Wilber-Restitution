@@ -77,7 +77,7 @@
         },
         methods: {
             saveContact() {
-                this.$store.commit('createContact', this.contact);
+                this.$store.dispatch('createContact', this.contact);
                 this.contact = {
                     contact_name: '',
                     phone: '',

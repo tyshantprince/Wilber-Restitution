@@ -31,7 +31,7 @@
         },
         methods:{
             addNote(){
-                this.$store.commit('createNote', this.createdNote);
+                this.$store.dispatch('createNote', this.createdNote);
                 this.createdNote = '';
             }
         }

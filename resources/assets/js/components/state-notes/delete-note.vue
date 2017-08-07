@@ -23,7 +23,7 @@
         props: ['note'],
         methods:{
             deleteNote(){
-                this.$store.commit('deleteNote', this.note);
+                this.$store.dispatch('deleteNote', this.note);
             },
         },
 

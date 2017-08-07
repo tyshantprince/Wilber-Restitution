@@ -23,7 +23,7 @@
         props:['contact'],
         methods:{
             deleteContact(){
-                this.$store.commit('deleteContact', this.contact);
+                this.$store.dispatch('deleteContact', this.contact);
             }
         }
     }

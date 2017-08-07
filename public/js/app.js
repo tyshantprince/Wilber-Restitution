@@ -42766,6 +42766,69 @@ var actions = {
         }).catch(function (error) {
             console.log(error);
         });
+    },
+    updateNote: function updateNote(_ref2, note) {
+        var commit = _ref2.commit;
+
+        axios.patch('state/' + note.state_id + '/notes/' + note.id, { body: note.body }).then(function (response) {}).catch(function (error) {
+            console.log(error);
+        });
+    },
+    deleteNote: function deleteNote(_ref3, note) {
+        var commit = _ref3.commit;
+
+        axios.delete('state/' + note.state_id + '/notes/' + note.id).then(function (response) {
+            commit('deleteNote', note);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    },
+    createNote: function createNote(_ref4, note) {
+        var commit = _ref4.commit,
+            state = _ref4.state;
+
+        axios.post('state/' + state.selectedStateID + '/notes', { body: note }).then(function (response) {
+            commit('createNote', response.data);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    },
+    createCounty: function createCounty(_ref5, county) {
+        var commit = _ref5.commit,
+            state = _ref5.state;
+
+        axios.post('state/' + state.selectedStateID + '/counties', { name: county }).then(function (response) {
+            return commit('createCounty', response.data);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    },
+    updateContact: function updateContact(_ref6, contact) {
+        var commit = _ref6.commit;
+
+        axios.patch('county/' + contact.county_id + '/contacts/' + contact.id, contact).then(function (response) {
+            return console.log('success');
+        }).catch(function (error) {
+            return console.log(error);
+        });
+    },
+    deleteContact: function deleteContact(_ref7, contact) {
+        var commit = _ref7.commit;
+
+        axios.delete('county/' + contact.county_id + '/contacts/' + contact.id).then(function (response) {
+            commit('deleteContact', contact);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    },
+    createContact: function createContact(_ref8, contact) {
+        var commit = _ref8.commit;
+
+        axios.post('county/' + contact.county_id + '/contacts', contact).then(function (response) {
+            commit('createContact', response.data);
+        }).catch(function (error) {
+            return console.log(error);
+        });
     }
 };
 
@@ -42779,56 +42842,23 @@ var mutations = {
     setCurrentState: function setCurrentState(state, data) {
         state.currentState = data;
     },
-    updateNote: function updateNote(state, note) {
-        axios.patch('state/' + note.state_id + '/notes/' + note.id, { body: note.body }).then(function (response) {}).catch(function (error) {
-            console.log(error);
-        });
-    },
     deleteNote: function deleteNote(state, note) {
-        axios.delete('state/' + note.state_id + '/notes/' + note.id).then(function (response) {
-            getters.getCurrentState(state).notes = _.without(getters.getCurrentState(state).notes, note);
-        }).catch(function (error) {
-            console.log(error);
-        });
+        state.currentState.notes = _.without(state.currentState.notes, note);
     },
     createNote: function createNote(state, note) {
-        axios.post('state/' + state.selectedStateID + '/notes', { body: note }).then(function (response) {
-            getters.getCurrentState(state).notes.push(response.data);
-        }).catch(function (error) {
-            console.log(error);
-        });
+        state.currentState.notes.push(note);
     },
     createCounty: function createCounty(state, county) {
-        axios.post('state/' + state.selectedStateID + '/counties', { name: county }).then(function (response) {
-            if (typeof response.data.contacts === "undefined") {
-                response.data.contacts = [];
-            }
-            getters.getCurrentState(state).counties.push(response.data);
-        }).catch(function (error) {
-            console.log(error);
-        });
-    },
-    updateContact: function updateContact(state, contact) {
-        axios.patch('county/' + contact.county_id + '/contacts/' + contact.id, contact).then(function (response) {
-            return console.log('success');
-        }).catch(function (error) {
-            return console.log(error);
-        });
+        if (typeof county.contacts === "undefined") {
+            county.contacts = [];
+        }
+        state.currentState.counties.push(county);
     },
     deleteContact: function deleteContact(state, contact) {
-        axios.delete('county/' + contact.county_id + '/contacts/' + contact.id).then(function (response) {
-            getters.getSelectedCounty(state).contacts = _.without(getters.getSelectedCounty(state).contacts, contact);
-        }).catch(function (error) {
-            console.log(error);
-        });
+        state.currentState.contacts = _.without(state.currentState.contacts, contact);
     },
     createContact: function createContact(state, contact) {
-
-        axios.post('county/' + contact.county_id + '/contacts', contact).then(function (response) {
-            getters.getSelectedCounty(state).contacts.push(response.data);
-        }).catch(function (error) {
-            return console.log(error);
-        });
+        state.currentState.contacts.push(response.data);
     }
 };
 
@@ -43782,7 +43812,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         newCounty: function newCounty() {
-            this.$store.commit('createCounty', this.createdCounty);
+            this.$store.dispatch('createCounty', this.createdCounty);
         }
     }
 });
@@ -44014,7 +44044,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         saveContact: function saveContact() {
-            this.$store.commit('createContact', this.contact);
+            this.$store.dispatch('createContact', this.contact);
             this.contact = {
                 contact_name: '',
                 phone: '',
@@ -44656,7 +44686,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['note'],
     methods: {
         editNote: function editNote() {
-            this.$store.commit('updateNote', this.note);
+            this.$store.dispatch('updateNote', this.note);
         }
     }
 });
@@ -44823,7 +44853,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['note'],
     methods: {
         deleteNote: function deleteNote() {
-            this.$store.commit('deleteNote', this.note);
+            this.$store.dispatch('deleteNote', this.note);
         }
     }
 
@@ -44977,7 +45007,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         addNote: function addNote() {
-            this.$store.commit('createNote', this.createdNote);
+            this.$store.dispatch('createNote', this.createdNote);
             this.createdNote = '';
         }
     }
@@ -45159,7 +45189,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['contact'],
     methods: {
         deleteContact: function deleteContact() {
-            this.$store.commit('deleteContact', this.contact);
+            this.$store.dispatch('deleteContact', this.contact);
         }
     }
 });
@@ -45333,7 +45363,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['contact'],
     methods: {
         editContact: function editContact() {
-            this.$store.commit('updateContact', this.contact);
+            this.$store.dispatch('updateContact', this.contact);
         }
     }
 });

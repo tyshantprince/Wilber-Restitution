@@ -53,7 +53,7 @@
         props:['contact'],
         methods:{
             editContact(){
-                this.$store.commit('updateContact', this.contact);
+                this.$store.dispatch('updateContact', this.contact);
             }
         }
     }

@@ -23,7 +23,7 @@
         props:['note'],
         methods:{
             editNote(){
-               this.$store.commit('updateNote', this.note)
+               this.$store.dispatch('updateNote', this.note)
             },
         }
     }

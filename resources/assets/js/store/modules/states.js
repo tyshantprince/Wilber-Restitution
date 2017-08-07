@@ -21,7 +21,7 @@ const getters = {
 };
 
 const actions = {
-    setCurrentState({ commit, state } ){
+    setCurrentState({commit, state}){
         axios.get('state/' + state.selectedStateID)
             .then((response) => {
                 commit('setCurrentState', response.data);
@@ -30,6 +30,60 @@ const actions = {
                 console.log(error);
             });
     },
+    updateNote({commit}, note) {
+        axios.patch('state/' + note.state_id + '/notes/' + note.id, {body: note.body})
+            .then((response) => {
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    },
+    deleteNote({commit}, note) {
+        axios.delete('state/' + note.state_id + '/notes/' + note.id)
+            .then((response) => {
+                commit('deleteNote', note);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    },
+    createNote({commit, state}, note) {
+        axios.post('state/' + state.selectedStateID + '/notes', {body: note})
+            .then((response) => {
+                commit('createNote', response.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    },
+    createCounty({commit, state}, county) {
+        axios.post('state/' + state.selectedStateID + '/counties', {name: county})
+            .then((response) => commit('createCounty', response.data))
+            .catch((error) => {
+                console.log(error);
+            });
+    },
+    updateContact({commit}, contact) {
+        axios.patch('county/' + contact.county_id + '/contacts/' + contact.id, contact)
+            .then(response => console.log('success'))
+            .catch(error => console.log(error));
+    },
+    deleteContact({commit}, contact) {
+        axios.delete('county/' + contact.county_id + '/contacts/' + contact.id)
+            .then((response) => {
+                commit('deleteContact', contact);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    },
+    createContact({commit}, contact) {
+        axios.post('county/' + contact.county_id + '/contacts', contact)
+            .then(response => {
+                commit('createContact', response.data);
+            })
+            .catch(error => console.log(error));
+    }
 };
 
 const mutations = {
@@ -42,64 +96,23 @@ const mutations = {
     setCurrentState(state, data){
         state.currentState = data;
     },
-    updateNote(state, note) {
-        axios.patch('state/' + note.state_id + '/notes/' + note.id, {body: note.body})
-            .then((response) => {})
-            .catch((error) => {
-                console.log(error);
-            });
-    },
     deleteNote(state, note) {
-        axios.delete('state/' + note.state_id + '/notes/' + note.id)
-            .then((response) => {
-                getters.getCurrentState(state).notes = _.without(getters.getCurrentState(state).notes, note)
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        state.currentState.notes = _.without(state.currentState.notes, note)
     },
     createNote(state, note) {
-        axios.post('state/' + state.selectedStateID + '/notes', {body: note})
-            .then((response) => {
-                getters.getCurrentState(state).notes.push(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        state.currentState.notes.push(note);
     },
     createCounty(state, county) {
-        axios.post('state/' + state.selectedStateID + '/counties', {name: county})
-            .then((response) => {
-                if(typeof response.data.contacts === "undefined"){
-                    response.data.contacts = [];
+                if(typeof county.contacts === "undefined"){
+                    county.contacts = [];
                 }
-                getters.getCurrentState(state).counties.push(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    },
-    updateContact(state, contact) {
-        axios.patch('county/' + contact.county_id + '/contacts/' + contact.id, contact)
-            .then(response => console.log('success'))
-            .catch(error => console.log(error));
+                state.currentState.counties.push(county);
     },
     deleteContact(state, contact) {
-        axios.delete('county/' + contact.county_id + '/contacts/' + contact.id)
-            .then((response) => {
-                getters.getSelectedCounty(state).contacts = _.without(getters.getSelectedCounty(state).contacts, contact);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        state.currentState.contacts = _.without(state.currentState.contacts, contact);
     },
     createContact(state, contact) {
-
-        axios.post('county/' + contact.county_id + '/contacts', contact)
-            .then(response => {
-                getters.getSelectedCounty(state).contacts.push(response.data);
-            })
-            .catch(error => console.log(error));
+        state.currentState.contacts.push(response.data);
     }
 
 };
