@@ -1,5 +1,6 @@
 const state = {
     stateList: [],
+    currentState:{},
     selectedStateID: '',
     selectedCountyID: '',
 };
@@ -8,24 +9,38 @@ const getters = {
     getSelectedState: (state) => {
         return _.find(state.stateList, {id: state.selectedStateID});
     },
+    getCurrentState: (state) => {
+        return state.currentState;
+    },
     getSelectedCounty: (state) => {
         if(state.selectedStateID != '')
         {
-            return _.find(getters.getSelectedState(state).counties, {id: state.selectedCountyID})
+            return _.find(getters.getCurrentState(state).counties, {id: state.selectedCountyID})
         }
-        },
+    },
+};
+
+const actions = {
+    setCurrentState({ commit, state } ){
+        axios.get('state/' + state.selectedStateID)
+            .then((response) => {
+                commit('setCurrentState', response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    },
 };
 
 const mutations = {
-    init(state, payload) {
-        state.stateList = payload;
-    },
     setSelectedState(state, id){
-        state.selectedCountyID = '';
         state.selectedStateID = id;
     },
     setSelectedCounty(state, id) {
         state.selectedCountyID =  id;
+    },
+    setCurrentState(state, data){
+        state.currentState = data;
     },
     updateNote(state, note) {
         axios.patch('state/' + note.state_id + '/notes/' + note.id, {body: note.body})
@@ -37,7 +52,7 @@ const mutations = {
     deleteNote(state, note) {
         axios.delete('state/' + note.state_id + '/notes/' + note.id)
             .then((response) => {
-                getters.getSelectedState(state).notes = _.without(getters.getSelectedState(state).notes, note)
+                getters.getCurrentState(state).notes = _.without(getters.getCurrentState(state).notes, note)
             })
             .catch((error) => {
                 console.log(error);
@@ -46,7 +61,7 @@ const mutations = {
     createNote(state, note) {
         axios.post('state/' + state.selectedStateID + '/notes', {body: note})
             .then((response) => {
-                getters.getSelectedState(state).notes.push(response.data);
+                getters.getCurrentState(state).notes.push(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -58,7 +73,7 @@ const mutations = {
                 if(typeof response.data.contacts === "undefined"){
                     response.data.contacts = [];
                 }
-                getters.getSelectedState(state).counties.push(response.data);
+                getters.getCurrentState(state).counties.push(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -93,5 +108,6 @@ const mutations = {
 export default {
     state,
     getters,
-    mutations
+    mutations,
+    actions
 }

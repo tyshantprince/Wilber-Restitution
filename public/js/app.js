@@ -41912,7 +41912,6 @@ module.exports = function spread(callback) {
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
-    strict: true,
     modules: {
         states: __WEBPACK_IMPORTED_MODULE_2__modules_states__["a" /* default */]
     }
@@ -42738,6 +42737,7 @@ var index_esm = {
 "use strict";
 var state = {
     stateList: [],
+    currentState: {},
     selectedStateID: '',
     selectedCountyID: ''
 };
@@ -42746,23 +42746,38 @@ var getters = {
     getSelectedState: function getSelectedState(state) {
         return _.find(state.stateList, { id: state.selectedStateID });
     },
+    getCurrentState: function getCurrentState(state) {
+        return state.currentState;
+    },
     getSelectedCounty: function getSelectedCounty(state) {
         if (state.selectedStateID != '') {
-            return _.find(getters.getSelectedState(state).counties, { id: state.selectedCountyID });
+            return _.find(getters.getCurrentState(state).counties, { id: state.selectedCountyID });
         }
     }
 };
 
+var actions = {
+    setCurrentState: function setCurrentState(_ref) {
+        var commit = _ref.commit,
+            state = _ref.state;
+
+        axios.get('state/' + state.selectedStateID).then(function (response) {
+            commit('setCurrentState', response.data);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+};
+
 var mutations = {
-    init: function init(state, payload) {
-        state.stateList = payload;
-    },
     setSelectedState: function setSelectedState(state, id) {
-        state.selectedCountyID = '';
         state.selectedStateID = id;
     },
     setSelectedCounty: function setSelectedCounty(state, id) {
         state.selectedCountyID = id;
+    },
+    setCurrentState: function setCurrentState(state, data) {
+        state.currentState = data;
     },
     updateNote: function updateNote(state, note) {
         axios.patch('state/' + note.state_id + '/notes/' + note.id, { body: note.body }).then(function (response) {}).catch(function (error) {
@@ -42771,14 +42786,14 @@ var mutations = {
     },
     deleteNote: function deleteNote(state, note) {
         axios.delete('state/' + note.state_id + '/notes/' + note.id).then(function (response) {
-            getters.getSelectedState(state).notes = _.without(getters.getSelectedState(state).notes, note);
+            getters.getCurrentState(state).notes = _.without(getters.getCurrentState(state).notes, note);
         }).catch(function (error) {
             console.log(error);
         });
     },
     createNote: function createNote(state, note) {
         axios.post('state/' + state.selectedStateID + '/notes', { body: note }).then(function (response) {
-            getters.getSelectedState(state).notes.push(response.data);
+            getters.getCurrentState(state).notes.push(response.data);
         }).catch(function (error) {
             console.log(error);
         });
@@ -42788,7 +42803,7 @@ var mutations = {
             if (typeof response.data.contacts === "undefined") {
                 response.data.contacts = [];
             }
-            getters.getSelectedState(state).counties.push(response.data);
+            getters.getCurrentState(state).counties.push(response.data);
         }).catch(function (error) {
             console.log(error);
         });
@@ -42820,7 +42835,8 @@ var mutations = {
 /* harmony default export */ __webpack_exports__["a"] = ({
     state: state,
     getters: getters,
-    mutations: mutations
+    mutations: mutations,
+    actions: actions
 });
 
 /***/ }),
@@ -42923,10 +42939,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     watch: {
         selectedState: function selectedState() {
             this.$store.commit('setSelectedState', this.selectedState);
+            this.$store.dispatch('setCurrentState');
         }
-    },
-    created: function created() {
-        this.$store.commit('init', this.data);
     }
 });
 
@@ -43090,7 +43104,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     computed: {
         currentState: function currentState() {
-            return this.$store.getters.getSelectedState;
+            return this.$store.getters.getCurrentState;
         }
     },
     methods: {
@@ -43675,7 +43689,7 @@ Vue.component('add-contact', __webpack_require__(56));
 
     computed: {
         currentState: function currentState() {
-            return this.$store.getters.getSelectedState;
+            return this.$store.getters.getCurrentState;
         }
     },
     methods: {

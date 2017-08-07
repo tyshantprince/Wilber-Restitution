@@ -78,7 +78,7 @@
         },
         computed:{
             currentState(){
-                        return this.$store.getters.getSelectedState;
+                return this.$store.getters.getCurrentState;
             },
         },
         methods: {
@@ -89,10 +89,6 @@
             currentContact(contact){
                 this.selectedContact = contact;
             },
-//            newCounty(){
-//                this.$emit('newCounty', this.createdCounty)
-//            }
-//
         }
     }
 </script>

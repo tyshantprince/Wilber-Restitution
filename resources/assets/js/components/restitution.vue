@@ -52,12 +52,9 @@
         },
         watch: {
             selectedState(){
-                this.$store.commit('setSelectedState', this.selectedState)
-
+                this.$store.commit('setSelectedState', this.selectedState);
+                this.$store.dispatch('setCurrentState');
             },
         },
-        created(){
-            this.$store.commit('init', this.data);
-        }
     }
 </script>

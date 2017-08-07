@@ -9,7 +9,12 @@ class RestitutionController extends Controller
     public function index()
     {
         return view('index', [
-            'states' => State::with('notes', 'counties', 'counties.contacts')->get(),
+            'states' => State::select(['id', 'name'])->get(),
         ]);
+    }
+
+    public function show(State $state)
+    {
+        return $state->load('notes', 'counties', 'counties.contacts');
     }
 }

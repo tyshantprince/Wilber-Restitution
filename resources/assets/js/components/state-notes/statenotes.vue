@@ -36,7 +36,7 @@
         },
         computed:{
             currentState(){
-                return this.$store.getters.getSelectedState;
+                return this.$store.getters.getCurrentState;
             }
         },
         methods: {

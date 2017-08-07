@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'RestitutionController@index');
+Route::get('state/{state}', 'RestitutionController@show');
 
 
 Route::get('state/{state}/notes',           'StateNotesController@index')->name('state.notes.index');
