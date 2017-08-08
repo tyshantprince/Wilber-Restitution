@@ -16,7 +16,7 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import store from './store/index'
+import store from './store/index';
 
 Vue.component('restitution', require('./components/restitution.vue'));
 Vue.component('state-notes', require('./components/state-notes/statenotes.vue'));

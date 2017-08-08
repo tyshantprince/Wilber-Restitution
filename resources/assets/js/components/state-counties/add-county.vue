@@ -31,6 +31,7 @@
         methods:{
           newCounty(){
               this.$store.dispatch('createCounty', this.createdCounty);
+              this.createdCounty = '';
           }
         }
     }

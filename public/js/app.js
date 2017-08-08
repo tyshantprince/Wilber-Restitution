@@ -42743,9 +42743,6 @@ var state = {
 };
 
 var getters = {
-    getSelectedState: function getSelectedState(state) {
-        return _.find(state.stateList, { id: state.selectedStateID });
-    },
     getCurrentState: function getCurrentState(state) {
         return state.currentState;
     },
@@ -42849,16 +42846,14 @@ var mutations = {
         state.currentState.notes.push(note);
     },
     createCounty: function createCounty(state, county) {
-        if (typeof county.contacts === "undefined") {
-            county.contacts = [];
-        }
+        county.contacts = [];
         state.currentState.counties.push(county);
     },
     deleteContact: function deleteContact(state, contact) {
-        state.currentState.contacts = _.without(state.currentState.contacts, contact);
+        getters.getSelectedCounty(state).contacts = _.without(getters.getSelectedCounty(state).contacts, contact);
     },
     createContact: function createContact(state, contact) {
-        state.currentState.contacts.push(response.data);
+        getters.getSelectedCounty(state).contacts.push(contact);
     }
 };
 
@@ -43095,7 +43090,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
 //
 //
 //
@@ -43813,6 +43807,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         newCounty: function newCounty() {
             this.$store.dispatch('createCounty', this.createdCounty);
+            this.createdCounty = '';
         }
     }
 });

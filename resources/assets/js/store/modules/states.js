@@ -6,9 +6,6 @@ const state = {
 };
 
 const getters = {
-    getSelectedState: (state) => {
-        return _.find(state.stateList, {id: state.selectedStateID});
-    },
     getCurrentState: (state) => {
         return state.currentState;
     },
@@ -103,16 +100,14 @@ const mutations = {
         state.currentState.notes.push(note);
     },
     createCounty(state, county) {
-                if(typeof county.contacts === "undefined"){
-                    county.contacts = [];
-                }
-                state.currentState.counties.push(county);
+        county.contacts = [];
+        state.currentState.counties.push(county);
     },
     deleteContact(state, contact) {
-        state.currentState.contacts = _.without(state.currentState.contacts, contact);
+        getters.getSelectedCounty(state).contacts = _.without(getters.getSelectedCounty(state).contacts, contact);
     },
     createContact(state, contact) {
-        state.currentState.contacts.push(response.data);
+        getters.getSelectedCounty(state).contacts.push(contact);
     }
 
 };

@@ -19,7 +19,6 @@
 
             <edit-note :note="currentNote"></edit-note>
             <delete-note :note="currentNote" ></delete-note>
-
             <add-note></add-note>
 
         </div>
