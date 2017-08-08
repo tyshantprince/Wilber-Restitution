@@ -10,8 +10,8 @@
                 <div class="panel-body">
                     <p>{{note.body}}
                         <span class="text-right">
-                            <a @click="chooseNote(note)" class="btn btn-small" data-toggle="modal" :data-target="'#edit' + note.id">Edit</a>
-                            <a @click="chooseNote(note)" class="btn btn-small" data-toggle="modal" :data-target="'#delete' + note.id">Delete</a>
+                            <a @click="chooseNote(note)" class="btn btn-small" data-toggle="modal" :data-target="'#edit' + note.id" :name="'edit' + note.id">Edit</a>
+                            <a @click="chooseNote(note)" class="btn btn-small" data-toggle="modal" :data-target="'#delete' + note.id" :name="'delete' + note.id">Delete</a>
                         </span>
                     </p>
                 </div>

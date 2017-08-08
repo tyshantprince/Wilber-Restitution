@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" :id="'create' + countyId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" :id="'createContact' + countyId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -8,40 +8,40 @@
                 </div>
                 <div class="modal-body ">
 
-                    <label for="name">Name</label>
-                    <input id="name" class="form-control" type="text" v-model="contact.contact_name">
+                    <label>Name</label>
+                    <input name="name" class="form-control" type="text" v-model="contact.contact_name">
 
-                    <label for="phone">Phone</label>
-                    <input id="phone" class="form-control" type="text" v-model="contact.phone">
+                    <label>Phone</label>
+                    <input name="phone" class="form-control" type="text" v-model="contact.phone">
 
-                    <label for="address1">Address</label>
-                    <input id="address1" class="form-control" type="text" v-model="contact.address1">
+                    <label>Address</label>
+                    <input name="address1" class="form-control" type="text" v-model="contact.address1">
 
-                    <label for="city">City</label>
-                    <input id="city" class="form-control" type="text" v-model="contact.city">
+                    <label>City</label>
+                    <input name="city" class="form-control" type="text" v-model="contact.city">
 
-                    <label for="zip">Zipcode</label>
-                    <input id="zip" class="form-control" type="text" v-model="contact.zip">
+                    <label>Zipcode</label>
+                    <input name="zip" class="form-control" type="text" v-model="contact.zip">
 
-                    <label for="fax">Fax</label>
-                    <input id="fax" class="form-control" type="text" v-model="contact.fax">
+                    <label>Fax</label>
+                    <input name="fax" class="form-control" type="text" v-model="contact.fax">
 
-                    <label for="email">Email</label>
-                    <input id="email" class="form-control" type="text" v-model="contact.email">
+                    <label>Email</label>
+                    <input name="email" class="form-control" type="text" v-model="contact.email">
 
-                    <label for="website">Website</label>
-                    <input id="website" class="form-control" type="text" v-model="contact.website">
+                    <label>Website</label>
+                    <input name="website" class="form-control" type="text" v-model="contact.website">
 
-                    <label for="fee">Fee</label>
-                    <input id="fee" class="form-control" type="text" v-model="contact.fee">
+                    <label>Fee</label>
+                    <input name="fee" class="form-control" type="text" v-model="contact.fee">
 
-                    <label for="notes">Notes</label>
-                    <textarea id="notes" class="form-control"  cols="30" rows="4" v-model="contact.notes" style="min-width: 100%"></textarea>
+                    <label>Notes</label>
+                    <textarea name="notes" class="form-control"  cols="30" rows="4" v-model="contact.notes" style="min-width: 100%"></textarea>
 
                 </div>
                 <div class="modal-footer" >
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button @click="saveContact" type="button" class="btn btn-primary" data-dismiss="modal">Save Contact</button>
+                    <button @click="saveContact" type="button" class="btn btn-primary make-contact" data-dismiss="modal">Save Contact</button>
                 </div>
             </div>
         </div>

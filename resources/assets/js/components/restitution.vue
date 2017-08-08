@@ -6,7 +6,7 @@
                 <div class="flex" style="">
                     <div class="flex fl-ai-b">
                         <label class="pr1">State</label>
-                        <select class="form-control" v-model="selectedState">
+                        <select name="stateDropdown" class="form-control" v-model="selectedState">
                             <option></option>
                             <option v-for="state in data" v-bind:value="state.id" >{{state.name}}</option>
                         </select>

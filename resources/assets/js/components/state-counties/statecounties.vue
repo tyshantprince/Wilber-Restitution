@@ -21,12 +21,12 @@
 
         <div id="notes-container">
             <div v-for="county in currentState.counties">
-                <button @click="countyClicked(county.id)" class="btn btn-primary block mb075 w100p">{{ county.name}}</button>
+                <button @click="countyClicked(county.id)" class="btn btn-primary block mb075 w100p" :id="county.id">{{ county.name}}</button>
 
                 <div v-if="county.contacts" class="contacts-container" :class="{collapse: county.id !== selectedCounty}">
                     <hr>
                     <!--<a @click="countyClicked(county)" class="btn btn-primary mb075 w100p" data-toggle="modal" :data-target="'#create' + county.id">Add Contact</a>-->
-                    <a @click="selectedCounty = county.id" data-toggle="modal" :data-target="'#create' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
+                    <a @click="selectedCounty = county.id" :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
                     <div v-for="contact in county.contacts">
                             <div class="row">
                                 <div class="col-sm-12">
@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div v-else="county.contacts == ''" :class="{collapse: county.id !== selectedCounty}">
-                    <a @click="selectedCounty = county.id" data-toggle="modal" :data-target="'#create' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
+                    <a @click="selectedCounty = county.id"  :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
                     <h3>No Contacts For This County</h3>
                 </div>
             </div>

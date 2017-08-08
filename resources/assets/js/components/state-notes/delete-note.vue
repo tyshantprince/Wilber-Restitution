@@ -11,7 +11,7 @@
                 </div>
                 <div class="modal-footer" >
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button @click="deleteNote" type="button" class="btn btn-danger" data-dismiss="modal">Yes I am</button>
+                    <button @click="deleteNote" id="delete" type="button" class="btn btn-danger" data-dismiss="modal">Yes I am</button>
                 </div>
             </div>
         </div>

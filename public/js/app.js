@@ -42996,6 +42996,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "selectedState"
     }],
     staticClass: "form-control",
+    attrs: {
+      "name": "stateDropdown"
+    },
     on: {
       "change": function($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
@@ -43158,7 +43161,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "btn btn-small",
       attrs: {
         "data-toggle": "modal",
-        "data-target": '#edit' + note.id
+        "data-target": '#edit' + note.id,
+        "name": 'edit' + note.id
       },
       on: {
         "click": function($event) {
@@ -43169,7 +43173,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "btn btn-small",
       attrs: {
         "data-toggle": "modal",
-        "data-target": '#delete' + note.id
+        "data-target": '#delete' + note.id,
+        "name": 'delete' + note.id
       },
       on: {
         "click": function($event) {
@@ -43817,7 +43822,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._m(0), _vm._v(" "), _c('div', {
+  return _c('div', [_c('a', {
+    staticClass: "btn-large",
+    attrs: {
+      "data-toggle": "modal",
+      "data-target": "#newCounty"
+    }
+  }, [_vm._v("New County")]), _vm._v(" "), _c('div', {
     staticClass: "modal fade",
     attrs: {
       "id": "newCounty",
@@ -43832,7 +43843,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "modal-content"
-  }, [_vm._m(1), _vm._v(" "), _c('div', {
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
   }, [_c('input', {
     directives: [{
@@ -43867,6 +43878,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary",
     attrs: {
+      "id": "makeCounty",
       "type": "button",
       "data-dismiss": "modal"
     },
@@ -43875,16 +43887,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Create County")])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('a', {
-    staticClass: "btn-large",
-    attrs: {
-      "data-toggle": "modal",
-      "data-target": "#newCounty"
-    }
-  }, [_c('span', {
-    staticClass: "btn-add"
-  }, [_vm._v("New County")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "modal-header"
   }, [_c('button', {
@@ -44067,7 +44069,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "modal fade",
     attrs: {
-      "id": 'create' + _vm.countyId,
+      "id": 'createContact' + _vm.countyId,
       "tabindex": "-1",
       "role": "dialog",
       "aria-labelledby": "myModalLabel"
@@ -44081,11 +44083,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-content"
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "modal-body "
-  }, [_c('label', {
-    attrs: {
-      "for": "name"
-    }
-  }, [_vm._v("Name")]), _vm._v(" "), _c('input', {
+  }, [_c('label', [_vm._v("Name")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -44094,7 +44092,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "name",
+      "name": "name",
       "type": "text"
     },
     domProps: {
@@ -44106,11 +44104,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.contact_name = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "phone"
-    }
-  }, [_vm._v("Phone")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Phone")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -44119,7 +44113,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "phone",
+      "name": "phone",
       "type": "text"
     },
     domProps: {
@@ -44131,11 +44125,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.phone = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "address1"
-    }
-  }, [_vm._v("Address")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Address")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -44144,7 +44134,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "address1",
+      "name": "address1",
       "type": "text"
     },
     domProps: {
@@ -44156,11 +44146,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.address1 = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "city"
-    }
-  }, [_vm._v("City")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("City")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -44169,7 +44155,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "city",
+      "name": "city",
       "type": "text"
     },
     domProps: {
@@ -44181,11 +44167,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.city = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "zip"
-    }
-  }, [_vm._v("Zipcode")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Zipcode")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -44194,7 +44176,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "zip",
+      "name": "zip",
       "type": "text"
     },
     domProps: {
@@ -44206,11 +44188,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.zip = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "fax"
-    }
-  }, [_vm._v("Fax")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Fax")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -44219,7 +44197,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "fax",
+      "name": "fax",
       "type": "text"
     },
     domProps: {
@@ -44231,11 +44209,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.fax = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "email"
-    }
-  }, [_vm._v("Email")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Email")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -44244,7 +44218,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "email",
+      "name": "email",
       "type": "text"
     },
     domProps: {
@@ -44256,11 +44230,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.email = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "website"
-    }
-  }, [_vm._v("Website")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Website")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -44269,7 +44239,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "website",
+      "name": "website",
       "type": "text"
     },
     domProps: {
@@ -44281,11 +44251,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.website = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "fee"
-    }
-  }, [_vm._v("Fee")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Fee")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -44294,7 +44260,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "fee",
+      "name": "fee",
       "type": "text"
     },
     domProps: {
@@ -44306,11 +44272,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.fee = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "notes"
-    }
-  }, [_vm._v("Notes")]), _vm._v(" "), _c('textarea', {
+  }), _vm._v(" "), _c('label', [_vm._v("Notes")]), _vm._v(" "), _c('textarea', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -44322,7 +44284,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "min-width": "100%"
     },
     attrs: {
-      "id": "notes",
+      "name": "notes",
       "cols": "30",
       "rows": "4"
     },
@@ -44344,7 +44306,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "data-dismiss": "modal"
     }
   }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary",
+    staticClass: "btn btn-primary make-contact",
     attrs: {
       "type": "button",
       "data-dismiss": "modal"
@@ -44391,6 +44353,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._l((_vm.currentState.counties), function(county) {
     return _c('div', [_c('button', {
       staticClass: "btn btn-primary block mb075 w100p",
+      attrs: {
+        "id": county.id
+      },
       on: {
         "click": function($event) {
           _vm.countyClicked(county.id)
@@ -44407,8 +44372,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "padding-right": "8px"
       },
       attrs: {
+        "id": 'addButton' + county.id,
         "data-toggle": "modal",
-        "data-target": '#create' + county.id
+        "data-target": '#createContact' + county.id
       },
       on: {
         "click": function($event) {
@@ -44483,8 +44449,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "padding-right": "8px"
       },
       attrs: {
+        "id": 'addButton' + county.id,
         "data-toggle": "modal",
-        "data-target": '#create' + county.id
+        "data-target": '#createContact' + county.id
       },
       on: {
         "click": function($event) {
@@ -44744,6 +44711,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary",
     attrs: {
+      "id": "edit",
       "type": "button",
       "data-dismiss": "modal"
     },
@@ -44885,6 +44853,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-danger",
     attrs: {
+      "id": "delete",
       "type": "button",
       "data-dismiss": "modal"
     },
@@ -45067,6 +45036,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary",
     attrs: {
+      "id": "create",
       "type": "button",
       "data-dismiss": "modal"
     },

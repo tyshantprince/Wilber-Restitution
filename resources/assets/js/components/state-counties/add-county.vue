@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a class="btn-large" data-toggle="modal" data-target="#newCounty"><span class="btn-add">New County</span></a>
+        <a class="btn-large" data-toggle="modal" data-target="#newCounty">New County</a>
         <div class="modal fade" id="newCounty" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -13,7 +13,7 @@
                     </div>
                     <div class="modal-footer" >
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button @click="newCounty" type="button" class="btn btn-primary" data-dismiss="modal">Create County</button>
+                        <button @click="newCounty" id="makeCounty" type="button" class="btn btn-primary" data-dismiss="modal">Create County</button>
                     </div>
                 </div>
             </div>
