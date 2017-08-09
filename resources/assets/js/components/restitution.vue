@@ -20,7 +20,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <state-notes :currentStateObj="currentStateObj" v-if="selectedState"></state-notes>
-                                <h1 v-else>Please Select a State</h1>
+                                <h1 v-else>PleaseWDFWFW Select a State</h1>
                             </div>
                         </div>
                     </div>

@@ -22,7 +22,7 @@
         <div id="notes-container">
             <div v-for="county in currentStateObj.counties">
                 <button @click="countyClicked(county)" class="btn btn-primary block mb075 w100p">{{ county.name}}</button>
-                <div v-if="county.contacts.length > 0" class="contacts-container" :class="{collapse: county.id !== selectedCounty}">
+                <div class="contacts-container" :class="{collapse: county.id !== selectedCounty}">
                     <hr>
                     <div v-for="contact in county.contacts">
                             <div class="row">
@@ -47,9 +47,6 @@
                                 </div>
                             </div>
                     </div>
-                </div>
-                <div v-else :class="{collapse: county.id !== selectedCounty}">
-                    No Contacts For This County
                 </div>
             </div>
             <delete-contact :contact="selectedContact"></delete-contact>
