@@ -42794,10 +42794,13 @@ var actions = {
         var commit = _ref5.commit,
             state = _ref5.state;
 
-        axios.post('state/' + state.selectedStateID + '/counties', { name: county }).then(function (response) {
-            return commit('createCounty', response.data);
-        }).catch(function (error) {
-            console.log(error);
+        return new Promise(function (resolve, reject) {
+            axios.post('state/' + state.selectedStateID + '/counties', { name: county }).then(function (response) {
+                commit('createCounty', response.data);
+                resolve();
+            }).catch(function (error) {
+                console.log(error);
+            });
         });
     },
     updateContact: function updateContact(_ref6, contact) {
@@ -42848,6 +42851,7 @@ var mutations = {
     createCounty: function createCounty(state, county) {
         county.contacts = [];
         state.currentState.counties.push(county);
+        state.selectedCountyID = county.id;
     },
     deleteContact: function deleteContact(state, contact) {
         getters.getSelectedCounty(state).contacts = _.without(getters.getSelectedCounty(state).contacts, contact);
@@ -43725,6 +43729,9 @@ Vue.component('add-contact', __webpack_require__(56));
     computed: {
         currentState: function currentState() {
             return this.$store.getters.getCurrentState;
+        },
+        currentCounty: function currentCounty() {
+            return this.$store.getters.getSelectedCounty;
         }
     },
     methods: {
@@ -43735,12 +43742,47 @@ Vue.component('add-contact', __webpack_require__(56));
         currentContact: function currentContact(contact) {
             this.selectedContact = contact;
         },
-        newContact: function newContact(county) {
-            this.selectedCounty = county.id;
+        newContact: function newContact() {
+            this.selectedCounty = this.currentCounty.id;
             setTimeout(function () {
                 $('input[name=name]').focus();
             }, 500);
+        },
+        showContactModal: function showContactModal() {
+            $('#createContact').modal('toggle');
+            setTimeout(function () {
+                $('input[name=name]').focus();
+            }, 500);
+            //                $('#' + this.currentCounty.id).click(() => {
+            //                    $('#addButton' + this.currentCounty.id).click(() => {
+            //                        $('input[name=name]').focus();
+            //                    });
+            //                });
+
+
+            //                setTimeout(() => {
+            //                    $('#' + this.currentCounty.id).click();
+            //                    setTimeout(() => {
+            //                        $('#addButton' + this.currentCounty.id).click();
+            //                    }, 1000)
+            //                }, 1000);
+
+            //                this.selectedCounty = this.currentCounty.id
+            //                $('#' + this.currentCounty.id).click();
+            //                setTimeout(() => {
+            //                        console.log(this.currentCounty);
+            //                        $('#addButton' + this.currentCounty.id).click();
+            //                    }, 500)
         }
+        //                this.selectedCounty = this.currentCounty.id
+        //                setTimeout((that) => {
+        //                    console.log(that.currentCounty);
+        //                    $('#addButton' + that.currentCounty.id).click();
+        //                }, 500, this)
+        //
+
+        //            }
+
     }
 });
 
@@ -43823,7 +43865,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         newCounty: function newCounty() {
-            this.$store.dispatch('createCounty', this.createdCounty);
+            var _this = this;
+
+            this.$store.dispatch('createCounty', this.createdCounty).then(function () {
+                $('#' + _this.$store.getters.getSelectedCounty.id).click();
+                _this.$emit('countyAdded');
+            });
             this.createdCounty = '';
         },
         focus: function focus() {
@@ -44397,9 +44444,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "data-target": '#createContact' + county.id
       },
       on: {
-        "click": function($event) {
-          _vm.newContact(county)
-        }
+        "click": _vm.newContact
       }
     }, [_vm._v("Add Contact")]), _vm._v(" "), _vm._l((county.contacts), function(contact) {
       return _c('div', [_c('div', {
@@ -44474,9 +44519,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "data-target": '#createContact' + county.id
       },
       on: {
-        "click": function($event) {
-          _vm.newContact(county)
-        }
+        "click": _vm.newContact
       }
     }, [_vm._v("Add Contact")]), _vm._v(" "), _c('h3', [_vm._v("No Contacts For This County")])])])
   }), _vm._v(" "), _c('delete-contact', {
@@ -44491,7 +44534,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "county-id": _vm.selectedCounty
     }
-  }), _vm._v(" "), _c('add-county')], 2)])
+  }), _vm._v(" "), _c('add-county', {
+    on: {
+      "countyAdded": _vm.showContactModal
+    }
+  })], 2)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
     staticClass: "state-notes-header"

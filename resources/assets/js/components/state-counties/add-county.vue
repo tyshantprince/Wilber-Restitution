@@ -30,8 +30,11 @@
         },
         methods:{
           newCounty(){
-              this.$store.dispatch('createCounty', this.createdCounty);
-              this.createdCounty = '';
+              this.$store.dispatch('createCounty', this.createdCounty).then(() => {
+                  $('#' + this.$store.getters.getSelectedCounty.id).click();
+                  this.$emit('countyAdded')
+              });
+              this.createdCounty = ''
           },
             focus(){
                 setTimeout(() => {

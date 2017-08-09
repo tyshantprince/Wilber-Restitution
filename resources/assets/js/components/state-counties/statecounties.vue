@@ -26,7 +26,7 @@
                 <div v-if="county.contacts" class="contacts-container" :class="{collapse: county.id !== selectedCounty}">
                     <hr>
                     <!--<a @click="countyClicked(county)" class="btn btn-primary mb075 w100p" data-toggle="modal" :data-target="'#create' + county.id">Add Contact</a>-->
-                    <a @click="newContact(county)" :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
+                    <a @click="newContact" :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
                     <div v-for="contact in county.contacts">
                             <div class="row">
                                 <div class="col-sm-12">
@@ -52,14 +52,14 @@
                     </div>
                 </div>
                 <div v-else="county.contacts == ''" :class="{collapse: county.id !== selectedCounty}">
-                    <a @click="newContact(county)"  :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
+                    <a @click="newContact"  :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
                     <h3>No Contacts For This County</h3>
                 </div>
             </div>
             <delete-contact :contact="selectedContact"></delete-contact>
             <edit-contact :contact="selectedContact"></edit-contact>
             <add-contact :county-id="selectedCounty"></add-contact>
-            <add-county></add-county>
+            <add-county @countyAdded="showContactModal"></add-county>
         </div>
     </div>
 
@@ -80,6 +80,9 @@
             currentState(){
                 return this.$store.getters.getCurrentState;
             },
+            currentCounty(){
+                return this.$store.getters.getSelectedCounty;
+            }
         },
         methods: {
             countyClicked(id){
@@ -89,12 +92,48 @@
             currentContact(contact){
                 this.selectedContact = contact;
             },
-            newContact(county){
-                this.selectedCounty = county.id;
+            newContact(){
+                this.selectedCounty = this.currentCounty.id;
                 setTimeout(() => {
                     $('input[name=name]').focus();
                 }, 500)
+            },
+            showContactModal()
+            {
+                $('#createContact').modal('toggle');
+                setTimeout(() => {
+                    $('input[name=name]').focus();
+                }, 500)
+//                $('#' + this.currentCounty.id).click(() => {
+//                    $('#addButton' + this.currentCounty.id).click(() => {
+//                        $('input[name=name]').focus();
+//                    });
+//                });
+
+
+//                setTimeout(() => {
+//                    $('#' + this.currentCounty.id).click();
+//                    setTimeout(() => {
+//                        $('#addButton' + this.currentCounty.id).click();
+//                    }, 1000)
+//                }, 1000);
+
+//                this.selectedCounty = this.currentCounty.id
+//                $('#' + this.currentCounty.id).click();
+//                setTimeout(() => {
+//                        console.log(this.currentCounty);
+//                        $('#addButton' + this.currentCounty.id).click();
+//                    }, 500)
             }
+//                this.selectedCounty = this.currentCounty.id
+//                setTimeout((that) => {
+//                    console.log(that.currentCounty);
+//                    $('#addButton' + that.currentCounty.id).click();
+//                }, 500, this)
+//
+
+//            }
+
         }
     }
 </script>

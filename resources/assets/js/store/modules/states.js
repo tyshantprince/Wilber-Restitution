@@ -54,11 +54,17 @@ const actions = {
             });
     },
     createCounty({commit, state}, county) {
-        axios.post('state/' + state.selectedStateID + '/counties', {name: county})
-            .then((response) => commit('createCounty', response.data))
-            .catch((error) => {
-                console.log(error);
-            });
+        return new Promise((resolve, reject) => {
+            axios.post('state/' + state.selectedStateID + '/counties', {name: county})
+                .then((response) => {
+                    commit('createCounty', response.data);
+                    resolve()
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        })
+
     },
     updateContact({commit}, contact) {
         axios.patch('county/' + contact.county_id + '/contacts/' + contact.id, contact)
@@ -102,6 +108,7 @@ const mutations = {
     createCounty(state, county) {
         county.contacts = [];
         state.currentState.counties.push(county);
+        state.selectedCountyID =  county.id;
     },
     deleteContact(state, contact) {
         getters.getSelectedCounty(state).contacts = _.without(getters.getSelectedCounty(state).contacts, contact);
