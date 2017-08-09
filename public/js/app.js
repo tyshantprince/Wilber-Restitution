@@ -11036,7 +11036,7 @@ try {
 
 window.axios = __webpack_require__(17);
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -11046,11 +11046,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
-if (token) {
-  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
+// if (token) {
+//     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+// } else {
+//     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+// }
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -42969,6 +42969,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         selectedState: function selectedState() {
             this.$store.commit('setSelectedState', this.selectedState);
             this.$store.dispatch('setCurrentState');
+            this.cubsCountyLookup();
+        }
+    },
+    methods: {
+        cubsCountyLookup: function cubsCountyLookup() {
+            var _this = this;
+
+            var apiKey = 'AIzaSyAAK-Blg6TN6PMjZdPkahbMs-CKRx-aXbY';
+            var city = 'chicago';
+            var state = 'illinois';
+
+            axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + city + ',' + state + '&key=' + apiKey).then(function (response) {
+                console.log(response.data);
+                var data = response.data.results[0].address_components.filter(function (info) {
+                    return info.types[0] == 'administrative_area_level_2';
+                    //                            if(info.long_name.match(/county/i))
+                    //                            {
+                    //                                console.log(info.long_name);
+                    //                            }
+                })[0];
+                console.log(data);
+                _this.searchCountyOrFail(data.long_name);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        searchCountyOrFail: function searchCountyOrFail(county) {
+            console.log(this.$store.getters.getCurrentState.counties.filter(function (c) {
+                return c.name == county;
+            }));
         }
     }
 });
