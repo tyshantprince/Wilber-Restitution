@@ -42,8 +42,13 @@
             chooseNote(note)
             {
                 this.currentNote = note;
-            }
-
+                this.addFocus(note)
+            },
+            addFocus(note){
+                setTimeout((note) => {
+                    $('#' + note.id).focus();
+                }, 500, note)
+            },
         },
     }
 </script>

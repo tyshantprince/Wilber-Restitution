@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a class="btn-large" data-toggle="modal" data-target="#newNote"><span class="btn-add">New Note</span></a>
+        <a @click="inputFocus" class="btn-large" data-toggle="modal" data-target="#newNote"><span class="btn-add">New Note</span></a>
 
         <div class="modal fade" id="newNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
@@ -33,6 +33,11 @@
             addNote(){
                 this.$store.dispatch('createNote', this.createdNote);
                 this.createdNote = '';
+            },
+            inputFocus(){
+                $("#newNote").on('shown.bs.modal', function(){
+                    $(this).find('textarea[name=note]').focus();
+                });
             }
         }
 

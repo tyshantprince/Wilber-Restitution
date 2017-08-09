@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a class="btn-large" data-toggle="modal" data-target="#newCounty">New County</a>
+        <a @click="focus" class="btn-large" data-toggle="modal" data-target="#newCounty">New County</a>
         <div class="modal fade" id="newCounty" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -32,7 +32,12 @@
           newCounty(){
               this.$store.dispatch('createCounty', this.createdCounty);
               this.createdCounty = '';
-          }
+          },
+            focus(){
+                setTimeout(() => {
+                    $('input[name=county]').focus();
+                }, 500)
+            }
         }
     }
 </script>

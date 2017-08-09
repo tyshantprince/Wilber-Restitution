@@ -43137,6 +43137,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         chooseNote: function chooseNote(note) {
             this.currentNote = note;
+            this.addFocus(note);
+        },
+        addFocus: function addFocus(note) {
+            setTimeout(function (note) {
+                $('#' + note.id).focus();
+            }, 500, note);
         }
     }
 });
@@ -43728,6 +43734,12 @@ Vue.component('add-contact', __webpack_require__(56));
         },
         currentContact: function currentContact(contact) {
             this.selectedContact = contact;
+        },
+        newContact: function newContact(county) {
+            this.selectedCounty = county.id;
+            setTimeout(function () {
+                $('input[name=name]').focus();
+            }, 500);
         }
     }
 });
@@ -43813,6 +43825,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         newCounty: function newCounty() {
             this.$store.dispatch('createCounty', this.createdCounty);
             this.createdCounty = '';
+        },
+        focus: function focus() {
+            setTimeout(function () {
+                $('input[name=county]').focus();
+            }, 500);
         }
     }
 });
@@ -43827,6 +43844,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "data-toggle": "modal",
       "data-target": "#newCounty"
+    },
+    on: {
+      "click": _vm.focus
     }
   }, [_vm._v("New County")]), _vm._v(" "), _c('div', {
     staticClass: "modal fade",
@@ -44378,7 +44398,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       on: {
         "click": function($event) {
-          _vm.selectedCounty = county.id
+          _vm.newContact(county)
         }
       }
     }, [_vm._v("Add Contact")]), _vm._v(" "), _vm._l((county.contacts), function(contact) {
@@ -44455,7 +44475,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       on: {
         "click": function($event) {
-          _vm.selectedCounty = county.id
+          _vm.newContact(county)
         }
       }
     }, [_vm._v("Add Contact")]), _vm._v(" "), _c('h3', [_vm._v("No Contacts For This County")])])])
@@ -44973,6 +44993,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         addNote: function addNote() {
             this.$store.dispatch('createNote', this.createdNote);
             this.createdNote = '';
+        },
+        inputFocus: function inputFocus() {
+            $("#newNote").on('shown.bs.modal', function () {
+                $(this).find('textarea[name=note]').focus();
+            });
         }
     }
 
@@ -44983,7 +45008,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._m(0), _vm._v(" "), _c('div', {
+  return _c('div', [_c('a', {
+    staticClass: "btn-large",
+    attrs: {
+      "data-toggle": "modal",
+      "data-target": "#newNote"
+    },
+    on: {
+      "click": _vm.inputFocus
+    }
+  }, [_c('span', {
+    staticClass: "btn-add"
+  }, [_vm._v("New Note")])]), _vm._v(" "), _c('div', {
     staticClass: "modal fade",
     attrs: {
       "id": "newNote",
@@ -44998,7 +45034,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "modal-content"
-  }, [_vm._m(1), _vm._v(" "), _c('div', {
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
   }, [_c('textarea', {
     directives: [{
@@ -45045,16 +45081,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Create Note")])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('a', {
-    staticClass: "btn-large",
-    attrs: {
-      "data-toggle": "modal",
-      "data-target": "#newNote"
-    }
-  }, [_c('span', {
-    staticClass: "btn-add"
-  }, [_vm._v("New Note")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "modal-header"
   }, [_c('button', {
