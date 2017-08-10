@@ -11,6 +11,7 @@
                             <option v-for="state in data" v-bind:value="state.id" >{{state.name}}</option>
                         </select>
                     </div>
+                    <input @keyup.enter="cubsNumberEntered" v-model="cubsNumber" style="margin-left: auto" class="" type="text" placeholder="Cubs #">
                 </div>
                 <div class="row">
                     <hr>
@@ -48,45 +49,75 @@
         data() {
             return{
                 selectedState: '',
+                apiKey : 'AIzaSyAAK-Blg6TN6PMjZdPkahbMs-CKRx-aXbY',
+                cubsCity : '',
+                cubsState : '',
+                cubsCounty: '',
+                cubsNumber: ''
             }
         },
         watch: {
             selectedState() {
                 this.$store.commit('setSelectedState', this.selectedState);
                 this.$store.dispatch('setCurrentState');
-                this.cubsCountyLookup();
-            }
             },
-        methods:{
-            cubsCountyLookup(){
-
-                var apiKey = 'AIzaSyAAK-Blg6TN6PMjZdPkahbMs-CKRx-aXbY';
-                var city = 'chicago';
-                var state = 'illinois';
-
-                axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + city + ',' + state + '&key=' + apiKey)
-                    .then((response) => {
-                        console.log(response.data);
-                        var data = response.data.results[0].address_components.filter((info) => {
-                            return info.types[0] == 'administrative_area_level_2';
-//                            if(info.long_name.match(/county/i))
-//                            {
-//                                console.log(info.long_name);
-//                            }
-                        })[0];
-                        console.log(data);
-                        this.searchCountyOrFail(data.long_name)
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+        },
+        methods: {
+            cubsNumberEntered(){
+                this.callToCubs()
+                    .then(() => this.cubsCountyLookup())
+                    .then(() => this.findStateFromAbbr(this.cubsState));
             },
-            searchCountyOrFail(county)
+
+            callToCubs(){
+                return new Promise((resolve, reject) => {
+                    axios.get('https://cubsapi.wilbergroup.com/v1/get_claimant_info?wilber_file_number=' + this.cubsNumber)
+                        .then(({data:{data}}) => {
+                            this.cubsCity = (data.c1.city);
+                            this.cubsState = (data.c1.state);
+                            resolve();
+                        })
+                })
+            },
+            cubsCountyLookup() {
+                return new Promise((resolve, reject) => {
+                    axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.cubsCity + ',' + this.cubsState + '&key=' + this.apiKey)
+                        .then((response) => {
+                            this.cubsCounty = response.data.results[0].address_components.filter((info) => {
+                                return info.types[0] === 'administrative_area_level_2';
+                            })[0].long_name;
+                            resolve();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                })
+
+            },
+            findStateFromAbbr(abbr){
+                let stateIWant = this.data.filter((state) => {
+                    return state.abbr == abbr
+                })[0];
+                this.selectedState = stateIWant.id;
+            },
+            findCountyOrFail(county)
             {
-                console.log(this.$store.getters.getCurrentState.counties.filter((c) => {
-                    return c.name == county;
-            }));
-            }
+               let countyObj = this.$store.getters.getCurrentState.counties.filter((c) => {
+                    return c.name === county;
+                })[0];
+                console.log(countyObj);
+                if(countyObj == null){
+                    this.cubsCounty = county;
+                    $('#newCounty').modal('toggle');
+
+                }
+                else
+                {
+                    this.$store.commit('setSelectedCounty', countyObj.id);
+                    this.cubsCounty = countyObj;
+                    $('#' + this.cubsCounty.id).click();
+                }
+           }
         },
     }
 </script>

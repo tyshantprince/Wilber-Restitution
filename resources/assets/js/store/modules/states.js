@@ -19,13 +19,16 @@ const getters = {
 
 const actions = {
     setCurrentState({commit, state}){
-        axios.get('state/' + state.selectedStateID)
-            .then((response) => {
-                commit('setCurrentState', response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        return new Promise((resolve, reject) => {
+            axios.get('state/' + state.selectedStateID)
+                .then((response) => {
+                    commit('setCurrentState', response.data);
+                    resolve();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
     },
     updateNote({commit}, note) {
         axios.patch('state/' + note.state_id + '/notes/' + note.id, {body: note.body})

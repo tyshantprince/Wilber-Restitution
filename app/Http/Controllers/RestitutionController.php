@@ -9,7 +9,7 @@ class RestitutionController extends Controller
     public function index()
     {
         return view('index', [
-            'states' => State::select(['id', 'name'])->get(),
+            'states' => State::select(['id', 'name', 'abbr'])->get(),
         ]);
     }
 

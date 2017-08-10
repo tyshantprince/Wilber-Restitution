@@ -42758,10 +42758,13 @@ var actions = {
         var commit = _ref.commit,
             state = _ref.state;
 
-        axios.get('state/' + state.selectedStateID).then(function (response) {
-            commit('setCurrentState', response.data);
-        }).catch(function (error) {
-            console.log(error);
+        return new Promise(function (resolve, reject) {
+            axios.get('state/' + state.selectedStateID).then(function (response) {
+                commit('setCurrentState', response.data);
+                resolve();
+            }).catch(function (error) {
+                console.log(error);
+            });
         });
     },
     updateNote: function updateNote(_ref2, note) {
@@ -42955,13 +42958,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['data'],
     data: function data() {
         return {
-            selectedState: ''
+            selectedState: '',
+            apiKey: 'AIzaSyAAK-Blg6TN6PMjZdPkahbMs-CKRx-aXbY',
+            cubsCity: '',
+            cubsState: '',
+            cubsCounty: '',
+            cubsNumber: ''
         };
     },
 
@@ -42969,36 +42978,64 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         selectedState: function selectedState() {
             this.$store.commit('setSelectedState', this.selectedState);
             this.$store.dispatch('setCurrentState');
-            this.cubsCountyLookup();
         }
     },
     methods: {
-        cubsCountyLookup: function cubsCountyLookup() {
+        cubsNumberEntered: function cubsNumberEntered() {
             var _this = this;
 
-            var apiKey = 'AIzaSyAAK-Blg6TN6PMjZdPkahbMs-CKRx-aXbY';
-            var city = 'chicago';
-            var state = 'illinois';
-
-            axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + city + ',' + state + '&key=' + apiKey).then(function (response) {
-                console.log(response.data);
-                var data = response.data.results[0].address_components.filter(function (info) {
-                    return info.types[0] == 'administrative_area_level_2';
-                    //                            if(info.long_name.match(/county/i))
-                    //                            {
-                    //                                console.log(info.long_name);
-                    //                            }
-                })[0];
-                console.log(data);
-                _this.searchCountyOrFail(data.long_name);
-            }).catch(function (error) {
-                console.log(error);
+            this.callToCubs().then(function () {
+                return _this.cubsCountyLookup();
+            }).then(function () {
+                return _this.findStateFromAbbr(_this.cubsState);
             });
         },
-        searchCountyOrFail: function searchCountyOrFail(county) {
-            console.log(this.$store.getters.getCurrentState.counties.filter(function (c) {
-                return c.name == county;
-            }));
+        callToCubs: function callToCubs() {
+            var _this2 = this;
+
+            return new Promise(function (resolve, reject) {
+                axios.get('https://cubsapi.wilbergroup.com/v1/get_claimant_info?wilber_file_number=' + _this2.cubsNumber).then(function (_ref) {
+                    var data = _ref.data.data;
+
+                    _this2.cubsCity = data.c1.city;
+                    _this2.cubsState = data.c1.state;
+                    resolve();
+                });
+            });
+        },
+        cubsCountyLookup: function cubsCountyLookup() {
+            var _this3 = this;
+
+            return new Promise(function (resolve, reject) {
+                axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + _this3.cubsCity + ',' + _this3.cubsState + '&key=' + _this3.apiKey).then(function (response) {
+                    _this3.cubsCounty = response.data.results[0].address_components.filter(function (info) {
+                        return info.types[0] === 'administrative_area_level_2';
+                    })[0].long_name;
+                    resolve();
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            });
+        },
+        findStateFromAbbr: function findStateFromAbbr(abbr) {
+            var stateIWant = this.data.filter(function (state) {
+                return state.abbr == abbr;
+            })[0];
+            this.selectedState = stateIWant.id;
+        },
+        findCountyOrFail: function findCountyOrFail(county) {
+            var countyObj = this.$store.getters.getCurrentState.counties.filter(function (c) {
+                return c.name === county;
+            })[0];
+            console.log(countyObj);
+            if (countyObj == null) {
+                this.cubsCounty = county;
+                $('#newCounty').modal('toggle');
+            } else {
+                this.$store.commit('setSelectedCounty', countyObj.id);
+                this.cubsCounty = countyObj;
+                $('#' + this.cubsCounty.id).click();
+            }
         }
     }
 });
@@ -43050,7 +43087,34 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": state.id
       }
     }, [_vm._v(_vm._s(state.name))])
-  })], 2)])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
+  })], 2)]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.cubsNumber),
+      expression: "cubsNumber"
+    }],
+    staticStyle: {
+      "margin-left": "auto"
+    },
+    attrs: {
+      "type": "text",
+      "placeholder": "Cubs #"
+    },
+    domProps: {
+      "value": (_vm.cubsNumber)
+    },
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.cubsNumberEntered($event)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.cubsNumber = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "panels-container",
     attrs: {
       "id": ""
