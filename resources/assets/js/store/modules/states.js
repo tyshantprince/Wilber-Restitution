@@ -14,9 +14,10 @@ const mutations = {
     },
     updateCurrentState(state, name)
     {
-        state.currentState = state.stateList.filter((stateInList) => {
-           return stateInList.name == name;
-        })[0];
+        state.currentState = name;
+        // state.currentState = state.stateList.filter((stateInList) => {
+        //    return stateInList.name == name;
+        // })[0];
         // TODO: make request to get state attributes;
     },
     updateNote(state, note)
