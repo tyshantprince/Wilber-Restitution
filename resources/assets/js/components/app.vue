@@ -29,7 +29,14 @@
                     </v-flex>
                     <v-flex xs6>
                         <v-card light class="">
-                            <v-card-text>6</v-card-text>
+                            <v-card-text>
+                                <div v-if="selectedState">
+                                    <state-counties :currentStateObj="currentStateObj" v-if="selectedState"></state-counties>
+                                </div>
+                                <div v-else>
+                                    <h4 class="">Please Select A State</h4>
+                                </div>
+                            </v-card-text>
                         </v-card>
                     </v-flex>
                 </v-layout>
