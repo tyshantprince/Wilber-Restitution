@@ -1,7 +1,9 @@
 <template>
 
     <v-dialog v-model="dialog" width="400" persistent>
-        <v-btn flat secondary small slot="activator">Delete</v-btn>
+        <v-btn icon fab small class="" slot="activator">
+            <v-icon class="">cancel</v-icon>
+        </v-btn>
         <v-card>
             <v-card-title class="headline">Delete Note</v-card-title>
             <p class="px-2">Are you sure you want to delete this note?</p>

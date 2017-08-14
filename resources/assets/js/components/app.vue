@@ -1,9 +1,9 @@
 <template>
-    <v-app>
+    <v-app class="">
         <main>
             <v-container>
                 <v-layout row>
-                    <v-flex xs12>
+                    <v-flex xs9>
                         <v-select
                                 v-bind:items="items"
                                 v-model="selectedState"
@@ -12,6 +12,14 @@
                                 prepend-icon="search"
                                 autocomplete
                         ></v-select>
+                    </v-flex>
+                    <v-flex xs2 offset-xs1>
+                        <v-text-field
+                                v-model="cubsNumber"
+                                name="cubsNumber"
+                                label="Cubs #"
+                                id="testing"
+                        ></v-text-field>
                     </v-flex>
                 </v-layout>
                 <v-layout row>
@@ -58,6 +66,7 @@
         data() {
             return{
                 selectedState: '',
+                cubsNumber: '',
             }
         },
         watch: {

@@ -1,6 +1,6 @@
 <template>
     <v-dialog  v-model="dialog" width="500" persistent>
-        <v-btn icon outline fab small class="" slot="activator">
+        <v-btn icon fab small class="" slot="activator">
             <v-icon class="">create</v-icon>
         </v-btn>
         <v-card>

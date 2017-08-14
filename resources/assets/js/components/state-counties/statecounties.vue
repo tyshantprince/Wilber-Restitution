@@ -4,32 +4,28 @@
     	<div style="display: flex; justify-content: center; align-items: baseline" class="pb-3">
 			<h3 style="flex: 1;" id="head" class="text-center header"><small>State</small> <span class="weight-normal"> Counties</span>
 			</h3>
-			<span class="pr-2"><add-county></add-county></span>
+			<span class="pr-2"><add-county @countyAdded="countyAdded=true;"></add-county></span>
 		</div>
 
 		<div>
 			<div>
 				<v-expansion-panel>
-					<v-expansion-panel-content  ripple v-for="(county,i) in currentStateObj.counties" :key="i">
+					<v-expansion-panel-content  ripple v-if="currentStateObj.counties" v-for="(county,i) in currentStateObj.counties" :key="i">
 						<div slot="header">{{county.name}}</div>
-						<v-card v-for="(contact, i) in county.contacts" :key="i">
-							<v-card-text class="grey lighten-3">
+						<v-card>
+							<p style="text-align: center">
+								<add-contact :countyAdded="countyAdded" :county="county"></add-contact>
+							</p>
+							<v-card-text v-if="county.contacts != ''" v-for="(contact, i) in county.contacts" :key="i" class="grey lighten-3">
 								<v-card class="elevation-7">
 									<v-card-title style="display: flex; justify-content: center; align-items: baseline">
 										<h5 style="flex: 1;" class="text-xs-center">{{contact.contact_name}}</h5>
 										<edit-contact :contact="contact"></edit-contact>
-										<!--<delete-contact :contact="contact"></delete-contact>-->
-
-										<v-btn icon outline fab small class="" slot="activator">
-											<v-icon>cancel</v-icon>
-										</v-btn>
-
+										<delete-contact :contact="contact"></delete-contact>
 									</v-card-title>
 									<v-divider></v-divider>
 									<v-card-text>
 										<div style="display: flex; flex-direction: column">
-												<!--<a @click="currentContact(contact)" data-toggle="modal" :data-target="'#edit' + contact.id" style="margin-right: auto; padding-right: 8px"><span class="glyphicon glyphicon-pencil"></span></a>-->
-												<!--<a @click="currentContact(contact)" data-toggle="modal" :data-target="'#delete' + contact.id"  style="margin-right: auto"><span class="glyphicon glyphicon-remove"></span></a>-->
 											</div>
 											<p v-if="contact.phone" >Phone Number: {{contact.phone}}</p>
 											<p v-if="contact.address1" >Address: {{contact.address1}}</p>
@@ -40,6 +36,18 @@
 											<p v-if="contact.website" >website: <a :href="contact.website">{{contact.city}}</a></p>
 											<p v-if="contact.notes" style="">Notes: {{contact.notes}}</p>
 										<v-divider></v-divider>
+									</v-card-text>
+								</v-card>
+							</v-card-text>
+						</v-card>
+						<v-card v-if="county.contacts == ''">
+							<v-card-text class="grey lighten-3">
+								<v-card class="elevation-7">
+									<v-card-title  style="display: flex; flex-direction: column; ">
+										<h5>No Contacts For This County</h5>
+									</v-card-title>
+									<v-divider></v-divider>
+									<v-card-text>
 									</v-card-text>
 								</v-card>
 							</v-card-text>
@@ -87,6 +95,7 @@
 
 <script>
     Vue.component('add-county', require('./add-county.vue'));
+    Vue.component('add-contact', require('../county-contacts/create.vue'));
 
     export default {
         props: ['currentStateObj'],
@@ -94,6 +103,7 @@
             return{
                 selectedCounty: {},
                 selectedContact:{},
+				countyAdded: false,
             }
         },
         methods: {

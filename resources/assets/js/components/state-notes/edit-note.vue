@@ -1,7 +1,9 @@
 <template>
 
         <v-dialog v-model="dialog" width="500" persistent>
-            <v-btn flat secondary small slot="activator">Edit</v-btn>
+            <v-btn icon fab small class="" slot="activator">
+                <v-icon class="">create</v-icon>
+            </v-btn>
             <v-card>
                 <v-card-title class="headline">Edit Note</v-card-title>
                 <v-text-field class="px-2"
@@ -9,6 +11,7 @@
                         label="Body"
                         textarea
                         v-model="note.body"
+                        autofocus
                 ></v-text-field>
                 <v-card-actions>
                     <v-spacer></v-spacer>

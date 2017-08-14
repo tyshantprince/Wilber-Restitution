@@ -1,6 +1,6 @@
 <template>
     <v-dialog v-model="dialog" width="500" persistent>
-        <v-btn icon outline fab light small class="primary " slot="activator">
+        <v-btn @click="this.$emit('contactAdded')" icon fab light class="" slot="activator">
                 <v-icon light>add</v-icon>
         </v-btn>
         <v-card>
