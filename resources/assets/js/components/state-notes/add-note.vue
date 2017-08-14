@@ -3,7 +3,7 @@
             <button @click="toggleShowAddNote" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span></button>
 
         <transition name="modal">
-            <div class="modal-mask" @click="close" v-if="showAddNote">
+            <div class="modal-mask" @click="toggleShowAddNote" v-if="showAddNote">
                 <div class="modal-container" @click.stop>
                     <div class="modal-header">
                         <h3 class="text-center">New Note</h3>
@@ -11,14 +11,14 @@
                     <div class="modal-body">
                         <label class="form-label text-center">
                             Body
-                            <textarea rows="5" class="form-control"></textarea>
+                            <textarea rows="5" v-model="createdNote" class="form-control"></textarea>
                         </label>
                     </div>
                     <div class="modal-footer" style="display: flex; justify-content: space-between">
-                        <button class="btn btn-danger" @click="toggleShowAddNote">
+                        <button class="btn btn-default" @click="toggleShowAddNote">
                             Close
                         </button>
-                        <button class="btn btn-primary" @click="toggleShowAddNote">
+                        <button class="btn btn-primary" @click="addNote();toggleShowAddNote()">
                             Save
                         </button>
                     </div>

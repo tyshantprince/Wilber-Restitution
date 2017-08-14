@@ -1,46 +1,57 @@
 <template>
     <div>
-        <a @click="focus" class="btn-large" data-toggle="modal" data-target="#newCounty">New County</a>
-        <div class="modal fade" id="newCounty" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
+        <button @click="toggleShowAddNote" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span></button>
+
+        <transition name="modal">
+            <div class="modal-mask" @click="toggleShowAddNote" v-if="showAddNote">
+                <div class="modal-container" @click.stop>
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="">Create New County</h4>
+                        <h3 class="text-center">New County</h3>
                     </div>
                     <div class="modal-body">
-                        <input class="center-block" type="text" name="county" v-model="createdCounty" placeholder="Enter County Name">
+                            <input class="center-block" type="text" name="county" v-model="createdCounty" placeholder="Enter County Name">
                     </div>
-                    <div class="modal-footer" >
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button @click="newCounty" id="makeCounty" type="button" class="btn btn-primary" data-dismiss="modal">Create County</button>
+                    <div class="modal-footer" style="display: flex; justify-content: space-between">
+                        <button class="btn btn-default" @click="toggleShowAddNote">
+                            Close
+                        </button>
+                        <button class="btn btn-primary" @click="newCounty();toggleShowAddNote()">
+                            Save
+                        </button>
                     </div>
                 </div>
             </div>
-        </div>
+        </transition>
     </div>
 </template>
 
 <script>
     export default {
         data(){
-            return{
+            return {
                 createdCounty: '',
+                showAddNote: false,
+                bkClass: 'bk',
+                blurClass: 'blur'
             }
         },
         methods:{
-          newCounty(){
-              this.$store.dispatch('createCounty', this.createdCounty).then(() => {
-                  $('#' + this.$store.getters.getSelectedCounty.id).click();
-                  this.$emit('countyAdded')
-              });
-              this.createdCounty = ''
-          },
-            focus(){
-                setTimeout(() => {
-                    $('input[name=county]').focus();
-                }, 500)
+            newCounty(){
+                this.$store.dispatch('createCounty', this.createdCounty).then(() => {
+                    $('#' + this.$store.getters.getSelectedCounty.id).click();
+                    this.$emit('countyAdded')
+                });
+                this.createdCounty = ''
+            },
+            toggleShowAddNote(){
+                this.showAddNote = !this.showAddNote;
+            },
+            inputFocus(){
+                $("#newNote").on('shown.bs.modal', function(){
+                    $(this).find('textarea[name=note]').focus();
+                });
             }
         }
+
     }
 </script>

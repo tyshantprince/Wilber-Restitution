@@ -15,18 +15,22 @@
 
 <template>
     <div>
-    	<span class="state-notes-header">
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 10px;">
+    	    <span class="state-notes-header">
 		    <h3 id="head" class="text-center header"><small>State</small> <span class="weight-normal"> Counties</span></h3>
-	    </span>
+	        </span>
+            <add-county></add-county>
+        </div>
 
         <div id="notes-container">
             <div v-for="county in currentState.counties">
                 <button @click="countyClicked(county.id)" class="btn btn-primary block mb075 w100p" :id="county.id">{{ county.name}}</button>
-
                 <div v-if="county.contacts" class="contacts-container" :class="{collapse: county.id !== selectedCounty}">
+                    <add-contact class="text-center" :county-id="selectedCounty"></add-contact>
                     <hr>
                     <!--<a @click="countyClicked(county)" class="btn btn-primary mb075 w100p" data-toggle="modal" :data-target="'#create' + county.id">Add Contact</a>-->
-                    <a @click="newContact" :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
+                    <!--<a @click="newContact" :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>-->
+
                     <div v-for="contact in county.contacts">
                             <div class="row">
                                 <div class="col-sm-12">
@@ -58,8 +62,6 @@
             </div>
             <delete-contact :contact="selectedContact"></delete-contact>
             <edit-contact :contact="selectedContact"></edit-contact>
-            <add-contact :county-id="selectedCounty"></add-contact>
-            <add-county @countyAdded="showContactModal"></add-county>
         </div>
     </div>
 

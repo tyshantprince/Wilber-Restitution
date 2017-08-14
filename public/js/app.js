@@ -40834,9 +40834,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -40873,53 +40870,36 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "display": "flex",
       "flex-direction": "column",
       "justify-content": "center",
-      "align-items": "center"
+      "align-items": "center",
+      "padding-bottom": "10px"
     }
   }, [_vm._m(0), _vm._v(" "), _c('add-note')], 1), _vm._v(" "), _c('div', {
     attrs: {
       "id": "notes-container"
     }
-  }, [_vm._l((_vm.currentState.notes), function(note) {
+  }, _vm._l((_vm.currentState.notes), function(note) {
     return _c('div', {
       staticClass: "panel panel-default"
     }, [_c('div', {
-      staticClass: "panel-body"
-    }, [_c('p', [_vm._v(_vm._s(note.body) + "\n                        "), _c('span', {
-      staticClass: "text-right"
-    }, [_c('a', {
-      staticClass: "btn btn-small",
-      attrs: {
-        "data-toggle": "modal",
-        "data-target": '#edit' + note.id,
-        "name": 'edit' + note.id
-      },
-      on: {
-        "click": function($event) {
-          _vm.chooseNote(note)
-        }
+      staticClass: "panel-body",
+      staticStyle: {
+        "display": "flex",
+        "align-items": "baseline"
       }
-    }, [_vm._v("Edit")]), _vm._v(" "), _c('a', {
-      staticClass: "btn btn-small",
-      attrs: {
-        "data-toggle": "modal",
-        "data-target": '#delete' + note.id,
-        "name": 'delete' + note.id
-      },
-      on: {
-        "click": function($event) {
-          _vm.chooseNote(note)
-        }
+    }, [_c('p', {
+      staticStyle: {
+        "flex": "4"
       }
-    }, [_vm._v("Delete")])])])])])
-  }), _vm._v(" "), _c('edit-note', {
-    attrs: {
-      "note": _vm.currentNote
-    }
-  }), _vm._v(" "), _c('delete-note', {
-    attrs: {
-      "note": _vm.currentNote
-    }
-  })], 2)])
+    }, [_vm._v(_vm._s(note.body))]), _vm._v(" "), _c('edit-note', {
+      attrs: {
+        "note": note
+      }
+    }), _vm._v(" "), _c('delete-note', {
+      attrs: {
+        "note": note
+      }
+    })], 1)])
+  }))])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
     staticClass: "state-notes-header"
@@ -41433,6 +41413,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 Vue.component('add-county', __webpack_require__(52));
 Vue.component('add-contact', __webpack_require__(55));
@@ -41574,11 +41556,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            createdCounty: ''
+            createdCounty: '',
+            showAddNote: false,
+            bkClass: 'bk',
+            blurClass: 'blur'
         };
     },
 
@@ -41592,12 +41581,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
             this.createdCounty = '';
         },
-        focus: function focus() {
-            setTimeout(function () {
-                $('input[name=county]').focus();
-            }, 500);
+        toggleShowAddNote: function toggleShowAddNote() {
+            this.showAddNote = !this.showAddNote;
+        },
+        inputFocus: function inputFocus() {
+            $("#newNote").on('shown.bs.modal', function () {
+                $(this).find('textarea[name=note]').focus();
+            });
         }
     }
+
 });
 
 /***/ }),
@@ -41605,31 +41598,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('a', {
-    staticClass: "btn-large",
-    attrs: {
-      "data-toggle": "modal",
-      "data-target": "#newCounty"
-    },
+  return _c('div', [_c('button', {
+    staticClass: "btn btn-link",
     on: {
-      "click": _vm.focus
+      "click": _vm.toggleShowAddNote
     }
-  }, [_vm._v("New County")]), _vm._v(" "), _c('div', {
-    staticClass: "modal fade",
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus"
+  })]), _vm._v(" "), _c('transition', {
     attrs: {
-      "id": "newCounty",
-      "tabindex": "-1",
-      "role": "dialog",
-      "aria-labelledby": "myModalLabel"
+      "name": "modal"
+    }
+  }, [(_vm.showAddNote) ? _c('div', {
+    staticClass: "modal-mask",
+    on: {
+      "click": _vm.toggleShowAddNote
     }
   }, [_c('div', {
-    staticClass: "modal-dialog",
-    attrs: {
-      "role": "document"
+    staticClass: "modal-container",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+      }
     }
   }, [_c('div', {
-    staticClass: "modal-content"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "modal-header"
+  }, [_c('h3', {
+    staticClass: "text-center"
+  }, [_vm._v("New County")])]), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
   }, [_c('input', {
     directives: [{
@@ -41654,45 +41650,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer"
+    staticClass: "modal-footer",
+    staticStyle: {
+      "display": "flex",
+      "justify-content": "space-between"
+    }
   }, [_c('button', {
     staticClass: "btn btn-default",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    }
-  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary",
-    attrs: {
-      "id": "makeCounty",
-      "type": "button",
-      "data-dismiss": "modal"
-    },
     on: {
-      "click": _vm.newCounty
+      "click": _vm.toggleShowAddNote
     }
-  }, [_vm._v("Create County")])])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal",
-      "aria-label": "Close"
+  }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    on: {
+      "click": function($event) {
+        _vm.newCounty();
+        _vm.toggleShowAddNote()
+      }
     }
-  }, [_c('span', {
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
-    staticClass: "modal-title",
-    attrs: {
-      "id": ""
-    }
-  }, [_vm._v("Create New County")])])
-}]}
+  }, [_vm._v("\n                        Save\n                    ")])])])]) : _vm._e()])], 1)
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -41797,11 +41774,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['countyId'],
     data: function data() {
         return {
+            showAddNote: false,
+            bkClass: 'bk',
+            blurClass: 'blur',
             contact: {
                 contact_name: '',
                 phone: '',
@@ -41843,6 +41829,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 notes: '',
                 county_id: this.countyId
             };
+        },
+        toggleShowAddNote: function toggleShowAddNote() {
+            this.showAddNote = !this.showAddNote;
+        },
+        inputFocus: function inputFocus() {
+            $("#newNote").on('shown.bs.modal', function () {
+                $(this).find('textarea[name=note]').focus();
+            });
         }
     }
 });
@@ -41852,23 +41846,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal fade",
+  return _c('div', [_c('button', {
+    staticClass: "btn btn-link",
+    on: {
+      "click": _vm.toggleShowAddNote
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus"
+  })]), _vm._v(" "), _c('transition', {
     attrs: {
-      "id": 'createContact' + _vm.countyId,
-      "tabindex": "-1",
-      "role": "dialog",
-      "aria-labelledby": "myModalLabel"
+      "name": "modal"
+    }
+  }, [(_vm.showAddNote) ? _c('div', {
+    staticClass: "modal-mask",
+    on: {
+      "click": _vm.toggleShowAddNote
     }
   }, [_c('div', {
-    staticClass: "modal-dialog",
-    attrs: {
-      "role": "document"
+    staticClass: "modal-container",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+      }
     }
   }, [_c('div', {
-    staticClass: "modal-content"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "modal-body "
+    staticClass: "modal-header"
+  }, [_c('h3', {
+    staticClass: "text-center"
+  }, [_vm._v("New County")])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
   }, [_c('label', [_vm._v("Name")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
@@ -42084,41 +42090,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer"
+    staticClass: "modal-footer",
+    staticStyle: {
+      "display": "flex",
+      "justify-content": "space-between"
+    }
   }, [_c('button', {
     staticClass: "btn btn-default",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    }
-  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary make-contact",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    },
     on: {
-      "click": _vm.saveContact
+      "click": _vm.toggleShowAddNote
     }
-  }, [_vm._v("Save Contact")])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal",
-      "aria-label": "Close"
+  }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    on: {
+      "click": function($event) {
+        _vm.saveContact();
+        _vm.toggleShowAddNote()
+      }
     }
-  }, [_c('span', {
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
-    staticClass: "modal-title"
-  }, [_vm._v("Create County Contact")])])
-}]}
+  }, [_vm._v("\n                        Save\n                    ")])])])]) : _vm._e()])], 1)
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -42132,7 +42123,15 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._m(0), _vm._v(" "), _c('div', {
+  return _c('div', [_c('div', {
+    staticStyle: {
+      "display": "flex",
+      "flex-direction": "column",
+      "justify-content": "center",
+      "align-items": "center",
+      "padding-bottom": "10px"
+    }
+  }, [_vm._m(0), _vm._v(" "), _c('add-county')], 1), _vm._v(" "), _c('div', {
     attrs: {
       "id": "notes-container"
     }
@@ -42152,20 +42151,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: {
         collapse: county.id !== _vm.selectedCounty
       }
-    }, [_c('hr'), _vm._v(" "), _c('a', {
-      staticStyle: {
-        "margin-right": "auto",
-        "padding-right": "8px"
-      },
+    }, [_c('add-contact', {
+      staticClass: "text-center",
       attrs: {
-        "id": 'addButton' + county.id,
-        "data-toggle": "modal",
-        "data-target": '#createContact' + county.id
-      },
-      on: {
-        "click": _vm.newContact
+        "county-id": _vm.selectedCounty
       }
-    }, [_vm._v("Add Contact")]), _vm._v(" "), _vm._l((county.contacts), function(contact) {
+    }), _vm._v(" "), _c('hr'), _vm._v(" "), _vm._l((county.contacts), function(contact) {
       return _c('div', [_c('div', {
         staticClass: "row"
       }, [_c('div', {
@@ -42248,14 +42239,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('edit-contact', {
     attrs: {
       "contact": _vm.selectedContact
-    }
-  }), _vm._v(" "), _c('add-contact', {
-    attrs: {
-      "county-id": _vm.selectedCounty
-    }
-  }), _vm._v(" "), _c('add-county', {
-    on: {
-      "countyAdded": _vm.showContactModal
     }
   })], 2)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -42429,14 +42412,60 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['note'],
+    data: function data() {
+        return {
+            showAddNote: false,
+            bkClass: 'bk',
+            blurClass: 'blur'
+        };
+    },
+
     methods: {
         editNote: function editNote() {
             this.$store.dispatch('updateNote', this.note);
+        },
+        toggleShowAddNote: function toggleShowAddNote() {
+            this.showAddNote = !this.showAddNote;
+        },
+        inputFocus: function inputFocus() {
+            $("#newNote").on('shown.bs.modal', function () {
+                $(this).find('textarea[name=note]').focus();
+            });
         }
     }
+
 });
 
 /***/ }),
@@ -42444,38 +42473,47 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal fade",
+  return _c('div', [_c('button', {
+    staticClass: "btn btn-link",
+    on: {
+      "click": _vm.toggleShowAddNote
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-pencil"
+  })]), _vm._v(" "), _c('transition', {
     attrs: {
-      "id": 'edit' + _vm.note.id,
-      "tabindex": "-1",
-      "role": "dialog",
-      "aria-labelledby": "myModalLabel"
+      "name": "modal"
+    }
+  }, [(_vm.showAddNote) ? _c('div', {
+    staticClass: "modal-mask",
+    on: {
+      "click": _vm.toggleShowAddNote
     }
   }, [_c('div', {
-    staticClass: "modal-dialog",
-    attrs: {
-      "role": "document"
+    staticClass: "modal-container",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+      }
     }
   }, [_c('div', {
-    staticClass: "modal-content"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "modal-header"
+  }, [_c('h3', {
+    staticClass: "text-center"
+  }, [_vm._v("Edit Note")])]), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
-  }, [_c('textarea', {
+  }, [_c('label', {
+    staticClass: "form-label text-center"
+  }, [_vm._v("\n                        Body\n                        "), _c('textarea', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.note.body),
       expression: "note.body"
     }],
-    staticStyle: {
-      "min-width": "100%"
-    },
+    staticClass: "form-control",
     attrs: {
-      "name": "note",
-      "id": _vm.note.id,
-      "cols": "30",
-      "rows": "4"
+      "rows": "5"
     },
     domProps: {
       "value": (_vm.note.body)
@@ -42486,43 +42524,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.note.body = $event.target.value
       }
     }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer",
+    staticStyle: {
+      "display": "flex",
+      "justify-content": "space-between"
+    }
   }, [_c('button', {
     staticClass: "btn btn-default",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    }
-  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary",
-    attrs: {
-      "id": "edit",
-      "type": "button",
-      "data-dismiss": "modal"
-    },
     on: {
-      "click": _vm.editNote
+      "click": _vm.toggleShowAddNote
     }
-  }, [_vm._v("Save changes")])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal",
-      "aria-label": "Close"
+  }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    on: {
+      "click": function($event) {
+        _vm.editNote();
+        _vm.toggleShowAddNote()
+      }
     }
-  }, [_c('span', {
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
-    staticClass: "modal-title"
-  }, [_vm._v("Edit State Note")])])
-}]}
+  }, [_vm._v("\n                        Save\n                    ")])])])]) : _vm._e()])], 1)
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -42597,12 +42619,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['note'],
+    data: function data() {
+        return {
+            showAddNote: false,
+            bkClass: 'bk',
+            blurClass: 'blur'
+        };
+    },
+
     methods: {
         deleteNote: function deleteNote() {
             this.$store.dispatch('deleteNote', this.note);
+        },
+        toggleShowAddNote: function toggleShowAddNote() {
+            this.showAddNote = !this.showAddNote;
+        },
+        inputFocus: function inputFocus() {
+            $("#newNote").on('shown.bs.modal', function () {
+                $(this).find('textarea[name=note]').focus();
+            });
         }
     }
 
@@ -42613,62 +42660,58 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal fade",
-    attrs: {
-      "id": 'delete' + _vm.note.id,
-      "tabindex": "-1",
-      "role": "dialog",
-      "aria-labelledby": ""
-    }
-  }, [_c('div', {
-    staticClass: "modal-dialog",
-    attrs: {
-      "role": "document"
-    }
-  }, [_c('div', {
-    staticClass: "modal-content"
-  }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer"
-  }, [_c('button', {
-    staticClass: "btn btn-default",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    }
-  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-danger",
-    attrs: {
-      "id": "delete",
-      "type": "button",
-      "data-dismiss": "modal"
-    },
+  return _c('div', [_c('button', {
+    staticClass: "btn btn-link",
     on: {
-      "click": _vm.deleteNote
-    }
-  }, [_vm._v("Yes I am")])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal",
-      "aria-label": "Close"
+      "click": _vm.toggleShowAddNote
     }
   }, [_c('span', {
+    staticClass: "glyphicon glyphicon-trash"
+  })]), _vm._v(" "), _c('transition', {
     attrs: {
-      "aria-hidden": "true"
+      "name": "modal"
     }
-  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
-    staticClass: "modal-title"
-  }, [_vm._v("Delete State Note")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  }, [(_vm.showAddNote) ? _c('div', {
+    staticClass: "modal-mask",
+    on: {
+      "click": _vm.toggleShowAddNote
+    }
+  }, [_c('div', {
+    staticClass: "modal-container",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+      }
+    }
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('h3', {
+    staticClass: "text-center"
+  }, [_vm._v("Delete Note")])]), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
-  }, [_c('p', [_vm._v("Are you sure you want to delete this note?")])])
-}]}
+  }, [_c('h5', {
+    staticClass: "text-center"
+  }, [_vm._v("Are you sure you want to delete this note ?")])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer",
+    staticStyle: {
+      "display": "flex",
+      "justify-content": "space-between"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    on: {
+      "click": _vm.toggleShowAddNote
+    }
+  }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-danger",
+    on: {
+      "click": function($event) {
+        _vm.deleteNote();
+        _vm.toggleShowAddNote()
+      }
+    }
+  }, [_vm._v("\n                        Delete\n                    ")])])])]) : _vm._e()])], 1)
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -42819,7 +42862,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [(_vm.showAddNote) ? _c('div', {
     staticClass: "modal-mask",
     on: {
-      "click": _vm.close
+      "click": _vm.toggleShowAddNote
     }
   }, [_c('div', {
     staticClass: "modal-container",
@@ -42837,9 +42880,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "form-label text-center"
   }, [_vm._v("\n                        Body\n                        "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.createdNote),
+      expression: "createdNote"
+    }],
     staticClass: "form-control",
     attrs: {
       "rows": "5"
+    },
+    domProps: {
+      "value": (_vm.createdNote)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.createdNote = $event.target.value
+      }
     }
   })])]), _vm._v(" "), _c('div', {
     staticClass: "modal-footer",
@@ -42848,14 +42906,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "justify-content": "space-between"
     }
   }, [_c('button', {
-    staticClass: "btn btn-danger",
+    staticClass: "btn btn-default",
     on: {
       "click": _vm.toggleShowAddNote
     }
   }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": function($event) {
+        _vm.addNote();
+        _vm.toggleShowAddNote()
+      }
     }
   }, [_vm._v("\n                        Save\n                    ")])])])]) : _vm._e()])], 1)
 },staticRenderFns: []}

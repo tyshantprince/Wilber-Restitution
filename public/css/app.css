@@ -483,6 +483,7 @@ p.large {
   background-color: rgba(0, 0, 0, 0.5);
   -webkit-transition: opacity .3s ease;
   transition: opacity .3s ease;
+  overflow-y: auto;
 }
 
 .modal-container {

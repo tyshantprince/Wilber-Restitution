@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 10px;">
     	    <span class="state-notes-header">
 		    <h3 id="head" class="text-center header"><small>State</small> <span class="weight-normal"> Notes</span></h3>
 	        </span>
@@ -10,18 +10,15 @@
         <div id="notes-container">
 
             <div v-for="note in currentState.notes" class="panel panel-default">
-                <div class="panel-body">
-                    <p>{{note.body}}
-                        <span class="text-right">
-                            <a @click="chooseNote(note)" class="btn btn-small" data-toggle="modal" :data-target="'#edit' + note.id" :name="'edit' + note.id">Edit</a>
-                            <a @click="chooseNote(note)" class="btn btn-small" data-toggle="modal" :data-target="'#delete' + note.id" :name="'delete' + note.id">Delete</a>
-                        </span>
-                    </p>
+                <div class="panel-body" style="display: flex; align-items: baseline">
+                    <p style="flex: 4">{{note.body}}</p>
+                    <edit-note :note="note"></edit-note>
+                    <delete-note :note="note" ></delete-note>
                 </div>
             </div>
 
-            <edit-note :note="currentNote"></edit-note>
-            <delete-note :note="currentNote" ></delete-note>
+
+
 
         </div>
     </div>
