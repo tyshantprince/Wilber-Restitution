@@ -1,8 +1,11 @@
 <template>
     <div>
-    	<span class="state-notes-header">
-		<h3 id="head" class="text-center header"><small>State</small> <span class="weight-normal"> Notes</span></h3>
-	</span>
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+    	    <span class="state-notes-header">
+		    <h3 id="head" class="text-center header"><small>State</small> <span class="weight-normal"> Notes</span></h3>
+	        </span>
+            <add-note></add-note>
+        </div>
 
         <div id="notes-container">
 
@@ -19,7 +22,6 @@
 
             <edit-note :note="currentNote"></edit-note>
             <delete-note :note="currentNote" ></delete-note>
-            <add-note></add-note>
 
         </div>
     </div>
