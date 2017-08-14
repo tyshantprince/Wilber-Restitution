@@ -17,8 +17,11 @@ window.Vue = require('vue');
  */
 
 import store from './store/index';
+import Vuetify from 'vuetify';
 
-Vue.component('restitution', require('./components/restitution.vue'));
+Vue.use(Vuetify);
+
+Vue.component('app', require('./app.vue'));
 Vue.component('state-notes', require('./components/state-notes/statenotes.vue'));
 Vue.component('state-counties', require('./components/state-counties/statecounties.vue'));
 Vue.component('contacts', require('./components/contacts.vue'));

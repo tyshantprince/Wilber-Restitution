@@ -86,6 +86,7 @@ const actions = {
     createContact({commit}, contact) {
         axios.post('county/' + contact.county_id + '/contacts', contact)
             .then(response => {
+                console.log(response.data);
                 commit('createContact', response.data);
             })
             .catch(error => console.log(error));

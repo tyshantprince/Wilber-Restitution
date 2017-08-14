@@ -28,7 +28,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <state-counties v-if="selectedState"></state-counties>
+                                <state-counties :cubsNumber="cubsNumber" :cubsCounty="cubsCounty" v-if="selectedState"></state-counties>
                                 <h1 v-else>Please Select a State</h1>
                             </div>
                         </div>
@@ -79,6 +79,7 @@
                         })
                 })
             },
+
             cubsCountyLookup() {
                 return new Promise((resolve, reject) => {
                     axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.cubsCity + ',' + this.cubsState + '&key=' + this.apiKey)
@@ -100,24 +101,6 @@
                 })[0];
                 this.selectedState = stateIWant.id;
             },
-            findCountyOrFail(county)
-            {
-               let countyObj = this.$store.getters.getCurrentState.counties.filter((c) => {
-                    return c.name === county;
-                })[0];
-                console.log(countyObj);
-                if(countyObj == null){
-                    this.cubsCounty = county;
-                    $('#newCounty').modal('toggle');
-
-                }
-                else
-                {
-                    this.$store.commit('setSelectedCounty', countyObj.id);
-                    this.cubsCounty = countyObj;
-                    $('#' + this.cubsCounty.id).click();
-                }
-           }
         },
     }
 </script>

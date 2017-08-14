@@ -1,65 +1,71 @@
-<style scoped>
-    .contacts {
-        overflow-y: scroll;
-    }
-
-    .modal-body {
-        max-height: 75vh;
-        overflow-y: scroll;
-    }
-
-    .collapse {
-        height: 0;
-    }
-</style>
-
 <template>
     <div>
-    	<span class="state-notes-header">
-		    <h3 id="head" class="text-center header"><small>State</small> <span class="weight-normal"> Counties</span></h3>
-	    </span>
+        <div style="display: flex; justify-content: center; align-items: baseline" class="pb-3">
+            <h3 style="flex: 1;" id="head" class="text-center header"><small>State</small> <span class="weight-normal"> Counties</span>
+            </h3>
+            <span class="pr-2"><add-county @countyAdded="onCountyAdded" :cubsCall="cubsCall" :cubsCounty="cubsCounty"></add-county></span>
+        </div>
 
-        <div id="notes-container">
-            <div v-for="county in currentState.counties">
-                <button @click="countyClicked(county.id)" class="btn btn-primary block mb075 w100p" :id="county.id">{{ county.name}}</button>
-
-                <div v-if="county.contacts" class="contacts-container" :class="{collapse: county.id !== selectedCounty}">
-                    <hr>
-                    <!--<a @click="countyClicked(county)" class="btn btn-primary mb075 w100p" data-toggle="modal" :data-target="'#create' + county.id">Add Contact</a>-->
-                    <a @click="newContact" :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
-                    <div v-for="contact in county.contacts">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div style="display: flex; flex-direction: column">
-                                        <div class="panel panel-default text-center">
-                                            <div class="panel-heading flex" style="align-items: baseline">
-                                                <h5 class="panel-heading" style="flex: 3;">{{contact.contact_name}}</h5>
-                                                <a @click="currentContact(contact)" data-toggle="modal" :data-target="'#edit' + contact.id" style="margin-right: auto; padding-right: 8px"><span class="glyphicon glyphicon-pencil"></span></a>
-                                                <a @click="currentContact(contact)" data-toggle="modal" :data-target="'#delete' + contact.id"  style="margin-right: auto"><span class="glyphicon glyphicon-remove"></span></a>
-                                            </div>
-                                            <p v-if="contact.phone" >Phone Number: {{contact.phone}}</p>
-                                            <p v-if="contact.address1" >Address: {{contact.address1}}</p>
-                                            <p v-if="contact.city" >City: {{contact.city}}</p>
-                                            <p v-if="contact.zip" >ZipCode: {{contact.zip}}</p>
-                                            <p v-if="contact.fax" >Fax: {{contact.fax}}</p>
-                                            <p v-if="contact.email" >Email: {{contact.email}}</p>
-                                            <p v-if="contact.website" >website: <a :href="contact.website">{{contact.city}}</a></p>
-                                            <p v-if="contact.notes" style="">Notes: {{contact.notes}}</p>
+        <div>
+            <div>
+                <v-expansion-panel  v-if="currentStateObj.counties" v-for="(county,i) in currentStateObj.counties" :key="i">
+                    <v-expansion-panel-content ripple :id="'countyBtn' +county.id" @click.native="countyClicked(county)" >
+                        <div slot="header">{{county.name}}</div>
+                        <v-card>
+                            <p style="text-align: center">
+                                <add-contact :county="county"></add-contact>
+                            </p>
+                            <v-card-text v-if="county.contacts" v-for="(contact, i) in county.contacts" :key="i" class="grey lighten-3">
+                                <v-card class="elevation-7">
+                                    <v-card-title style="display: flex; justify-content: center; align-items: baseline">
+                                        <h5 style="flex: 1;" class="text-xs-center">{{contact.contact_name}}</h5>
+                                        <edit-contact :contact="contact"></edit-contact>
+                                        <delete-contact :contact="contact"></delete-contact>
+                                    </v-card-title>
+                                    <v-divider></v-divider>
+                                    <v-card-text>
+                                        <div style="display: flex; flex-direction: column">
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-                <div v-else="county.contacts == ''" :class="{collapse: county.id !== selectedCounty}">
-                    <a @click="newContact"  :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
-                    <h3>No Contacts For This County</h3>
-                </div>
+                                        <p v-if="contact.phone" >Phone Number: {{contact.phone}}</p>
+                                        <p v-if="contact.address1" >Address: {{contact.address1}}</p>
+                                        <p v-if="contact.city" >City: {{contact.city}}</p>
+                                        <p v-if="contact.zip" >ZipCode: {{contact.zip}}</p>
+                                        <p v-if="contact.fax" >Fax: {{contact.fax}}</p>
+                                        <p v-if="contact.email" >Email: {{contact.email}}</p>
+                                        <p v-if="contact.website" >website: <a :href="contact.website">{{contact.city}}</a></p>
+                                        <p v-if="contact.notes" style="">Notes: {{contact.notes}}</p>
+                                        <v-divider></v-divider>
+                                    </v-card-text>
+                                </v-card>
+                            </v-card-text>
+                        </v-card>
+                        <v-card v-if="county.contacts == ''">
+                            <v-card-text class="grey lighten-3">
+                                <v-card class="elevation-7">
+                                    <v-card-title  style="display: flex; flex-direction: column; ">
+                                        <h5>No Contacts For This County</h5>
+                                    </v-card-title>
+                                    <v-divider></v-divider>
+                                    <v-card-text>
+                                    </v-card-text>
+                                </v-card>
+                            </v-card-text>
+                        </v-card>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+                <!--<v-card v-else>-->
+                    <!--<v-card-text class="grey lighten-3">-->
+                        <!--<v-card class="elevation-7">-->
+                            <!--<v-card-title  style="display: flex; flex-direction: column; ">-->
+                                <!--<h5>No Counties For This State</h5>-->
+                            <!--</v-card-title>-->
+                            <!--<v-divider></v-divider>-->
+                            <!--<v-card-text>-->
+                            <!--</v-card-text>-->
+                        <!--</v-card>-->
+                    <!--</v-card-text>-->
+                <!--</v-card>-->
             </div>
-            <delete-contact :contact="selectedContact"></delete-contact>
-            <edit-contact :contact="selectedContact"></edit-contact>
-            <add-contact :county-id="selectedCounty"></add-contact>
-            <add-county @countyAdded="showContactModal"></add-county>
         </div>
     </div>
 
@@ -68,71 +74,71 @@
 <script>
     Vue.component('add-county', require('./add-county.vue'));
     Vue.component('add-contact', require('../county-contacts/create.vue'));
-
     export default {
+        props:['cubsCall', 'cubsCounty'],
         data() {
             return{
                 selectedCounty: '',
-                selectedContact: {},
+                selectedContact:{},
+                countyAdded: false,
             }
         },
-        computed:{
-            currentState(){
+        computed: {
+            currentStateObj(){
                 return this.$store.getters.getCurrentState;
-            },
-            currentCounty(){
-                return this.$store.getters.getSelectedCounty;
+            }
+        },
+        watch:{
+            cubsCall(){
             }
         },
         methods: {
-            countyClicked(id){
-                this.$store.commit('setSelectedCounty', id);
-                this.selectedCounty = this.selectedCounty === id ? '' : id;
+            countyClicked(county){
+                this.selectedCounty = this.selectedCounty == county.id ? '' : county.id;
+                this.$store.commit('setSelectedCounty', county.id);
             },
             currentContact(contact){
                 this.selectedContact = contact;
             },
-            newContact(){
-                this.selectedCounty = this.currentCounty.id;
-                setTimeout(() => {
-                    $('input[name=name]').focus();
-                }, 500)
+            test(){
+                console.log('test')
             },
-            showContactModal()
-            {
-                $('#createContact').modal('toggle');
-                setTimeout(() => {
-                    $('input[name=name]').focus();
-                }, 500)
-//                $('#' + this.currentCounty.id).click(() => {
-//                    $('#addButton' + this.currentCounty.id).click(() => {
-//                        $('input[name=name]').focus();
-//                    });
-//                });
+            newCounty(){
+                this.$emit('newCounty', this.createdCounty)
+            },
+            onCountyAdded(){
+                if(this.cubsCall == false){
+                    setTimeout(() =>{
+                        this.selectedCounty = this.$store.getters.getSelectedCounty.id;
+                        $('#countyBtn' + this.selectedCounty).find(':first').trigger('click');
+                    }, 500);
 
-
-//                setTimeout(() => {
-//                    $('#' + this.currentCounty.id).click();
-//                    setTimeout(() => {
-//                        $('#addButton' + this.currentCounty.id).click();
-//                    }, 1000)
-//                }, 1000);
-
-//                this.selectedCounty = this.currentCounty.id
-//                $('#' + this.currentCounty.id).click();
-//                setTimeout(() => {
-//                        console.log(this.currentCounty);
-//                        $('#addButton' + this.currentCounty.id).click();
-//                    }, 500)
+                    setTimeout(() =>{
+                        $('#createContact').trigger('click');
+                    }, 1500);
+                }
             }
-//                this.selectedCounty = this.currentCounty.id
-//                setTimeout((that) => {
-//                    console.log(that.currentCounty);
-//                    $('#addButton' + that.currentCounty.id).click();
-//                }, 500, this)
-//
+        },
+        updated(){
+            if(this.cubsCall == true){
+                if(this.currentStateObj.counties == ''){
 
-//            }
+                    this.$emit('cubsCallOver')
+
+                }
+                else{
+                    this.selectedCounty = this.currentStateObj.counties.filter((county) => {
+                        return this.cubsCounty == county.name;
+                    })[0].id;
+                    $('#countyBtn' + this.selectedCounty).find(':first').trigger('click');
+                    this.$emit('cubsCallOver')
+                }
+
+
+//                console.log($('#countyBtn203'));
+//                his.selectedCounty)
+
+            }
 
         }
     }

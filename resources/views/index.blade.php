@@ -1,5 +1,5 @@
 @extends('partials.main')
 
 @section('content')
-    <restitution :data="{{$states->toJson() }}"></restitution>
+    <app :items="{{$states->toJson() }}"></app>
 @endsection
