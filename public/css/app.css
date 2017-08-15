@@ -508,15 +508,6 @@ p.large {
   margin: 20px 0;
 }
 
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
 .modal-enter {
   opacity: 0;
 }
@@ -529,6 +520,58 @@ p.large {
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+.world {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 25% 50%;
+  grid-template-areas: "search-area" "main";
+  grid-gap: 20px 10px;
+}
+
+.search-area {
+  width: 100%;
+  grid-area: search-area;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: "cubs" "select-state";
+  grid-gap: 20px;
+}
+
+.main {
+  grid-area: main;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: "state-notes state-counties";
+  grid-gap: 20px;
+}
+
+.select-state {
+  grid-area: select-state;
+  justify-self: center;
+  -ms-flex-item-align: center;
+      align-self: center;
+}
+
+.cubsNumber {
+  margin-top: 20px;
+  grid-area: cubs;
+  justify-self: center;
+  -ms-flex-item-align: center;
+      align-self: center;
+}
+
+.state-notes {
+  width: 100%;
+  grid-area: state-notes;
+}
+
+.state-counties {
+  width: 100%;
+  grid-area: state-counties;
 }
 
 /*!
