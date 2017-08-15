@@ -2,15 +2,16 @@
 
 namespace App;
 
+use Iatstuti\Database\Support\OwnsModels;
 use Illuminate\Database\Eloquent\Model;
-use Mockery\Matcher\Not;
 
 class State extends Model
 {
+    use OwnsModels;
+
     protected $fillable = [
         'abbr', 'name', 'url',
     ];
-
 
     public function contacts()
     {
@@ -26,4 +27,22 @@ class State extends Model
     {
         return $this->hasMany(Note::class);
     }
+
+    public function addNote(array $data)
+    {
+        $note = new Note($data);
+
+        $this->notes()->save($note);
+
+        return $note;
+    }
+
+    public function addCounty(array $data)
+    {
+        $county = new County($data);
+        $county->state_id = $this->id;
+        $this->counties()->save($county);
+        return $county;
+    }
+
 }

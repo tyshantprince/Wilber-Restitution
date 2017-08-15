@@ -1,0 +1,48 @@
+.world{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 25% 50% ;
+  grid-template-areas: "search-area"
+                        "main";
+  grid-gap: 20px 10px;
+}
+
+.search-area{
+  width: 100%;
+  grid-area: search-area;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: "cubs"
+                        "select-state";
+  grid-gap: 20px;
+}
+.main{
+  grid-area: main;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: "state-notes state-counties";
+  grid-gap: 20px ;
+}
+
+.select-state{
+  grid-area: select-state;
+  justify-self: center;
+  align-self: center;
+}
+.cubsNumber{
+  margin-top: 20px;
+  grid-area: cubs;
+  justify-self: center;
+  align-self: center;
+}
+.state-notes{
+  width: 100%;
+  grid-area: state-notes;
+
+}
+.state-counties{
+  width: 100%;
+  grid-area: state-counties;
+}

@@ -1,0 +1,59 @@
+<template>
+
+    <div>
+
+        <button @click="toggleDeleteNote" class="btn btn-link"><span class="glyphicon glyphicon-trash"></span></button>
+
+        <transition name="modal">
+            <div class="modal-mask" @click="toggleDeleteNote" v-if="active">
+                <div class="modal-container" @click.stop>
+                    <div class="modal-header">
+                        <h3 class="text-center">Delete Note</h3>
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="text-center">Are you sure you want to delete this note ?</h5>
+                    </div>
+                    <div class="modal-footer" style="display: flex; justify-content: space-between">
+                        <button class="btn btn-default" @click="toggleDeleteNote">
+                            Close
+                        </button>
+                        <button class="btn btn-danger" @click="deleteNote();toggleDeleteNote()">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </transition>
+    </div>
+</template>
+
+<script>
+    export default {
+        props:['note'],
+        data(){
+            return {
+                bkClass: 'bk',
+                blurClass: 'blur'
+            }
+        },
+        computed:{
+            active(){
+                return this.$store.state.modals.deleteNote;
+            }
+        },
+        methods:{
+            deleteNote(){
+                this.$store.dispatch('deleteNote', this.note);
+            },
+            toggleDeleteNote(){
+                this.$store.commit('toggleDeleteNote')
+            },
+            inputFocus(){
+                $("#newNote").on('shown.bs.modal', function(){
+                    $(this).find('textarea[name=note]').focus();
+                });
+            }
+        }
+
+    }
+</script>
