@@ -10997,12 +10997,13 @@ window.Vue = __webpack_require__(9);
 Vue.component('restitution', __webpack_require__(40));
 Vue.component('state-notes', __webpack_require__(43));
 Vue.component('state-counties', __webpack_require__(46));
-Vue.component('contacts', __webpack_require__(60));
 Vue.component('edit-note', __webpack_require__(63));
 Vue.component('delete-note', __webpack_require__(66));
 Vue.component('add-note', __webpack_require__(69));
 Vue.component('delete-contact', __webpack_require__(72));
 Vue.component('edit-contact', __webpack_require__(75));
+Vue.component('add-county', __webpack_require__(53));
+Vue.component('add-contact', __webpack_require__(56));
 
 var app = new Vue({
   store: __WEBPACK_IMPORTED_MODULE_0__store_index__["a" /* default */],
@@ -40421,7 +40422,7 @@ var actions = {
         return new Promise(function (resolve, reject) {
             axios.post('state/' + state.selectedStateID + '/counties', { name: county }).then(function (response) {
                 commit('createCounty', response.data);
-                resolve();
+                resolve(response.data);
             }).catch(function (error) {
                 console.log(error);
             });
@@ -40457,10 +40458,10 @@ var actions = {
 };
 
 var mutations = {
-    setSelectedState: function setSelectedState(state, id) {
+    setSelectedStateId: function setSelectedStateId(state, id) {
         state.selectedStateID = id;
     },
-    setSelectedCounty: function setSelectedCounty(state, id) {
+    setSelectedCountyId: function setSelectedCountyId(state, id) {
         state.selectedCountyID = id;
     },
     setCurrentState: function setCurrentState(state, data) {
@@ -40565,7 +40566,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/restitution.vue"
+Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/restitution.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] restitution.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40576,9 +40577,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6f489e88", Component.options)
+    hotAPI.createRecord("data-v-0ceb8268", Component.options)
   } else {
-    hotAPI.reload("data-v-6f489e88", Component.options)
+    hotAPI.reload("data-v-0ceb8268", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -40628,44 +40629,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['data'],
+    props: ['stateList'],
     data: function data() {
         return {
             selectedState: '',
@@ -40676,7 +40643,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     watch: {
         selectedState: function selectedState() {
-            this.$store.commit('setSelectedState', this.selectedState);
+            if (this.$store.state.states.selectedStateID == this.selectedState) return false;
+            this.$store.commit('setSelectedStateId', this.selectedState);
             this.$store.dispatch('setCurrentState');
         }
     },
@@ -40684,9 +40652,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         cubsNumberEntered: function cubsNumberEntered() {
             var _this = this;
 
-            this.callToCubs().then(function (location) {
+            // Three possible errors
+            // 1. Can't find cubs number
+            // 2. Claim doesn't have a loss location
+            // 3. Google can't find the county
+            this.callToCubs()
+            // LOOKUP STATE BY ABBREVIATION AND SET THE FREAKING STATE
+            .then(function (location) {
+                return _this.setStateFromAbbr(location);
+            })
+            // get the city and state
+            // set the current state to be the returned value (this is async)
+            .then(function (location) {
                 return _this.cubsCountyLookup(location);
-            }).then(function (county) {
+            })
+            // go grab the county from google, and look to see if it exists
+            // PROBLEM is that the state ajax hasn't yet returned
+            // County is duplicated as a result
+
+            //                    .catch((error) => this.displayError(error))
+            .then(function (county) {
                 return _this.findOrCreateCounty(county);
             });
         },
@@ -40694,10 +40679,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             return new Promise(function (resolve, reject) {
-                axios.get('https://cubsapi.wilbergroup.com/v1/get_claimant_info?wilber_file_number=' + _this2.cubsNumber).then(function (_ref) {
+                axios.get('https://capi.wilbergroup.com/v1/get_claim_details?wilber_file_number=' + _this2.cubsNumber).then(function (_ref) {
                     var data = _ref.data.data;
 
-                    resolve([data.c1.city, _this2.setStateFromAbbr(data.c1.state)]);
+                    // delay the resoving of this until
+                    // the state is ajaxed in
+
+                    var location = {
+                        city: data.meta.loss_location_city,
+                        state: data.meta.loss_location_state
+                    };
+                    resolve(location);
+                }).catch(function () {
+                    reject('Cubs number not found.');
                 });
             });
         },
@@ -40705,7 +40699,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this3 = this;
 
             return new Promise(function (resolve, reject) {
-                axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + location[0] + ',' + location[1] + '&key=' + _this3.apiKey).then(function (response) {
+                axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + location.city + ',' + location.state + '&key=' + _this3.apiKey).then(function (response) {
                     var county = response.data.results[0].address_components.filter(function (info) {
                         return info.types[0] === 'administrative_area_level_2';
                     })[0].long_name;
@@ -40715,21 +40709,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             });
         },
-        setStateFromAbbr: function setStateFromAbbr(abbr) {
-            var stateIWant = this.data.filter(function (state) {
-                return state.abbr == abbr;
-            })[0];
-            this.selectedState = stateIWant.id;
-            return stateIWant.name;
-            // tell the store to set the state to whatever I find
-            // return the state I find
+        setStateFromAbbr: function setStateFromAbbr(location) {
+            var _this4 = this;
 
-            // The store does not have access to state list
+            return new Promise(function (resolve, reject) {
+                var state = _.find(_this4.stateList, { abbr: location.state });
+
+                if (state === null) {
+                    reject('Invalid state abbreviation in loss location.');
+                }
+
+                _this4.$store.commit('setSelectedStateId', state.id);
+                _this4.$store.dispatch('setCurrentState').then(function () {
+                    return resolve(location);
+                });
+                _this4.selectedState = state.id;
+            });
         },
         findOrCreateCounty: function findOrCreateCounty(county) {
             var countyObj = _.find(this.$store.getters.getCurrentState.counties, { name: county });
             if (countyObj != null) {
-                this.$store.commit('setSelectedCounty', countyObj.id);
+                this.$store.commit('setSelectedCountyId', countyObj.id);
             } else {
                 this.$store.dispatch('createCounty', county);
             }
@@ -40797,7 +40797,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.selectedState = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }
     }
-  }, [_c('option'), _vm._v(" "), _vm._l((_vm.data), function(state) {
+  }, [_c('option', {
+    attrs: {
+      "value": ""
+    }
+  }, [_vm._v("Please Select State")]), _vm._v(" "), _vm._l((_vm.stateList), function(state) {
     return _c('option', {
       domProps: {
         "value": state.id
@@ -40811,21 +40815,47 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [(_vm.selectedState) ? _c('state-notes') : _c('h1', [_vm._v("Please Select a State")])], 1)])]), _vm._v(" "), _c('div', {
+  }, [_c('state-notes', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.selectedState),
+      expression: "selectedState"
+    }]
+  }), _vm._v(" "), _c('h1', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.selectedState),
+      expression: "!selectedState"
+    }]
+  }, [_vm._v("Please Select a State")])], 1)])]), _vm._v(" "), _c('div', {
     staticClass: "state-counties"
   }, [_c('div', {
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [(_vm.selectedState) ? _c('state-counties', {
-    ref: "stateCounties"
-  }) : _c('h1', [_vm._v("Please Select a State")])], 1)])])])])
+  }, [_c('state-counties', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.selectedState),
+      expression: "selectedState"
+    }]
+  }), _vm._v(" "), _c('h1', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.selectedState),
+      expression: "!selectedState"
+    }]
+  }, [_vm._v("Please Select a State")])], 1)])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-6f489e88", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-0ceb8268", module.exports)
   }
 }
 
@@ -40846,7 +40876,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/state-notes/statenotes.vue"
+Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/state-notes/statenotes.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] statenotes.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40857,9 +40887,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-22a6abec", Component.options)
+    hotAPI.createRecord("data-v-4cd89c0c", Component.options)
   } else {
-    hotAPI.reload("data-v-22a6abec", Component.options)
+    hotAPI.reload("data-v-4cd89c0c", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -40984,7 +41014,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-22a6abec", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-4cd89c0c", module.exports)
   }
 }
 
@@ -41005,11 +41035,11 @@ var Component = __webpack_require__(1)(
   /* styles */
   injectStyle,
   /* scopeId */
-  "data-v-43b41520",
+  "data-v-8d0d2580",
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/state-counties/statecounties.vue"
+Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/state-counties/statecounties.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] statecounties.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41020,9 +41050,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-43b41520", Component.options)
+    hotAPI.createRecord("data-v-8d0d2580", Component.options)
   } else {
-    hotAPI.reload("data-v-43b41520", Component.options)
+    hotAPI.reload("data-v-8d0d2580", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -41043,13 +41073,13 @@ var content = __webpack_require__(48);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(50)("6f9b1188", content, false);
+var update = __webpack_require__(50)("4ae4aeb0", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43b41520\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./statecounties.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43b41520\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./statecounties.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8d0d2580\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./statecounties.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8d0d2580\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./statecounties.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -41067,7 +41097,7 @@ exports = module.exports = __webpack_require__(49)(undefined);
 
 
 // module
-exports.push([module.i, "\n.contacts[data-v-43b41520] {\n    overflow-y: scroll;\n}\n.modal-body[data-v-43b41520] {\n    max-height: 75vh;\n    overflow-y: scroll;\n}\n.collapse[data-v-43b41520] {\n    height: 0;\n}\n", ""]);
+exports.push([module.i, "\n.contacts[data-v-8d0d2580] {\n    overflow-y: scroll;\n}\n.modal-body[data-v-8d0d2580] {\n    max-height: 75vh;\n    overflow-y: scroll;\n}\n.collapse[data-v-8d0d2580] {\n    height: 0;\n}\n", ""]);
 
 // exports
 
@@ -41485,9 +41515,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-Vue.component('add-county', __webpack_require__(53));
-Vue.component('add-contact', __webpack_require__(56));
-
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
@@ -41509,9 +41536,9 @@ Vue.component('add-contact', __webpack_require__(56));
     methods: {
         countyClicked: function countyClicked(id) {
             if (id != this.currentCountyID) {
-                this.$store.commit('setSelectedCounty', id);
+                this.$store.commit('setSelectedCountyId', id);
             } else {
-                this.$store.commit('setSelectedCounty', '');
+                this.$store.commit('setSelectedCountyId', '');
             }
             //                this.selectedCounty = this.selectedCounty === id ? '' : id;
         },
@@ -41538,7 +41565,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/state-counties/add-county.vue"
+Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/state-counties/add-county.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] add-county.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41549,9 +41576,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-17de69df", Component.options)
+    hotAPI.createRecord("data-v-613505bf", Component.options)
   } else {
-    hotAPI.reload("data-v-17de69df", Component.options)
+    hotAPI.reload("data-v-613505bf", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -41598,9 +41625,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            createdCounty: '',
-            bkClass: 'bk',
-            blurClass: 'blur'
+            createdCounty: ''
         };
     },
 
@@ -41683,11 +41708,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer",
-    staticStyle: {
-      "display": "flex",
-      "justify-content": "space-between"
-    }
+    staticClass: "modal-footer flex fl-jc-sb"
   }, [_c('button', {
     staticClass: "btn btn-default",
     on: {
@@ -41707,7 +41728,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-17de69df", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-613505bf", module.exports)
   }
 }
 
@@ -41728,7 +41749,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/county-contacts/create.vue"
+Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/county-contacts/create.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] create.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41739,9 +41760,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-678d60f2", Component.options)
+    hotAPI.createRecord("data-v-132980b2", Component.options)
   } else {
-    hotAPI.reload("data-v-678d60f2", Component.options)
+    hotAPI.reload("data-v-132980b2", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -41870,11 +41891,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         toggleAddCounty: function toggleAddCounty() {
             this.$store.commit('toggleAddContact');
-        },
-        inputFocus: function inputFocus() {
-            $("#newNote").on('shown.bs.modal', function () {
-                $(this).find('textarea[name=note]').focus();
-            });
         }
     }
 });
@@ -42152,7 +42168,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-678d60f2", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-132980b2", module.exports)
   }
 }
 
@@ -42264,96 +42280,14 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-43b41520", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-8d0d2580", module.exports)
   }
 }
 
 /***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(61),
-  /* template */
-  __webpack_require__(62),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/contacts.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] contacts.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-51a59ab6", Component.options)
-  } else {
-    hotAPI.reload("data-v-51a59ab6", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 61 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
-    }
-});
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "container"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-8 col-md-offset-2"
-  })])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-51a59ab6", module.exports)
-  }
-}
-
-/***/ }),
+/* 60 */,
+/* 61 */,
+/* 62 */,
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -42370,7 +42304,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/state-notes/edit-note.vue"
+Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/state-notes/edit-note.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] edit-note.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42381,9 +42315,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7926d62e", Component.options)
+    hotAPI.createRecord("data-v-512c20c9", Component.options)
   } else {
-    hotAPI.reload("data-v-7926d62e", Component.options)
+    hotAPI.reload("data-v-512c20c9", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -42560,7 +42494,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-7926d62e", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-512c20c9", module.exports)
   }
 }
 
@@ -42581,7 +42515,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/state-notes/delete-note.vue"
+Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/state-notes/delete-note.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] delete-note.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42592,9 +42526,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0e0cb368", Component.options)
+    hotAPI.createRecord("data-v-2a18c748", Component.options)
   } else {
-    hotAPI.reload("data-v-0e0cb368", Component.options)
+    hotAPI.reload("data-v-2a18c748", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -42731,7 +42665,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-0e0cb368", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-2a18c748", module.exports)
   }
 }
 
@@ -42752,7 +42686,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/state-notes/add-note.vue"
+Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/state-notes/add-note.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] add-note.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42763,9 +42697,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1babbeba", Component.options)
+    hotAPI.createRecord("data-v-d849924c", Component.options)
   } else {
-    hotAPI.reload("data-v-1babbeba", Component.options)
+    hotAPI.reload("data-v-d849924c", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -42943,7 +42877,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-1babbeba", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-d849924c", module.exports)
   }
 }
 
@@ -42964,7 +42898,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/county-contacts/delete-contact.vue"
+Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/county-contacts/delete-contact.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] delete-contact.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42975,9 +42909,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-449f6c89", Component.options)
+    hotAPI.createRecord("data-v-5e6f3ca9", Component.options)
   } else {
-    hotAPI.reload("data-v-449f6c89", Component.options)
+    hotAPI.reload("data-v-5e6f3ca9", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -43044,11 +42978,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         toggleDeleteContact: function toggleDeleteContact() {
             this.$store.commit('toggleDeleteContact');
-        },
-        inputFocus: function inputFocus() {
-            $("#newNote").on('shown.bs.modal', function () {
-                $(this).find('textarea[name=note]').focus();
-            });
         }
     }
 
@@ -43115,7 +43044,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-449f6c89", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-5e6f3ca9", module.exports)
   }
 }
 
@@ -43136,7 +43065,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/county-contacts/edit-contact.vue"
+Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/county-contacts/edit-contact.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] edit-contact.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -43147,9 +43076,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-e03a41b0", Component.options)
+    hotAPI.createRecord("data-v-05a83748", Component.options)
   } else {
-    hotAPI.reload("data-v-e03a41b0", Component.options)
+    hotAPI.reload("data-v-05a83748", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -43224,13 +43153,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['contact'],
-    data: function data() {
-        return {
-            bkClass: 'bk',
-            blurClass: 'blur'
-        };
-    },
-
     computed: {
         active: function active() {
             return this.$store.state.modals.editContact;
@@ -43256,11 +43178,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         toggleEditContact: function toggleEditContact() {
             this.$store.commit('toggleEditContact');
-        },
-        inputFocus: function inputFocus() {
-            $("#newNote").on('shown.bs.modal', function () {
-                $(this).find('textarea[name=note]').focus();
-            });
         }
     }
 });
@@ -43538,7 +43455,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-e03a41b0", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-05a83748", module.exports)
   }
 }
 

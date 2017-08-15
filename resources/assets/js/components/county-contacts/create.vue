@@ -110,11 +110,6 @@
                 },
                 toggleAddCounty() {
                     this.$store.commit('toggleAddContact');
-                },
-                inputFocus() {
-                    $("#newNote").on('shown.bs.modal', function () {
-                        $(this).find('textarea[name=note]').focus();
-                    });
                 }
         }
     }

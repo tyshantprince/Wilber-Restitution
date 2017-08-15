@@ -11,7 +11,7 @@
                     <div class="modal-body">
                             <input class="center-block" type="text" name="county" v-model="createdCounty" placeholder="Enter County Name">
                     </div>
-                    <div class="modal-footer" style="display: flex; justify-content: space-between">
+                    <div class="modal-footer flex fl-jc-sb">
                         <button class="btn btn-default" @click="toggleAddCounty">
                             Close
                         </button>
@@ -30,8 +30,6 @@
         data(){
             return {
                 createdCounty: '',
-                bkClass: 'bk',
-                blurClass: 'blur'
             }
         },
         computed:{

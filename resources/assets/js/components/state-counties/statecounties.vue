@@ -69,9 +69,6 @@
 </template>
 
 <script>
-    Vue.component('add-county', require('./add-county.vue'));
-    Vue.component('add-contact', require('../county-contacts/create.vue'));
-
     export default {
         data() {
             return{
@@ -92,10 +89,10 @@
         methods: {
             countyClicked(id){
                 if(id != this.currentCountyID){
-                    this.$store.commit('setSelectedCounty', id);
+                    this.$store.commit('setSelectedCountyId', id);
                 }
                 else {
-                    this.$store.commit('setSelectedCounty', '');
+                    this.$store.commit('setSelectedCountyId', '');
                 }
 //                this.selectedCounty = this.selectedCounty === id ? '' : id;
             },

@@ -62,7 +62,7 @@ const actions = {
             axios.post('state/' + state.selectedStateID + '/counties', {name: county})
                 .then((response) => {
                     commit('createCounty', response.data);
-                    resolve()
+                    resolve(response.data);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -94,10 +94,10 @@ const actions = {
 };
 
 const mutations = {
-    setSelectedState(state, id){
+    setSelectedStateId(state, id){
         state.selectedStateID = id;
     },
-    setSelectedCounty(state, id) {
+    setSelectedCountyId(state, id) {
         state.selectedCountyID =  id;
     },
     setCurrentState(state, data){

@@ -57,12 +57,6 @@
 <script>
     export default {
         props: ['contact'],
-        data() {
-            return {
-                bkClass: 'bk',
-                blurClass: 'blur',
-            }
-        },
         computed:{
             active(){
                 return this.$store.state.modals.editContact;
@@ -88,11 +82,6 @@
             },
             toggleEditContact() {
                 this.$store.commit('toggleEditContact');
-            },
-            inputFocus() {
-                $("#newNote").on('shown.bs.modal', function () {
-                    $(this).find('textarea[name=note]').focus();
-                });
             }
         }
     }
