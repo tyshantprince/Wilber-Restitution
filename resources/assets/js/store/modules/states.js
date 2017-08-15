@@ -1,5 +1,4 @@
 const state = {
-    stateList: [],
     currentState:{},
     selectedStateID: '',
     selectedCountyID: '',
@@ -57,6 +56,8 @@ const actions = {
             });
     },
     createCounty({commit, state}, county) {
+        console.log(state);
+        console.log(county);
         return new Promise((resolve, reject) => {
             axios.post('state/' + state.selectedStateID + '/counties', {name: county})
                 .then((response) => {
@@ -89,7 +90,7 @@ const actions = {
                 commit('createContact', response.data);
             })
             .catch(error => console.log(error));
-    }
+    },
 };
 
 const mutations = {
@@ -118,6 +119,12 @@ const mutations = {
     },
     createContact(state, contact) {
         getters.getSelectedCounty(state).contacts.push(contact);
+    },
+    findOrCreateCounty(state, {dispatch})
+    {
+        console.log(dispatch)
+        console.log(state)
+
     }
 
 };

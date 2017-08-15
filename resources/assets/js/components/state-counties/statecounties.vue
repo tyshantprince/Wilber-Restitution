@@ -25,8 +25,8 @@
         <div id="notes-container">
             <div v-for="county in currentState.counties">
                 <button @click="countyClicked(county.id)" class="btn btn-primary block mb075 w100p" :id="county.id">{{ county.name}}</button>
-                <div v-if="county.contacts" class="contacts-container" :class="{collapse: county.id !== selectedCounty}">
-                    <add-contact class="text-center" :county-id="selectedCounty"></add-contact>
+                <div v-if="county.contacts" class="contacts-container" :class="{collapse: county.id !== currentCountyID}">
+                    <add-contact class="text-center" :county-id="currentCountyID"></add-contact>
                     <hr>
                     <!--<a @click="countyClicked(county)" class="btn btn-primary mb075 w100p" data-toggle="modal" :data-target="'#create' + county.id">Add Contact</a>-->
                     <!--<a @click="newContact" :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>-->
@@ -38,8 +38,10 @@
                                         <div class="panel panel-default text-center">
                                             <div class="panel-heading flex" style="align-items: baseline">
                                                 <h5 class="panel-heading" style="flex: 3;">{{contact.contact_name}}</h5>
-                                                <a @click="currentContact(contact)" data-toggle="modal" :data-target="'#edit' + contact.id" style="margin-right: auto; padding-right: 8px"><span class="glyphicon glyphicon-pencil"></span></a>
-                                                <a @click="currentContact(contact)" data-toggle="modal" :data-target="'#delete' + contact.id"  style="margin-right: auto"><span class="glyphicon glyphicon-remove"></span></a>
+                                                <!--<a @click="currentContact(contact)" data-toggle="modal" :data-target="'#edit' + contact.id" style="margin-right: auto; padding-right: 8px"><span class="glyphicon glyphicon-pencil"></span></a>-->
+                                                <!--<a @click="currentContact(contact)" data-toggle="modal" :data-target="'#delete' + contact.id"  style="margin-right: auto"><span class="glyphicon glyphicon-remove"></span></a>-->
+                                                <edit-contact :contact="contact"></edit-contact>
+                                                <delete-contact :contact="contact"></delete-contact>
                                             </div>
                                             <p v-if="contact.phone" >Phone Number: {{contact.phone}}</p>
                                             <p v-if="contact.address1" >Address: {{contact.address1}}</p>
@@ -55,13 +57,12 @@
                             </div>
                     </div>
                 </div>
-                <div v-else="county.contacts == ''" :class="{collapse: county.id !== selectedCounty}">
+                <div v-else="county.contacts == ''" :class="{collapse: county.id !== currentCountyID}">
                     <a @click="newContact"  :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
                     <h3>No Contacts For This County</h3>
                 </div>
             </div>
-            <delete-contact :contact="selectedContact"></delete-contact>
-            <edit-contact :contact="selectedContact"></edit-contact>
+
         </div>
     </div>
 
@@ -74,7 +75,6 @@
     export default {
         data() {
             return{
-                selectedCounty: '',
                 selectedContact: {},
             }
         },
@@ -84,58 +84,24 @@
             },
             currentCounty(){
                 return this.$store.getters.getSelectedCounty;
+            },
+            currentCountyID(){
+                return (this.$store.getters.getSelectedCounty != null) ? this.$store.getters.getSelectedCounty.id : '';
             }
         },
         methods: {
             countyClicked(id){
-                this.$store.commit('setSelectedCounty', id);
-                this.selectedCounty = this.selectedCounty === id ? '' : id;
+                if(id != this.currentCountyID){
+                    this.$store.commit('setSelectedCounty', id);
+                }
+                else {
+                    this.$store.commit('setSelectedCounty', '');
+                }
+//                this.selectedCounty = this.selectedCounty === id ? '' : id;
             },
             currentContact(contact){
                 this.selectedContact = contact;
             },
-            newContact(){
-                this.selectedCounty = this.currentCounty.id;
-                setTimeout(() => {
-                    $('input[name=name]').focus();
-                }, 500)
-            },
-            showContactModal()
-            {
-                $('#createContact').modal('toggle');
-                setTimeout(() => {
-                    $('input[name=name]').focus();
-                }, 500)
-//                $('#' + this.currentCounty.id).click(() => {
-//                    $('#addButton' + this.currentCounty.id).click(() => {
-//                        $('input[name=name]').focus();
-//                    });
-//                });
-
-
-//                setTimeout(() => {
-//                    $('#' + this.currentCounty.id).click();
-//                    setTimeout(() => {
-//                        $('#addButton' + this.currentCounty.id).click();
-//                    }, 1000)
-//                }, 1000);
-
-//                this.selectedCounty = this.currentCounty.id
-//                $('#' + this.currentCounty.id).click();
-//                setTimeout(() => {
-//                        console.log(this.currentCounty);
-//                        $('#addButton' + this.currentCounty.id).click();
-//                    }, 500)
-            }
-//                this.selectedCounty = this.currentCounty.id
-//                setTimeout((that) => {
-//                    console.log(that.currentCounty);
-//                    $('#addButton' + that.currentCounty.id).click();
-//                }, 500, this)
-//
-
-//            }
-
         }
     }
 </script>

@@ -39520,17 +39520,20 @@ module.exports = function spread(callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_states__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_modals__ = __webpack_require__(86);
 
 
 // import * as actions from './actions';
 // import * as getters from './getters';
 
 
+
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     modules: {
-        states: __WEBPACK_IMPORTED_MODULE_2__modules_states__["a" /* default */]
+        states: __WEBPACK_IMPORTED_MODULE_2__modules_states__["a" /* default */],
+        modals: __WEBPACK_IMPORTED_MODULE_3__modules_modals__["a" /* default */]
     }
 }));
 
@@ -40353,7 +40356,6 @@ var index_esm = {
 
 "use strict";
 var state = {
-    stateList: [],
     currentState: {},
     selectedStateID: '',
     selectedCountyID: ''
@@ -40414,6 +40416,8 @@ var actions = {
         var commit = _ref5.commit,
             state = _ref5.state;
 
+        console.log(state);
+        console.log(county);
         return new Promise(function (resolve, reject) {
             axios.post('state/' + state.selectedStateID + '/counties', { name: county }).then(function (response) {
                 commit('createCounty', response.data);
@@ -40478,6 +40482,12 @@ var mutations = {
     },
     createContact: function createContact(state, contact) {
         getters.getSelectedCounty(state).contacts.push(contact);
+    },
+    findOrCreateCounty: function findOrCreateCounty(state, _ref9) {
+        var dispatch = _ref9.dispatch;
+
+        console.log(dispatch);
+        console.log(state);
     }
 };
 
@@ -40584,9 +40594,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             selectedState: '',
             apiKey: 'AIzaSyAAK-Blg6TN6PMjZdPkahbMs-CKRx-aXbY',
-            cubsCity: '',
-            cubsState: '',
-            cubsCounty: '',
             cubsNumber: ''
         };
     },
@@ -40598,61 +40605,59 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
-        //            cubsNumberEntered(){
-        //                this.callToCubs()
-        //                    .then(() => this.cubsCountyLookup())
-        //                    .then(() => this.findStateFromAbbr(this.cubsState));
-        //            },
-        //
-        //            callToCubs(){
-        //                return new Promise((resolve, reject) => {
-        //                    axios.get('https://cubsapi.wilbergroup.com/v1/get_claimant_info?wilber_file_number=' + this.cubsNumber)
-        //                        .then(({data:{data}}) => {
-        //                            this.cubsCity = (data.c1.city);
-        //                            this.cubsState = (data.c1.state);
-        //                            resolve();
-        //                        })
-        //                })
-        //            },
-        //            cubsCountyLookup() {
-        //                return new Promise((resolve, reject) => {
-        //                    axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.cubsCity + ',' + this.cubsState + '&key=' + this.apiKey)
-        //                        .then((response) => {
-        //                            this.cubsCounty = response.data.results[0].address_components.filter((info) => {
-        //                                return info.types[0] === 'administrative_area_level_2';
-        //                            })[0].long_name;
-        //                            resolve();
-        //                        })
-        //                        .catch((error) => {
-        //                            console.log(error);
-        //                        });
-        //                })
-        //
-        //            },
-        //            findStateFromAbbr(abbr){
-        //                let stateIWant = this.data.filter((state) => {
-        //                    return state.abbr == abbr
-        //                })[0];
-        //                this.selectedState = stateIWant.id;
-        //            },
-        //            findCountyOrFail(county)
-        //            {
-        //               let countyObj = this.$store.getters.getCurrentState.counties.filter((c) => {
-        //                    return c.name === county;
-        //                })[0];
-        //                console.log(countyObj);
-        //                if(countyObj == null){
-        //                    this.cubsCounty = county;
-        //                    $('#newCounty').modal('toggle');
-        //
-        //                }
-        //                else
-        //                {
-        //                    this.$store.commit('setSelectedCounty', countyObj.id);
-        //                    this.cubsCounty = countyObj;
-        //                    $('#' + this.cubsCounty.id).click();
-        //                }
-        //           }
+        cubsNumberEntered: function cubsNumberEntered() {
+            var _this = this;
+
+            this.callToCubs().then(function (location) {
+                return _this.cubsCountyLookup(location);
+            }).then(function (county) {
+                return _this.findOrCreateCounty(county);
+            });
+        },
+        callToCubs: function callToCubs() {
+            var _this2 = this;
+
+            return new Promise(function (resolve, reject) {
+                axios.get('https://cubsapi.wilbergroup.com/v1/get_claimant_info?wilber_file_number=' + _this2.cubsNumber).then(function (_ref) {
+                    var data = _ref.data.data;
+
+                    resolve([data.c1.city, _this2.setStateFromAbbr(data.c1.state)]);
+                });
+            });
+        },
+        cubsCountyLookup: function cubsCountyLookup(location) {
+            var _this3 = this;
+
+            return new Promise(function (resolve, reject) {
+                axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + location[0] + ',' + location[1] + '&key=' + _this3.apiKey).then(function (response) {
+                    var county = response.data.results[0].address_components.filter(function (info) {
+                        return info.types[0] === 'administrative_area_level_2';
+                    })[0].long_name;
+                    resolve(county);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            });
+        },
+        setStateFromAbbr: function setStateFromAbbr(abbr) {
+            var stateIWant = this.data.filter(function (state) {
+                return state.abbr == abbr;
+            })[0];
+            this.selectedState = stateIWant.id;
+            return stateIWant.name;
+            // tell the store to set the state to whatever I find
+            // return the state I find
+
+            // The store does not have access to state list
+        },
+        findOrCreateCounty: function findOrCreateCounty(county) {
+            var countyObj = _.find(this.$store.getters.getCurrentState.counties, { name: county });
+            if (countyObj != null) {
+                this.$store.commit('setSelectedCounty', countyObj.id);
+            } else {
+                this.$store.dispatch('createCounty', county);
+            }
+        }
     }
 });
 
@@ -40747,7 +40752,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [(_vm.selectedState) ? _c('state-counties') : _c('h1', [_vm._v("Please Select a State")])], 1)])])])])])])])
+  }, [(_vm.selectedState) ? _c('state-counties', {
+    ref: "stateCounties"
+  }) : _c('h1', [_vm._v("Please Select a State")])], 1)])])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "row"
@@ -41415,6 +41422,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 Vue.component('add-county', __webpack_require__(52));
 Vue.component('add-contact', __webpack_require__(55));
@@ -41422,7 +41430,6 @@ Vue.component('add-contact', __webpack_require__(55));
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            selectedCounty: '',
             selectedContact: {}
         };
     },
@@ -41433,57 +41440,23 @@ Vue.component('add-contact', __webpack_require__(55));
         },
         currentCounty: function currentCounty() {
             return this.$store.getters.getSelectedCounty;
+        },
+        currentCountyID: function currentCountyID() {
+            return this.$store.getters.getSelectedCounty != null ? this.$store.getters.getSelectedCounty.id : '';
         }
     },
     methods: {
         countyClicked: function countyClicked(id) {
-            this.$store.commit('setSelectedCounty', id);
-            this.selectedCounty = this.selectedCounty === id ? '' : id;
+            if (id != this.currentCountyID) {
+                this.$store.commit('setSelectedCounty', id);
+            } else {
+                this.$store.commit('setSelectedCounty', '');
+            }
+            //                this.selectedCounty = this.selectedCounty === id ? '' : id;
         },
         currentContact: function currentContact(contact) {
             this.selectedContact = contact;
-        },
-        newContact: function newContact() {
-            this.selectedCounty = this.currentCounty.id;
-            setTimeout(function () {
-                $('input[name=name]').focus();
-            }, 500);
-        },
-        showContactModal: function showContactModal() {
-            $('#createContact').modal('toggle');
-            setTimeout(function () {
-                $('input[name=name]').focus();
-            }, 500);
-            //                $('#' + this.currentCounty.id).click(() => {
-            //                    $('#addButton' + this.currentCounty.id).click(() => {
-            //                        $('input[name=name]').focus();
-            //                    });
-            //                });
-
-
-            //                setTimeout(() => {
-            //                    $('#' + this.currentCounty.id).click();
-            //                    setTimeout(() => {
-            //                        $('#addButton' + this.currentCounty.id).click();
-            //                    }, 1000)
-            //                }, 1000);
-
-            //                this.selectedCounty = this.currentCounty.id
-            //                $('#' + this.currentCounty.id).click();
-            //                setTimeout(() => {
-            //                        console.log(this.currentCounty);
-            //                        $('#addButton' + this.currentCounty.id).click();
-            //                    }, 500)
         }
-        //                this.selectedCounty = this.currentCounty.id
-        //                setTimeout((that) => {
-        //                    console.log(that.currentCounty);
-        //                    $('#addButton' + that.currentCounty.id).click();
-        //                }, 500, this)
-        //
-
-        //            }
-
     }
 });
 
@@ -41565,24 +41538,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             createdCounty: '',
-            showAddNote: false,
             bkClass: 'bk',
             blurClass: 'blur'
         };
     },
 
+    computed: {
+        active: function active() {
+            return this.$store.state.modals.addCounty;
+        }
+    },
     methods: {
         newCounty: function newCounty() {
-            var _this = this;
-
-            this.$store.dispatch('createCounty', this.createdCounty).then(function () {
-                $('#' + _this.$store.getters.getSelectedCounty.id).click();
-                _this.$emit('countyAdded');
-            });
+            this.$store.dispatch('createCounty', this.createdCounty);
             this.createdCounty = '';
         },
-        toggleShowAddNote: function toggleShowAddNote() {
-            this.showAddNote = !this.showAddNote;
+        toggleAddCounty: function toggleAddCounty() {
+            this.$store.commit('toggleAddCounty');
         },
         inputFocus: function inputFocus() {
             $("#newNote").on('shown.bs.modal', function () {
@@ -41601,7 +41573,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', [_c('button', {
     staticClass: "btn btn-link",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": _vm.toggleAddCounty
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-plus"
@@ -41609,10 +41581,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "name": "modal"
     }
-  }, [(_vm.showAddNote) ? _c('div', {
+  }, [(_vm.active) ? _c('div', {
     staticClass: "modal-mask",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": _vm.toggleAddCounty
     }
   }, [_c('div', {
     staticClass: "modal-container",
@@ -41658,14 +41630,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('button', {
     staticClass: "btn btn-default",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": _vm.toggleAddCounty
     }
   }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary",
     on: {
       "click": function($event) {
         _vm.newCounty();
-        _vm.toggleShowAddNote()
+        _vm.toggleAddCounty()
       }
     }
   }, [_vm._v("\n                        Save\n                    ")])])])]) : _vm._e()])], 1)
@@ -41806,6 +41778,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
+    computed: {
+        active: function active() {
+            return this.$store.state.modals.addContact;
+        }
+    },
     watch: {
         countyId: function countyId() {
             this.contact.county_id = this.countyId;
@@ -41830,8 +41807,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 county_id: this.countyId
             };
         },
-        toggleShowAddNote: function toggleShowAddNote() {
-            this.showAddNote = !this.showAddNote;
+        toggleAddCounty: function toggleAddCounty() {
+            this.$store.commit('toggleAddContact');
         },
         inputFocus: function inputFocus() {
             $("#newNote").on('shown.bs.modal', function () {
@@ -41849,7 +41826,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', [_c('button', {
     staticClass: "btn btn-link",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": _vm.toggleAddCounty
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-plus"
@@ -41857,10 +41834,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "name": "modal"
     }
-  }, [(_vm.showAddNote) ? _c('div', {
+  }, [(_vm.active) ? _c('div', {
     staticClass: "modal-mask",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": _vm.toggleAddCounty
     }
   }, [_c('div', {
     staticClass: "modal-container",
@@ -42098,14 +42075,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('button', {
     staticClass: "btn btn-default",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": _vm.toggleAddCounty
     }
   }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary",
     on: {
       "click": function($event) {
         _vm.saveContact();
-        _vm.toggleShowAddNote()
+        _vm.toggleAddCounty()
       }
     }
   }, [_vm._v("\n                        Save\n                    ")])])])]) : _vm._e()])], 1)
@@ -42135,7 +42112,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "notes-container"
     }
-  }, [_vm._l((_vm.currentState.counties), function(county) {
+  }, _vm._l((_vm.currentState.counties), function(county) {
     return _c('div', [_c('button', {
       staticClass: "btn btn-primary block mb075 w100p",
       attrs: {
@@ -42149,12 +42126,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v(_vm._s(county.name))]), _vm._v(" "), (county.contacts) ? _c('div', {
       staticClass: "contacts-container",
       class: {
-        collapse: county.id !== _vm.selectedCounty
+        collapse: county.id !== _vm.currentCountyID
       }
     }, [_c('add-contact', {
       staticClass: "text-center",
       attrs: {
-        "county-id": _vm.selectedCounty
+        "county-id": _vm.currentCountyID
       }
     }), _vm._v(" "), _c('hr'), _vm._v(" "), _vm._l((county.contacts), function(contact) {
       return _c('div', [_c('div', {
@@ -42178,45 +42155,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         staticStyle: {
           "flex": "3"
         }
-      }, [_vm._v(_vm._s(contact.contact_name))]), _vm._v(" "), _c('a', {
-        staticStyle: {
-          "margin-right": "auto",
-          "padding-right": "8px"
-        },
+      }, [_vm._v(_vm._s(contact.contact_name))]), _vm._v(" "), _c('edit-contact', {
         attrs: {
-          "data-toggle": "modal",
-          "data-target": '#edit' + contact.id
-        },
-        on: {
-          "click": function($event) {
-            _vm.currentContact(contact)
-          }
+          "contact": contact
         }
-      }, [_c('span', {
-        staticClass: "glyphicon glyphicon-pencil"
-      })]), _vm._v(" "), _c('a', {
-        staticStyle: {
-          "margin-right": "auto"
-        },
+      }), _vm._v(" "), _c('delete-contact', {
         attrs: {
-          "data-toggle": "modal",
-          "data-target": '#delete' + contact.id
-        },
-        on: {
-          "click": function($event) {
-            _vm.currentContact(contact)
-          }
+          "contact": contact
         }
-      }, [_c('span', {
-        staticClass: "glyphicon glyphicon-remove"
-      })])]), _vm._v(" "), (contact.phone) ? _c('p', [_vm._v("Phone Number: " + _vm._s(contact.phone))]) : _vm._e(), _vm._v(" "), (contact.address1) ? _c('p', [_vm._v("Address: " + _vm._s(contact.address1))]) : _vm._e(), _vm._v(" "), (contact.city) ? _c('p', [_vm._v("City: " + _vm._s(contact.city))]) : _vm._e(), _vm._v(" "), (contact.zip) ? _c('p', [_vm._v("ZipCode: " + _vm._s(contact.zip))]) : _vm._e(), _vm._v(" "), (contact.fax) ? _c('p', [_vm._v("Fax: " + _vm._s(contact.fax))]) : _vm._e(), _vm._v(" "), (contact.email) ? _c('p', [_vm._v("Email: " + _vm._s(contact.email))]) : _vm._e(), _vm._v(" "), (contact.website) ? _c('p', [_vm._v("website: "), _c('a', {
+      })], 1), _vm._v(" "), (contact.phone) ? _c('p', [_vm._v("Phone Number: " + _vm._s(contact.phone))]) : _vm._e(), _vm._v(" "), (contact.address1) ? _c('p', [_vm._v("Address: " + _vm._s(contact.address1))]) : _vm._e(), _vm._v(" "), (contact.city) ? _c('p', [_vm._v("City: " + _vm._s(contact.city))]) : _vm._e(), _vm._v(" "), (contact.zip) ? _c('p', [_vm._v("ZipCode: " + _vm._s(contact.zip))]) : _vm._e(), _vm._v(" "), (contact.fax) ? _c('p', [_vm._v("Fax: " + _vm._s(contact.fax))]) : _vm._e(), _vm._v(" "), (contact.email) ? _c('p', [_vm._v("Email: " + _vm._s(contact.email))]) : _vm._e(), _vm._v(" "), (contact.website) ? _c('p', [_vm._v("website: "), _c('a', {
         attrs: {
           "href": contact.website
         }
       }, [_vm._v(_vm._s(contact.city))])]) : _vm._e(), _vm._v(" "), (contact.notes) ? _c('p', {}, [_vm._v("Notes: " + _vm._s(contact.notes))]) : _vm._e()])])])])])
     })], 2) : _c('div', {
       class: {
-        collapse: county.id !== _vm.selectedCounty
+        collapse: county.id !== _vm.currentCountyID
       }
     }, [_c('a', {
       staticStyle: {
@@ -42232,15 +42186,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "click": _vm.newContact
       }
     }, [_vm._v("Add Contact")]), _vm._v(" "), _c('h3', [_vm._v("No Contacts For This County")])])])
-  }), _vm._v(" "), _c('delete-contact', {
-    attrs: {
-      "contact": _vm.selectedContact
-    }
-  }), _vm._v(" "), _c('edit-contact', {
-    attrs: {
-      "contact": _vm.selectedContact
-    }
-  })], 2)])
+  }))])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
     staticClass: "state-notes-header"
@@ -42446,18 +42392,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['note'],
     data: function data() {
         return {
-            showAddNote: false,
             bkClass: 'bk',
             blurClass: 'blur'
         };
     },
 
+    computed: {
+        active: function active() {
+            return this.$store.state.modals.editNote;
+        }
+    },
     methods: {
         editNote: function editNote() {
             this.$store.dispatch('updateNote', this.note);
         },
-        toggleShowAddNote: function toggleShowAddNote() {
-            this.showAddNote = !this.showAddNote;
+        toggleEditNote: function toggleEditNote() {
+            this.$store.commit('toggleEditNote');
         },
         inputFocus: function inputFocus() {
             $("#newNote").on('shown.bs.modal', function () {
@@ -42476,7 +42426,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', [_c('button', {
     staticClass: "btn btn-link",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": _vm.toggleEditNote
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-pencil"
@@ -42484,10 +42434,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "name": "modal"
     }
-  }, [(_vm.showAddNote) ? _c('div', {
+  }, [(_vm.active) ? _c('div', {
     staticClass: "modal-mask",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": _vm.toggleEditNote
     }
   }, [_c('div', {
     staticClass: "modal-container",
@@ -42533,14 +42483,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('button', {
     staticClass: "btn btn-default",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": _vm.toggleEditNote
     }
   }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary",
     on: {
       "click": function($event) {
         _vm.editNote();
-        _vm.toggleShowAddNote()
+        _vm.toggleEditNote()
       }
     }
   }, [_vm._v("\n                        Save\n                    ")])])])]) : _vm._e()])], 1)
@@ -42633,18 +42583,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['note'],
     data: function data() {
         return {
-            showAddNote: false,
             bkClass: 'bk',
             blurClass: 'blur'
         };
     },
 
+    computed: {
+        active: function active() {
+            return this.$store.state.modals.deleteNote;
+        }
+    },
     methods: {
         deleteNote: function deleteNote() {
             this.$store.dispatch('deleteNote', this.note);
         },
-        toggleShowAddNote: function toggleShowAddNote() {
-            this.showAddNote = !this.showAddNote;
+        toggleDeleteNote: function toggleDeleteNote() {
+            this.$store.commit('toggleDeleteNote');
         },
         inputFocus: function inputFocus() {
             $("#newNote").on('shown.bs.modal', function () {
@@ -42663,7 +42617,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', [_c('button', {
     staticClass: "btn btn-link",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": _vm.toggleDeleteNote
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-trash"
@@ -42671,10 +42625,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "name": "modal"
     }
-  }, [(_vm.showAddNote) ? _c('div', {
+  }, [(_vm.active) ? _c('div', {
     staticClass: "modal-mask",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": _vm.toggleDeleteNote
     }
   }, [_c('div', {
     staticClass: "modal-container",
@@ -42700,14 +42654,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('button', {
     staticClass: "btn btn-default",
     on: {
-      "click": _vm.toggleShowAddNote
+      "click": _vm.toggleDeleteNote
     }
   }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-danger",
     on: {
       "click": function($event) {
         _vm.deleteNote();
-        _vm.toggleShowAddNote()
+        _vm.toggleDeleteNote()
       }
     }
   }, [_vm._v("\n                        Delete\n                    ")])])])]) : _vm._e()])], 1)
@@ -42820,19 +42774,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             createdNote: '',
-            showAddNote: false,
             bkClass: 'bk',
             blurClass: 'blur'
         };
     },
 
+    computed: {
+        active: function active() {
+            return this.$store.state.modals.addNote;
+        }
+    },
     methods: {
         addNote: function addNote() {
             this.$store.dispatch('createNote', this.createdNote);
             this.createdNote = '';
         },
         toggleShowAddNote: function toggleShowAddNote() {
-            this.showAddNote = !this.showAddNote;
+            this.$store.commit('toggleAddNote');
         },
         inputFocus: function inputFocus() {
             $("#newNote").on('shown.bs.modal', function () {
@@ -42859,7 +42817,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "name": "modal"
     }
-  }, [(_vm.showAddNote) ? _c('div', {
+  }, [(_vm.active) ? _c('div', {
     staticClass: "modal-mask",
     on: {
       "click": _vm.toggleShowAddNote
@@ -42994,14 +42952,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['contact'],
+    data: function data() {
+        return {
+            showAddNote: false,
+            bkClass: 'bk',
+            blurClass: 'blur'
+        };
+    },
+
+    computed: {
+        active: function active() {
+            return this.$store.state.modals.deleteContact;
+        }
+    },
     methods: {
         deleteContact: function deleteContact() {
             this.$store.dispatch('deleteContact', this.contact);
+        },
+        toggleDeleteContact: function toggleDeleteContact() {
+            this.$store.commit('toggleDeleteContact');
+        },
+        inputFocus: function inputFocus() {
+            $("#newNote").on('shown.bs.modal', function () {
+                $(this).find('textarea[name=note]').focus();
+            });
         }
     }
+
 });
 
 /***/ }),
@@ -43009,61 +42998,58 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal fade",
-    attrs: {
-      "id": 'delete' + _vm.contact.id,
-      "tabindex": "-1",
-      "role": "dialog",
-      "aria-labelledby": ""
-    }
-  }, [_c('div', {
-    staticClass: "modal-dialog",
-    attrs: {
-      "role": "document"
-    }
-  }, [_c('div', {
-    staticClass: "modal-content"
-  }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer"
-  }, [_c('button', {
-    staticClass: "btn btn-default",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    }
-  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-danger",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    },
+  return _c('div', [_c('button', {
+    staticClass: "btn btn-link",
     on: {
-      "click": _vm.deleteContact
-    }
-  }, [_vm._v("Yes I am")])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal",
-      "aria-label": "Close"
+      "click": _vm.toggleDeleteContact
     }
   }, [_c('span', {
+    staticClass: "glyphicon glyphicon-trash"
+  })]), _vm._v(" "), _c('transition', {
     attrs: {
-      "aria-hidden": "true"
+      "name": "modal"
     }
-  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
-    staticClass: "modal-title"
-  }, [_vm._v("Delete State Note")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  }, [(_vm.active) ? _c('div', {
+    staticClass: "modal-mask",
+    on: {
+      "click": _vm.toggleDeleteContact
+    }
+  }, [_c('div', {
+    staticClass: "modal-container",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+      }
+    }
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('h3', {
+    staticClass: "text-center"
+  }, [_vm._v("Delete Contact")])]), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
-  }, [_c('p', [_vm._v("Are you sure you want to delete this contact?")])])
-}]}
+  }, [_c('h5', {
+    staticClass: "text-center"
+  }, [_vm._v("Are you sure you want to delete this contact ?")])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer",
+    staticStyle: {
+      "display": "flex",
+      "justify-content": "space-between"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    on: {
+      "click": _vm.toggleDeleteContact
+    }
+  }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-danger",
+    on: {
+      "click": function($event) {
+        _vm.deleteContact();
+        _vm.toggleDeleteContact()
+      }
+    }
+  }, [_vm._v("\n                        Delete\n                    ")])])])]) : _vm._e()])], 1)
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -43168,12 +43154,52 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['contact'],
+    data: function data() {
+        return {
+            bkClass: 'bk',
+            blurClass: 'blur'
+        };
+    },
+
+    computed: {
+        active: function active() {
+            return this.$store.state.modals.editContact;
+        }
+    },
     methods: {
         editContact: function editContact() {
             this.$store.dispatch('updateContact', this.contact);
+            this.contact = {
+                contact_name: '',
+                phone: '',
+                ext: '',
+                address1: '',
+                address2: '',
+                city: '',
+                zip: '',
+                fax: '',
+                email: '',
+                website: '',
+                fee: '',
+                notes: ''
+            };
+        },
+        toggleEditContact: function toggleEditContact() {
+            this.$store.commit('toggleEditContact');
+        },
+        inputFocus: function inputFocus() {
+            $("#newNote").on('shown.bs.modal', function () {
+                $(this).find('textarea[name=note]').focus();
+            });
         }
     }
 });
@@ -43183,28 +43209,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal fade",
+  return _c('div', [_c('button', {
+    staticClass: "btn btn-link",
+    on: {
+      "click": _vm.toggleEditContact
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-pencil"
+  })]), _vm._v(" "), _c('transition', {
     attrs: {
-      "id": 'edit' + _vm.contact.id,
-      "tabindex": "-1",
-      "role": "dialog",
-      "aria-labelledby": "myModalLabel"
+      "name": "modal"
+    }
+  }, [(_vm.active) ? _c('div', {
+    staticClass: "modal-mask",
+    on: {
+      "click": _vm.toggleEditContact
     }
   }, [_c('div', {
-    staticClass: "modal-dialog",
-    attrs: {
-      "role": "document"
+    staticClass: "modal-container",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+      }
     }
   }, [_c('div', {
-    staticClass: "modal-content"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "modal-body "
-  }, [_c('label', {
-    attrs: {
-      "for": "name"
-    }
-  }, [_vm._v("Name")]), _vm._v(" "), _c('input', {
+    staticClass: "modal-header"
+  }, [_c('h3', {
+    staticClass: "text-center"
+  }, [_vm._v("New County")])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [_c('label', [_vm._v("Name")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -43213,7 +43247,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "name",
+      "name": "name",
       "type": "text"
     },
     domProps: {
@@ -43225,11 +43259,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.contact_name = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "phone"
-    }
-  }, [_vm._v("Phone")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Phone")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -43238,7 +43268,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "phone",
+      "name": "phone",
       "type": "text"
     },
     domProps: {
@@ -43250,11 +43280,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.phone = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "address1"
-    }
-  }, [_vm._v("Address")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Address")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -43263,7 +43289,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "address1",
+      "name": "address1",
       "type": "text"
     },
     domProps: {
@@ -43275,11 +43301,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.address1 = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "city"
-    }
-  }, [_vm._v("City")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("City")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -43288,7 +43310,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "city",
+      "name": "city",
       "type": "text"
     },
     domProps: {
@@ -43300,11 +43322,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.city = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "zip"
-    }
-  }, [_vm._v("Zipcode")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Zipcode")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -43313,7 +43331,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "zip",
+      "name": "zip",
       "type": "text"
     },
     domProps: {
@@ -43325,11 +43343,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.zip = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "fax"
-    }
-  }, [_vm._v("Fax")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Fax")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -43338,7 +43352,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "fax",
+      "name": "fax",
       "type": "text"
     },
     domProps: {
@@ -43350,11 +43364,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.fax = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "email"
-    }
-  }, [_vm._v("Email")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Email")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -43363,7 +43373,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "email",
+      "name": "email",
       "type": "text"
     },
     domProps: {
@@ -43375,11 +43385,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.email = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "website"
-    }
-  }, [_vm._v("Website")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Website")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -43388,7 +43394,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "website",
+      "name": "website",
       "type": "text"
     },
     domProps: {
@@ -43400,11 +43406,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.website = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "fee"
-    }
-  }, [_vm._v("Fee")]), _vm._v(" "), _c('input', {
+  }), _vm._v(" "), _c('label', [_vm._v("Fee")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -43413,7 +43415,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "fee",
+      "name": "fee",
       "type": "text"
     },
     domProps: {
@@ -43425,11 +43427,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contact.fee = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "notes"
-    }
-  }, [_vm._v("Notes")]), _vm._v(" "), _c('textarea', {
+  }), _vm._v(" "), _c('label', [_vm._v("Notes")]), _vm._v(" "), _c('textarea', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -43441,7 +43439,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "min-width": "100%"
     },
     attrs: {
-      "id": "notes",
+      "name": "notes",
       "cols": "30",
       "rows": "4"
     },
@@ -43455,41 +43453,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer"
+    staticClass: "modal-footer",
+    staticStyle: {
+      "display": "flex",
+      "justify-content": "space-between"
+    }
   }, [_c('button', {
     staticClass: "btn btn-default",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    }
-  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    },
     on: {
-      "click": _vm.editContact
+      "click": _vm.toggleEditContact
     }
-  }, [_vm._v("Save changes")])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal",
-      "aria-label": "Close"
+  }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    on: {
+      "click": function($event) {
+        _vm.editContact();
+        _vm.toggleEditContact()
+      }
     }
-  }, [_c('span', {
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
-    staticClass: "modal-title"
-  }, [_vm._v("Edit County Contact")])])
-}]}
+  }, [_vm._v("\n                        Save\n                    ")])])])]) : _vm._e()])], 1)
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -43503,6 +43486,64 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var state = {
+    addNote: false,
+    editNote: false,
+    deleteNote: false,
+    addCounty: false,
+    addContact: false,
+    editContact: false,
+    deleteContact: false
+};
+
+var getters = {};
+
+var actions = {};
+
+var mutations = {
+    toggleAddNote: function toggleAddNote(state) {
+        state.addNote = !state.addNote;
+    },
+    toggleEditNote: function toggleEditNote(state) {
+        state.editNote = !state.editNote;
+    },
+    toggleDeleteNote: function toggleDeleteNote(state) {
+        state.deleteNote = !state.deleteNote;
+    },
+    toggleAddCounty: function toggleAddCounty(state) {
+        state.addCounty = !state.addCounty;
+    },
+    toggleAddContact: function toggleAddContact(state) {
+        state.addContact = !state.addContact;
+    },
+    toggleEditContact: function toggleEditContact(state) {
+        state.editContact = !state.editContact;
+    },
+    toggleDeleteContact: function toggleDeleteContact(state) {
+        state.deleteContact = !state.deleteContact;
+    }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    state: state,
+    getters: getters,
+    mutations: mutations,
+    actions: actions
+});
 
 /***/ })
 /******/ ]);

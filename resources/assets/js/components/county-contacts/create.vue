@@ -1,9 +1,9 @@
 <template>
     <div>
-        <button @click="toggleShowAddNote" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span></button>
+        <button @click="toggleAddCounty" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span></button>
 
         <transition name="modal">
-            <div class="modal-mask" @click="toggleShowAddNote" v-if="showAddNote">
+            <div class="modal-mask" @click="toggleAddCounty" v-if="active">
                 <div class="modal-container" @click.stop>
                     <div class="modal-header">
                         <h3 class="text-center">New County</h3>
@@ -41,10 +41,10 @@
 
                     </div>
                     <div class="modal-footer" style="display: flex; justify-content: space-between">
-                        <button class="btn btn-default" @click="toggleShowAddNote">
+                        <button class="btn btn-default" @click="toggleAddCounty">
                             Close
                         </button>
-                        <button class="btn btn-primary" @click="saveContact();toggleShowAddNote()">
+                        <button class="btn btn-primary" @click="saveContact();toggleAddCounty()">
                             Save
                         </button>
                     </div>
@@ -79,6 +79,11 @@
                 },
             }
         },
+        computed:{
+            active(){
+                return this.$store.state.modals.addContact;
+            }
+        },
         watch: {
             countyId() {
                 this.contact.county_id = this.countyId;
@@ -103,8 +108,8 @@
                         county_id: this.countyId
                     };
                 },
-                toggleShowAddNote() {
-                    this.showAddNote = !this.showAddNote;
+                toggleAddCounty() {
+                    this.$store.commit('toggleAddContact');
                 },
                 inputFocus() {
                     $("#newNote").on('shown.bs.modal', function () {

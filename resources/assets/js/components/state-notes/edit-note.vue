@@ -2,10 +2,10 @@
 
     <div>
 
-        <button @click="toggleShowAddNote" class="btn btn-link"><span class="glyphicon glyphicon-pencil"></span></button>
+        <button @click="toggleEditNote" class="btn btn-link"><span class="glyphicon glyphicon-pencil"></span></button>
 
         <transition name="modal">
-            <div class="modal-mask" @click="toggleShowAddNote" v-if="showAddNote">
+            <div class="modal-mask" @click="toggleEditNote" v-if="active">
                 <div class="modal-container" @click.stop>
                     <div class="modal-header">
                         <h3 class="text-center">Edit Note</h3>
@@ -17,10 +17,10 @@
                         </label>
                     </div>
                     <div class="modal-footer" style="display: flex; justify-content: space-between">
-                        <button class="btn btn-default" @click="toggleShowAddNote">
+                        <button class="btn btn-default" @click="toggleEditNote">
                             Close
                         </button>
-                        <button class="btn btn-primary" @click="editNote();toggleShowAddNote()">
+                        <button class="btn btn-primary" @click="editNote();toggleEditNote()">
                             Save
                         </button>
                     </div>
@@ -52,17 +52,21 @@
         props:['note'],
         data(){
             return {
-                showAddNote: false,
                 bkClass: 'bk',
                 blurClass: 'blur'
+            }
+        },
+        computed:{
+            active(){
+                return this.$store.state.modals.editNote;
             }
         },
         methods:{
             editNote(){
                 this.$store.dispatch('updateNote', this.note)
             },
-            toggleShowAddNote(){
-                this.showAddNote = !this.showAddNote;
+            toggleEditNote(){
+                this.$store.commit('toggleEditNote');
             },
             inputFocus(){
                 $("#newNote").on('shown.bs.modal', function(){

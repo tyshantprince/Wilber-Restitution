@@ -3,7 +3,7 @@
             <button @click="toggleShowAddNote" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span></button>
 
         <transition name="modal">
-            <div class="modal-mask" @click="toggleShowAddNote" v-if="showAddNote">
+            <div class="modal-mask" @click="toggleShowAddNote" v-if="active">
                 <div class="modal-container" @click.stop>
                     <div class="modal-header">
                         <h3 class="text-center">New Note</h3>
@@ -52,9 +52,13 @@
         data(){
             return {
                 createdNote: '',
-                showAddNote: false,
                 bkClass: 'bk',
                 blurClass: 'blur'
+            }
+        },
+        computed:{
+            active(){
+                return this.$store.state.modals.addNote;
             }
         },
         methods:{
@@ -63,14 +67,14 @@
                 this.createdNote = '';
             },
             toggleShowAddNote(){
-              this.showAddNote = !this.showAddNote;
+              this.$store.commit('toggleAddNote');
             },
             inputFocus(){
                 $("#newNote").on('shown.bs.modal', function(){
                     $(this).find('textarea[name=note]').focus();
                 });
             }
-        }
+        },
 
     }
 </script>

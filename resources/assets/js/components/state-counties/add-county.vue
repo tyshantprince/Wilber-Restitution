@@ -1,9 +1,9 @@
 <template>
     <div>
-        <button @click="toggleShowAddNote" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span></button>
+        <button @click="toggleAddCounty" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span></button>
 
         <transition name="modal">
-            <div class="modal-mask" @click="toggleShowAddNote" v-if="showAddNote">
+            <div class="modal-mask" @click="toggleAddCounty" v-if="active">
                 <div class="modal-container" @click.stop>
                     <div class="modal-header">
                         <h3 class="text-center">New County</h3>
@@ -12,10 +12,10 @@
                             <input class="center-block" type="text" name="county" v-model="createdCounty" placeholder="Enter County Name">
                     </div>
                     <div class="modal-footer" style="display: flex; justify-content: space-between">
-                        <button class="btn btn-default" @click="toggleShowAddNote">
+                        <button class="btn btn-default" @click="toggleAddCounty">
                             Close
                         </button>
-                        <button class="btn btn-primary" @click="newCounty();toggleShowAddNote()">
+                        <button class="btn btn-primary" @click="newCounty();toggleAddCounty()">
                             Save
                         </button>
                     </div>
@@ -30,21 +30,22 @@
         data(){
             return {
                 createdCounty: '',
-                showAddNote: false,
                 bkClass: 'bk',
                 blurClass: 'blur'
             }
         },
+        computed:{
+            active(){
+                return this.$store.state.modals.addCounty;
+            }
+        },
         methods:{
             newCounty(){
-                this.$store.dispatch('createCounty', this.createdCounty).then(() => {
-                    $('#' + this.$store.getters.getSelectedCounty.id).click();
-                    this.$emit('countyAdded')
-                });
+                this.$store.dispatch('createCounty', this.createdCounty);
                 this.createdCounty = ''
             },
-            toggleShowAddNote(){
-                this.showAddNote = !this.showAddNote;
+            toggleAddCounty(){
+                this.$store.commit('toggleAddCounty');
             },
             inputFocus(){
                 $("#newNote").on('shown.bs.modal', function(){

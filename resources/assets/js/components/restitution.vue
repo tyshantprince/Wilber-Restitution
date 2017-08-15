@@ -28,7 +28,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <state-counties v-if="selectedState"></state-counties>
+                                <state-counties ref="stateCounties" v-if="selectedState"></state-counties>
                                 <h1 v-else>Please Select a State</h1>
                             </div>
                         </div>
@@ -50,9 +50,6 @@
             return{
                 selectedState: '',
                 apiKey : 'AIzaSyAAK-Blg6TN6PMjZdPkahbMs-CKRx-aXbY',
-                cubsCity : '',
-                cubsState : '',
-                cubsCounty: '',
                 cubsNumber: ''
             }
         },
@@ -63,61 +60,56 @@
             },
         },
         methods: {
-//            cubsNumberEntered(){
-//                this.callToCubs()
-//                    .then(() => this.cubsCountyLookup())
-//                    .then(() => this.findStateFromAbbr(this.cubsState));
-//            },
-//
-//            callToCubs(){
-//                return new Promise((resolve, reject) => {
-//                    axios.get('https://cubsapi.wilbergroup.com/v1/get_claimant_info?wilber_file_number=' + this.cubsNumber)
-//                        .then(({data:{data}}) => {
-//                            this.cubsCity = (data.c1.city);
-//                            this.cubsState = (data.c1.state);
-//                            resolve();
-//                        })
-//                })
-//            },
-//            cubsCountyLookup() {
-//                return new Promise((resolve, reject) => {
-//                    axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.cubsCity + ',' + this.cubsState + '&key=' + this.apiKey)
-//                        .then((response) => {
-//                            this.cubsCounty = response.data.results[0].address_components.filter((info) => {
-//                                return info.types[0] === 'administrative_area_level_2';
-//                            })[0].long_name;
-//                            resolve();
-//                        })
-//                        .catch((error) => {
-//                            console.log(error);
-//                        });
-//                })
-//
-//            },
-//            findStateFromAbbr(abbr){
-//                let stateIWant = this.data.filter((state) => {
-//                    return state.abbr == abbr
-//                })[0];
-//                this.selectedState = stateIWant.id;
-//            },
-//            findCountyOrFail(county)
-//            {
-//               let countyObj = this.$store.getters.getCurrentState.counties.filter((c) => {
-//                    return c.name === county;
-//                })[0];
-//                console.log(countyObj);
-//                if(countyObj == null){
-//                    this.cubsCounty = county;
-//                    $('#newCounty').modal('toggle');
-//
-//                }
-//                else
-//                {
-//                    this.$store.commit('setSelectedCounty', countyObj.id);
-//                    this.cubsCounty = countyObj;
-//                    $('#' + this.cubsCounty.id).click();
-//                }
-//           }
+            cubsNumberEntered(){
+                this.callToCubs()
+                    .then((location) => this.cubsCountyLookup(location))
+                    .then((county) => this.findOrCreateCounty(county));
+            },
+
+            callToCubs(){
+                return new Promise((resolve, reject) => {
+                    axios.get('https://cubsapi.wilbergroup.com/v1/get_claimant_info?wilber_file_number=' + this.cubsNumber)
+                        .then(({data:{data}}) => {
+                            resolve([data.c1.city, this.setStateFromAbbr(data.c1.state)]);
+                        })
+                })
+            },
+            cubsCountyLookup(location) {
+                return new Promise((resolve, reject) => {
+                    axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + location[0] + ',' + location[1] + '&key=' + this.apiKey)
+                        .then((response) => {
+                            var county = response.data.results[0].address_components.filter((info) => {
+                                return info.types[0] === 'administrative_area_level_2';
+                            })[0].long_name;
+                            resolve(county);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                })
+
+            },
+            setStateFromAbbr(abbr){
+                let stateIWant = this.data.filter((state) => {
+                    return state.abbr == abbr
+                })[0];
+                this.selectedState = stateIWant.id;
+                return stateIWant.name;
+                // tell the store to set the state to whatever I find
+                // return the state I find
+
+                // The store does not have access to state list
+            },
+            findOrCreateCounty(county){
+                let countyObj = _.find(this.$store.getters.getCurrentState.counties, {name: county})
+                if(countyObj != null){
+                    this.$store.commit('setSelectedCounty', countyObj.id)
+                }
+                else
+                {
+                    this.$store.dispatch('createCounty', county)
+                }
+            }
         },
     }
 </script>
