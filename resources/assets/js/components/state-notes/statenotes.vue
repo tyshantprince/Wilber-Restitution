@@ -8,7 +8,6 @@
         </div>
 
         <div id="notes-container">
-
             <div v-for="note in currentState.notes" class="panel panel-default">
                 <div class="panel-body" style="display: flex; align-items: baseline">
                     <p style="flex: 4">{{note.body}}</p>
@@ -16,10 +15,6 @@
                     <delete-note :note="note" ></delete-note>
                 </div>
             </div>
-
-
-
-
         </div>
     </div>
 
@@ -27,27 +22,10 @@
 
 <script>
     export default {
-        data() {
-            return{
-                currentNote: {}
-            }
-        },
         computed:{
             currentState(){
                 return this.$store.getters.getCurrentState;
             }
-        },
-        methods: {
-            chooseNote(note)
-            {
-                this.currentNote = note;
-                this.addFocus(note)
-            },
-            addFocus(note){
-                setTimeout((note) => {
-                    $('#' + note.id).focus();
-                }, 500, note)
-            },
         },
     }
 </script>

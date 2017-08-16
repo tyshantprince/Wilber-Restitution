@@ -6,7 +6,7 @@
             <div class="modal-mask" @click="toggleAddCounty" v-if="active">
                 <div class="modal-container" @click.stop>
                     <div class="modal-header">
-                        <h3 class="text-center">New County</h3>
+                        <h3 class="text-center">New Contact</h3>
                     </div>
                     <div class="modal-body">
                         <label>Name</label>
@@ -55,13 +55,14 @@
 </template>
 
 <script>
+    import FormReset from '../../mixins/form-reset';
+
     export default {
         props: ['countyId'],
+        mixins: [FormReset],
         data() {
             return {
                 showAddNote: false,
-                bkClass: 'bk',
-                blurClass: 'blur',
                 contact: {
                     contact_name: '',
                     phone: '',
@@ -92,21 +93,8 @@
         methods: {
                 saveContact() {
                     this.$store.dispatch('createContact', this.contact);
-                    this.contact = {
-                        contact_name: '',
-                        phone: '',
-                        ext: '',
-                        address1: '',
-                        address2: '',
-                        city: '',
-                        zip: '',
-                        fax: '',
-                        email: '',
-                        website: '',
-                        fee: '',
-                        notes: '',
-                        county_id: this.countyId
-                    };
+                    this.formReset(this.contact);
+                    this.contact.county_id = this.countyId
                 },
                 toggleAddCounty() {
                     this.$store.commit('toggleAddContact');

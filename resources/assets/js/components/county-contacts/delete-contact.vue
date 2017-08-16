@@ -33,8 +33,6 @@
         data(){
             return {
                 showAddNote: false,
-                bkClass: 'bk',
-                blurClass: 'blur'
             }
         },
         computed:{

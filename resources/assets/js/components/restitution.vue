@@ -35,9 +35,7 @@
 <script>
 
     export default {
-        props:[
-            'stateList'
-        ],
+        props:['stateList'],
         data() {
             return{
                 selectedState: '',

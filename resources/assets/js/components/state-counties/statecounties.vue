@@ -1,13 +1,4 @@
 <style scoped>
-    .contacts {
-        overflow-y: scroll;
-    }
-
-    .modal-body {
-        max-height: 75vh;
-        overflow-y: scroll;
-    }
-
     .collapse {
         height: 0;
     }
@@ -28,9 +19,6 @@
                 <div v-if="county.contacts" class="contacts-container" :class="{collapse: county.id !== currentCountyID}">
                     <add-contact class="text-center" :county-id="currentCountyID"></add-contact>
                     <hr>
-                    <!--<a @click="countyClicked(county)" class="btn btn-primary mb075 w100p" data-toggle="modal" :data-target="'#create' + county.id">Add Contact</a>-->
-                    <!--<a @click="newContact" :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>-->
-
                     <div v-for="contact in county.contacts">
                             <div class="row">
                                 <div class="col-sm-12">
@@ -38,8 +26,6 @@
                                         <div class="panel panel-default text-center">
                                             <div class="panel-heading flex" style="align-items: baseline">
                                                 <h5 class="panel-heading" style="flex: 3;">{{contact.contact_name}}</h5>
-                                                <!--<a @click="currentContact(contact)" data-toggle="modal" :data-target="'#edit' + contact.id" style="margin-right: auto; padding-right: 8px"><span class="glyphicon glyphicon-pencil"></span></a>-->
-                                                <!--<a @click="currentContact(contact)" data-toggle="modal" :data-target="'#delete' + contact.id"  style="margin-right: auto"><span class="glyphicon glyphicon-remove"></span></a>-->
                                                 <edit-contact :contact="contact"></edit-contact>
                                                 <delete-contact :contact="contact"></delete-contact>
                                             </div>
@@ -94,7 +80,6 @@
                 else {
                     this.$store.commit('setSelectedCountyId', '');
                 }
-//                this.selectedCounty = this.selectedCounty === id ? '' : id;
             },
             currentContact(contact){
                 this.selectedContact = contact;

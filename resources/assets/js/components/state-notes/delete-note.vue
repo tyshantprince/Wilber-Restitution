@@ -1,9 +1,6 @@
 <template>
-
     <div>
-
         <button @click="toggleDeleteNote" class="btn btn-link"><span class="glyphicon glyphicon-trash"></span></button>
-
         <transition name="modal">
             <div class="modal-mask" @click="toggleDeleteNote" v-if="active">
                 <div class="modal-container" @click.stop>
@@ -30,12 +27,6 @@
 <script>
     export default {
         props:['note'],
-        data(){
-            return {
-                bkClass: 'bk',
-                blurClass: 'blur'
-            }
-        },
         computed:{
             active(){
                 return this.$store.state.modals.deleteNote;
@@ -48,11 +39,6 @@
             toggleDeleteNote(){
                 this.$store.commit('toggleDeleteNote')
             },
-            inputFocus(){
-                $("#newNote").on('shown.bs.modal', function(){
-                    $(this).find('textarea[name=note]').focus();
-                });
-            }
         }
 
     }

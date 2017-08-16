@@ -10965,7 +10965,7 @@ module.exports = Vue$3;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(11);
-module.exports = __webpack_require__(78);
+module.exports = __webpack_require__(76);
 
 
 /***/ }),
@@ -10997,13 +10997,13 @@ window.Vue = __webpack_require__(9);
 Vue.component('restitution', __webpack_require__(40));
 Vue.component('state-notes', __webpack_require__(43));
 Vue.component('state-counties', __webpack_require__(46));
-Vue.component('edit-note', __webpack_require__(63));
-Vue.component('delete-note', __webpack_require__(66));
-Vue.component('add-note', __webpack_require__(69));
-Vue.component('delete-contact', __webpack_require__(72));
-Vue.component('edit-contact', __webpack_require__(75));
-Vue.component('add-county', __webpack_require__(53));
-Vue.component('add-contact', __webpack_require__(56));
+Vue.component('edit-note', __webpack_require__(54));
+Vue.component('delete-note', __webpack_require__(57));
+Vue.component('add-note', __webpack_require__(60));
+Vue.component('delete-contact', __webpack_require__(63));
+Vue.component('edit-contact', __webpack_require__(66));
+Vue.component('add-county', __webpack_require__(69));
+Vue.component('add-contact', __webpack_require__(72));
 
 var app = new Vue({
   store: __WEBPACK_IMPORTED_MODULE_0__store_index__["a" /* default */],
@@ -40566,7 +40566,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/restitution.vue"
+Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/restitution.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] restitution.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40577,9 +40577,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0ceb8268", Component.options)
+    hotAPI.createRecord("data-v-6f489e88", Component.options)
   } else {
-    hotAPI.reload("data-v-0ceb8268", Component.options)
+    hotAPI.reload("data-v-6f489e88", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -40855,7 +40855,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-0ceb8268", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-6f489e88", module.exports)
   }
 }
 
@@ -40876,7 +40876,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/state-notes/statenotes.vue"
+Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/state-notes/statenotes.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] statenotes.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40887,9 +40887,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4cd89c0c", Component.options)
+    hotAPI.createRecord("data-v-22a6abec", Component.options)
   } else {
-    hotAPI.reload("data-v-4cd89c0c", Component.options)
+    hotAPI.reload("data-v-22a6abec", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -40927,33 +40927,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            currentNote: {}
-        };
-    },
-
     computed: {
         currentState: function currentState() {
             return this.$store.getters.getCurrentState;
-        }
-    },
-    methods: {
-        chooseNote: function chooseNote(note) {
-            this.currentNote = note;
-            this.addFocus(note);
-        },
-        addFocus: function addFocus(note) {
-            setTimeout(function (note) {
-                $('#' + note.id).focus();
-            }, 500, note);
         }
     }
 });
@@ -41014,7 +40992,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-4cd89c0c", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-22a6abec", module.exports)
   }
 }
 
@@ -41031,15 +41009,15 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(52),
   /* template */
-  __webpack_require__(59),
+  __webpack_require__(53),
   /* styles */
   injectStyle,
   /* scopeId */
-  "data-v-8d0d2580",
+  "data-v-43b41520",
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/state-counties/statecounties.vue"
+Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/state-counties/statecounties.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] statecounties.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -41050,9 +41028,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-8d0d2580", Component.options)
+    hotAPI.createRecord("data-v-43b41520", Component.options)
   } else {
-    hotAPI.reload("data-v-8d0d2580", Component.options)
+    hotAPI.reload("data-v-43b41520", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -41073,13 +41051,13 @@ var content = __webpack_require__(48);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(50)("4ae4aeb0", content, false);
+var update = __webpack_require__(50)("6f9b1188", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8d0d2580\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./statecounties.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8d0d2580\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./statecounties.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43b41520\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./statecounties.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43b41520\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./statecounties.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -41097,7 +41075,7 @@ exports = module.exports = __webpack_require__(49)(undefined);
 
 
 // module
-exports.push([module.i, "\n.contacts[data-v-8d0d2580] {\n    overflow-y: scroll;\n}\n.modal-body[data-v-8d0d2580] {\n    max-height: 75vh;\n    overflow-y: scroll;\n}\n.collapse[data-v-8d0d2580] {\n    height: 0;\n}\n", ""]);
+exports.push([module.i, "\n.collapse[data-v-43b41520] {\n    height: 0;\n}\n", ""]);
 
 // exports
 
@@ -41500,20 +41478,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -41540,7 +41504,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else {
                 this.$store.commit('setSelectedCountyId', '');
             }
-            //                this.selectedCounty = this.selectedCounty === id ? '' : id;
         },
         currentContact: function currentContact(contact) {
             this.selectedContact = contact;
@@ -41550,630 +41513,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 /* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(54),
-  /* template */
-  __webpack_require__(55),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/state-counties/add-county.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] add-county.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-613505bf", Component.options)
-  } else {
-    hotAPI.reload("data-v-613505bf", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            createdCounty: ''
-        };
-    },
-
-    computed: {
-        active: function active() {
-            return this.$store.state.modals.addCounty;
-        }
-    },
-    methods: {
-        newCounty: function newCounty() {
-            this.$store.dispatch('createCounty', this.createdCounty);
-            this.createdCounty = '';
-        },
-        toggleAddCounty: function toggleAddCounty() {
-            this.$store.commit('toggleAddCounty');
-        },
-        inputFocus: function inputFocus() {
-            $("#newNote").on('shown.bs.modal', function () {
-                $(this).find('textarea[name=note]').focus();
-            });
-        }
-    }
-
-});
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('button', {
-    staticClass: "btn btn-link",
-    on: {
-      "click": _vm.toggleAddCounty
-    }
-  }, [_c('span', {
-    staticClass: "glyphicon glyphicon-plus"
-  })]), _vm._v(" "), _c('transition', {
-    attrs: {
-      "name": "modal"
-    }
-  }, [(_vm.active) ? _c('div', {
-    staticClass: "modal-mask",
-    on: {
-      "click": _vm.toggleAddCounty
-    }
-  }, [_c('div', {
-    staticClass: "modal-container",
-    on: {
-      "click": function($event) {
-        $event.stopPropagation();
-      }
-    }
-  }, [_c('div', {
-    staticClass: "modal-header"
-  }, [_c('h3', {
-    staticClass: "text-center"
-  }, [_vm._v("New County")])]), _vm._v(" "), _c('div', {
-    staticClass: "modal-body"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.createdCounty),
-      expression: "createdCounty"
-    }],
-    staticClass: "center-block",
-    attrs: {
-      "type": "text",
-      "name": "county",
-      "placeholder": "Enter County Name"
-    },
-    domProps: {
-      "value": (_vm.createdCounty)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.createdCounty = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer flex fl-jc-sb"
-  }, [_c('button', {
-    staticClass: "btn btn-default",
-    on: {
-      "click": _vm.toggleAddCounty
-    }
-  }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary",
-    on: {
-      "click": function($event) {
-        _vm.newCounty();
-        _vm.toggleAddCounty()
-      }
-    }
-  }, [_vm._v("\n                        Save\n                    ")])])])]) : _vm._e()])], 1)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-613505bf", module.exports)
-  }
-}
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(57),
-  /* template */
-  __webpack_require__(58),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/county-contacts/create.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] create.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-132980b2", Component.options)
-  } else {
-    hotAPI.reload("data-v-132980b2", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 57 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['countyId'],
-    data: function data() {
-        return {
-            showAddNote: false,
-            bkClass: 'bk',
-            blurClass: 'blur',
-            contact: {
-                contact_name: '',
-                phone: '',
-                ext: '',
-                address1: '',
-                address2: '',
-                city: '',
-                zip: '',
-                fax: '',
-                email: '',
-                website: '',
-                fee: '',
-                notes: '',
-                county_id: ''
-            }
-        };
-    },
-
-    computed: {
-        active: function active() {
-            return this.$store.state.modals.addContact;
-        }
-    },
-    watch: {
-        countyId: function countyId() {
-            this.contact.county_id = this.countyId;
-        }
-    },
-    methods: {
-        saveContact: function saveContact() {
-            this.$store.dispatch('createContact', this.contact);
-            this.contact = {
-                contact_name: '',
-                phone: '',
-                ext: '',
-                address1: '',
-                address2: '',
-                city: '',
-                zip: '',
-                fax: '',
-                email: '',
-                website: '',
-                fee: '',
-                notes: '',
-                county_id: this.countyId
-            };
-        },
-        toggleAddCounty: function toggleAddCounty() {
-            this.$store.commit('toggleAddContact');
-        }
-    }
-});
-
-/***/ }),
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('button', {
-    staticClass: "btn btn-link",
-    on: {
-      "click": _vm.toggleAddCounty
-    }
-  }, [_c('span', {
-    staticClass: "glyphicon glyphicon-plus"
-  })]), _vm._v(" "), _c('transition', {
-    attrs: {
-      "name": "modal"
-    }
-  }, [(_vm.active) ? _c('div', {
-    staticClass: "modal-mask",
-    on: {
-      "click": _vm.toggleAddCounty
-    }
-  }, [_c('div', {
-    staticClass: "modal-container",
-    on: {
-      "click": function($event) {
-        $event.stopPropagation();
-      }
-    }
-  }, [_c('div', {
-    staticClass: "modal-header"
-  }, [_c('h3', {
-    staticClass: "text-center"
-  }, [_vm._v("New County")])]), _vm._v(" "), _c('div', {
-    staticClass: "modal-body"
-  }, [_c('label', [_vm._v("Name")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contact.contact_name),
-      expression: "contact.contact_name"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "name",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.contact.contact_name)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contact.contact_name = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('label', [_vm._v("Phone")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contact.phone),
-      expression: "contact.phone"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "phone",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.contact.phone)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contact.phone = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('label', [_vm._v("Address")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contact.address1),
-      expression: "contact.address1"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "address1",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.contact.address1)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contact.address1 = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('label', [_vm._v("City")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contact.city),
-      expression: "contact.city"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "city",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.contact.city)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contact.city = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('label', [_vm._v("Zipcode")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contact.zip),
-      expression: "contact.zip"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "zip",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.contact.zip)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contact.zip = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('label', [_vm._v("Fax")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contact.fax),
-      expression: "contact.fax"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "fax",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.contact.fax)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contact.fax = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('label', [_vm._v("Email")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contact.email),
-      expression: "contact.email"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "email",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.contact.email)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contact.email = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('label', [_vm._v("Website")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contact.website),
-      expression: "contact.website"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "website",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.contact.website)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contact.website = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('label', [_vm._v("Fee")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contact.fee),
-      expression: "contact.fee"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "fee",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.contact.fee)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contact.fee = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('label', [_vm._v("Notes")]), _vm._v(" "), _c('textarea', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contact.notes),
-      expression: "contact.notes"
-    }],
-    staticClass: "form-control",
-    staticStyle: {
-      "min-width": "100%"
-    },
-    attrs: {
-      "name": "notes",
-      "cols": "30",
-      "rows": "4"
-    },
-    domProps: {
-      "value": (_vm.contact.notes)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contact.notes = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer",
-    staticStyle: {
-      "display": "flex",
-      "justify-content": "space-between"
-    }
-  }, [_c('button', {
-    staticClass: "btn btn-default",
-    on: {
-      "click": _vm.toggleAddCounty
-    }
-  }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary",
-    on: {
-      "click": function($event) {
-        _vm.saveContact();
-        _vm.toggleAddCounty()
-      }
-    }
-  }, [_vm._v("\n                        Save\n                    ")])])])]) : _vm._e()])], 1)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-132980b2", module.exports)
-  }
-}
-
-/***/ }),
-/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -42280,23 +41619,20 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-8d0d2580", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-43b41520", module.exports)
   }
 }
 
 /***/ }),
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(64),
+  __webpack_require__(55),
   /* template */
-  __webpack_require__(65),
+  __webpack_require__(56),
   /* styles */
   null,
   /* scopeId */
@@ -42304,7 +41640,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/state-notes/edit-note.vue"
+Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/state-notes/edit-note.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] edit-note.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42315,9 +41651,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-512c20c9", Component.options)
+    hotAPI.createRecord("data-v-7926d62e", Component.options)
   } else {
-    hotAPI.reload("data-v-512c20c9", Component.options)
+    hotAPI.reload("data-v-7926d62e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -42328,7 +41664,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 64 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42362,36 +41698,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['note'],
-    data: function data() {
-        return {
-            bkClass: 'bk',
-            blurClass: 'blur'
-        };
-    },
-
     computed: {
         active: function active() {
             return this.$store.state.modals.editNote;
@@ -42403,18 +41712,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         toggleEditNote: function toggleEditNote() {
             this.$store.commit('toggleEditNote');
-        },
-        inputFocus: function inputFocus() {
-            $("#newNote").on('shown.bs.modal', function () {
-                $(this).find('textarea[name=note]').focus();
-            });
         }
     }
 
 });
 
 /***/ }),
-/* 65 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -42494,20 +41798,20 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-512c20c9", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-7926d62e", module.exports)
   }
 }
 
 /***/ }),
-/* 66 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(67),
+  __webpack_require__(58),
   /* template */
-  __webpack_require__(68),
+  __webpack_require__(59),
   /* styles */
   null,
   /* scopeId */
@@ -42515,7 +41819,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/state-notes/delete-note.vue"
+Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/state-notes/delete-note.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] delete-note.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42526,9 +41830,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2a18c748", Component.options)
+    hotAPI.createRecord("data-v-0e0cb368", Component.options)
   } else {
-    hotAPI.reload("data-v-2a18c748", Component.options)
+    hotAPI.reload("data-v-0e0cb368", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -42539,7 +41843,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 67 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42570,19 +41874,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['note'],
-    data: function data() {
-        return {
-            bkClass: 'bk',
-            blurClass: 'blur'
-        };
-    },
-
     computed: {
         active: function active() {
             return this.$store.state.modals.deleteNote;
@@ -42594,18 +41888,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         toggleDeleteNote: function toggleDeleteNote() {
             this.$store.commit('toggleDeleteNote');
-        },
-        inputFocus: function inputFocus() {
-            $("#newNote").on('shown.bs.modal', function () {
-                $(this).find('textarea[name=note]').focus();
-            });
         }
     }
 
 });
 
 /***/ }),
-/* 68 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -42665,20 +41954,20 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-2a18c748", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-0e0cb368", module.exports)
   }
 }
 
 /***/ }),
-/* 69 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(70),
+  __webpack_require__(61),
   /* template */
-  __webpack_require__(71),
+  __webpack_require__(62),
   /* styles */
   null,
   /* scopeId */
@@ -42686,7 +41975,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/state-notes/add-note.vue"
+Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/state-notes/add-note.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] add-note.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42697,9 +41986,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-d849924c", Component.options)
+    hotAPI.createRecord("data-v-1babbeba", Component.options)
   } else {
-    hotAPI.reload("data-v-d849924c", Component.options)
+    hotAPI.reload("data-v-1babbeba", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -42710,7 +41999,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 70 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42746,31 +42035,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            createdNote: '',
-            bkClass: 'bk',
-            blurClass: 'blur'
+            createdNote: ''
         };
     },
 
@@ -42786,18 +42055,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         toggleShowAddNote: function toggleShowAddNote() {
             this.$store.commit('toggleAddNote');
-        },
-        inputFocus: function inputFocus() {
-            $("#newNote").on('shown.bs.modal', function () {
-                $(this).find('textarea[name=note]').focus();
-            });
         }
     }
 
 });
 
 /***/ }),
-/* 71 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -42877,20 +42141,20 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-d849924c", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-1babbeba", module.exports)
   }
 }
 
 /***/ }),
-/* 72 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(73),
+  __webpack_require__(64),
   /* template */
-  __webpack_require__(74),
+  __webpack_require__(65),
   /* styles */
   null,
   /* scopeId */
@@ -42898,7 +42162,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/county-contacts/delete-contact.vue"
+Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/county-contacts/delete-contact.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] delete-contact.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -42909,9 +42173,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5e6f3ca9", Component.options)
+    hotAPI.createRecord("data-v-449f6c89", Component.options)
   } else {
-    hotAPI.reload("data-v-5e6f3ca9", Component.options)
+    hotAPI.reload("data-v-449f6c89", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -42922,7 +42186,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 73 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42961,9 +42225,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['contact'],
     data: function data() {
         return {
-            showAddNote: false,
-            bkClass: 'bk',
-            blurClass: 'blur'
+            showAddNote: false
         };
     },
 
@@ -42984,7 +42246,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 74 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -43044,20 +42306,20 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-5e6f3ca9", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-449f6c89", module.exports)
   }
 }
 
 /***/ }),
-/* 75 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(76),
+  __webpack_require__(67),
   /* template */
-  __webpack_require__(77),
+  __webpack_require__(68),
   /* styles */
   null,
   /* scopeId */
@@ -43065,7 +42327,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/Jake/Documents/web/valet/restitution/resources/assets/js/components/county-contacts/edit-contact.vue"
+Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/county-contacts/edit-contact.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] edit-contact.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -43076,9 +42338,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-05a83748", Component.options)
+    hotAPI.createRecord("data-v-e03a41b0", Component.options)
   } else {
-    hotAPI.reload("data-v-05a83748", Component.options)
+    hotAPI.reload("data-v-e03a41b0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -43089,7 +42351,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 76 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43183,7 +42445,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 77 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -43455,12 +42717,640 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-05a83748", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-e03a41b0", module.exports)
   }
 }
 
 /***/ }),
-/* 78 */
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(70),
+  /* template */
+  __webpack_require__(71),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/state-counties/add-county.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] add-county.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-17de69df", Component.options)
+  } else {
+    hotAPI.reload("data-v-17de69df", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            createdCounty: ''
+        };
+    },
+
+    computed: {
+        active: function active() {
+            return this.$store.state.modals.addCounty;
+        }
+    },
+    methods: {
+        newCounty: function newCounty() {
+            this.$store.dispatch('createCounty', this.createdCounty);
+            this.createdCounty = '';
+        },
+        toggleAddCounty: function toggleAddCounty() {
+            this.$store.commit('toggleAddCounty');
+        },
+        inputFocus: function inputFocus() {
+            $("#newNote").on('shown.bs.modal', function () {
+                $(this).find('textarea[name=note]').focus();
+            });
+        }
+    }
+
+});
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('button', {
+    staticClass: "btn btn-link",
+    on: {
+      "click": _vm.toggleAddCounty
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus"
+  })]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "modal"
+    }
+  }, [(_vm.active) ? _c('div', {
+    staticClass: "modal-mask",
+    on: {
+      "click": _vm.toggleAddCounty
+    }
+  }, [_c('div', {
+    staticClass: "modal-container",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+      }
+    }
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('h3', {
+    staticClass: "text-center"
+  }, [_vm._v("New County")])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.createdCounty),
+      expression: "createdCounty"
+    }],
+    staticClass: "center-block",
+    attrs: {
+      "type": "text",
+      "name": "county",
+      "placeholder": "Enter County Name"
+    },
+    domProps: {
+      "value": (_vm.createdCounty)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.createdCounty = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer flex fl-jc-sb"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    on: {
+      "click": _vm.toggleAddCounty
+    }
+  }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    on: {
+      "click": function($event) {
+        _vm.newCounty();
+        _vm.toggleAddCounty()
+      }
+    }
+  }, [_vm._v("\n                        Save\n                    ")])])])]) : _vm._e()])], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-17de69df", module.exports)
+  }
+}
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(73),
+  /* template */
+  __webpack_require__(75),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/wilbergroup/code/Restitution/resources/assets/js/components/county-contacts/create.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] create.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-678d60f2", Component.options)
+  } else {
+    hotAPI.reload("data-v-678d60f2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 73 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_form_reset__ = __webpack_require__(74);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['countyId'],
+    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_form_reset__["a" /* default */]],
+    data: function data() {
+        return {
+            showAddNote: false,
+            contact: {
+                contact_name: '',
+                phone: '',
+                ext: '',
+                address1: '',
+                address2: '',
+                city: '',
+                zip: '',
+                fax: '',
+                email: '',
+                website: '',
+                fee: '',
+                notes: '',
+                county_id: ''
+            }
+        };
+    },
+
+    computed: {
+        active: function active() {
+            return this.$store.state.modals.addContact;
+        }
+    },
+    watch: {
+        countyId: function countyId() {
+            this.contact.county_id = this.countyId;
+        }
+    },
+    methods: {
+        saveContact: function saveContact() {
+            this.$store.dispatch('createContact', this.contact);
+            this.formReset(this.contact);
+            this.contact.county_id = this.countyId;
+        },
+        toggleAddCounty: function toggleAddCounty() {
+            this.$store.commit('toggleAddContact');
+        }
+    }
+});
+
+/***/ }),
+/* 74 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    methods: {
+        formReset: function formReset(form) {
+            form.map(function (field) {
+                field = '';
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('button', {
+    staticClass: "btn btn-link",
+    on: {
+      "click": _vm.toggleAddCounty
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus"
+  })]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "modal"
+    }
+  }, [(_vm.active) ? _c('div', {
+    staticClass: "modal-mask",
+    on: {
+      "click": _vm.toggleAddCounty
+    }
+  }, [_c('div', {
+    staticClass: "modal-container",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+      }
+    }
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('h3', {
+    staticClass: "text-center"
+  }, [_vm._v("New Contact")])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [_c('label', [_vm._v("Name")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.contact_name),
+      expression: "contact.contact_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "name",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.contact_name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.contact_name = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', [_vm._v("Phone")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.phone),
+      expression: "contact.phone"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "phone",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.phone)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.phone = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', [_vm._v("Address")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.address1),
+      expression: "contact.address1"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "address1",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.address1)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.address1 = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', [_vm._v("City")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.city),
+      expression: "contact.city"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "city",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.city)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.city = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', [_vm._v("Zipcode")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.zip),
+      expression: "contact.zip"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "zip",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.zip)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.zip = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', [_vm._v("Fax")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.fax),
+      expression: "contact.fax"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "fax",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.fax)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.fax = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', [_vm._v("Email")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.email),
+      expression: "contact.email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "email",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.email)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.email = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', [_vm._v("Website")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.website),
+      expression: "contact.website"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "website",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.website)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.website = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', [_vm._v("Fee")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.fee),
+      expression: "contact.fee"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "fee",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.contact.fee)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.fee = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', [_vm._v("Notes")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contact.notes),
+      expression: "contact.notes"
+    }],
+    staticClass: "form-control",
+    staticStyle: {
+      "min-width": "100%"
+    },
+    attrs: {
+      "name": "notes",
+      "cols": "30",
+      "rows": "4"
+    },
+    domProps: {
+      "value": (_vm.contact.notes)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contact.notes = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer",
+    staticStyle: {
+      "display": "flex",
+      "justify-content": "space-between"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    on: {
+      "click": _vm.toggleAddCounty
+    }
+  }, [_vm._v("\n                        Close\n                    ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    on: {
+      "click": function($event) {
+        _vm.saveContact();
+        _vm.toggleAddCounty()
+      }
+    }
+  }, [_vm._v("\n                        Save\n                    ")])])])]) : _vm._e()])], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-678d60f2", module.exports)
+  }
+}
+
+/***/ }),
+/* 76 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
