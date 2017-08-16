@@ -40483,12 +40483,6 @@ var mutations = {
     },
     createContact: function createContact(state, contact) {
         getters.getSelectedCounty(state).contacts.push(contact);
-    },
-    findOrCreateCounty: function findOrCreateCounty(state, _ref9) {
-        var dispatch = _ref9.dispatch;
-
-        console.log(dispatch);
-        console.log(state);
     }
 };
 
@@ -40652,87 +40646,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         cubsNumberEntered: function cubsNumberEntered() {
             var _this = this;
 
-            // Three possible errors
-            // 1. Can't find cubs number
-            // 2. Claim doesn't have a loss location
-            // 3. Google can't find the county
-            this.callToCubs()
-            // LOOKUP STATE BY ABBREVIATION AND SET THE FREAKING STATE
-            .then(function (location) {
-                return _this.setStateFromAbbr(location);
-            })
-            // get the city and state
-            // set the current state to be the returned value (this is async)
-            .then(function (location) {
-                return _this.cubsCountyLookup(location);
-            })
-            // go grab the county from google, and look to see if it exists
-            // PROBLEM is that the state ajax hasn't yet returned
-            // County is duplicated as a result
+            axios.get('CubsCountyLookup/' + this.cubsNumber).then(function (_ref) {
+                var data = _ref.data;
 
-            //                    .catch((error) => this.displayError(error))
-            .then(function (county) {
-                return _this.findOrCreateCounty(county);
+                _this.selectedState = data.stateID;
+                _this.$store.commit('setSelectedCountyId', data.countyID);
+            }).catch(function (error) {
+                return console.log(error);
             });
-        },
-        callToCubs: function callToCubs() {
-            var _this2 = this;
-
-            return new Promise(function (resolve, reject) {
-                axios.get('https://capi.wilbergroup.com/v1/get_claim_details?wilber_file_number=' + _this2.cubsNumber).then(function (_ref) {
-                    var data = _ref.data.data;
-
-                    // delay the resoving of this until
-                    // the state is ajaxed in
-
-                    var location = {
-                        city: data.meta.loss_location_city,
-                        state: data.meta.loss_location_state
-                    };
-                    resolve(location);
-                }).catch(function () {
-                    reject('Cubs number not found.');
-                });
-            });
-        },
-        cubsCountyLookup: function cubsCountyLookup(location) {
-            var _this3 = this;
-
-            return new Promise(function (resolve, reject) {
-                axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + location.city + ',' + location.state + '&key=' + _this3.apiKey).then(function (response) {
-                    var county = response.data.results[0].address_components.filter(function (info) {
-                        return info.types[0] === 'administrative_area_level_2';
-                    })[0].long_name;
-                    resolve(county);
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            });
-        },
-        setStateFromAbbr: function setStateFromAbbr(location) {
-            var _this4 = this;
-
-            return new Promise(function (resolve, reject) {
-                var state = _.find(_this4.stateList, { abbr: location.state });
-
-                if (state === null) {
-                    reject('Invalid state abbreviation in loss location.');
-                }
-
-                _this4.$store.commit('setSelectedStateId', state.id);
-                _this4.$store.dispatch('setCurrentState').then(function () {
-                    return resolve(location);
-                });
-                _this4.selectedState = state.id;
-            });
-        },
-        findOrCreateCounty: function findOrCreateCounty(county) {
-            var countyObj = _.find(this.$store.getters.getCurrentState.counties, { name: county });
-            if (countyObj != null) {
-                this.$store.commit('setSelectedCountyId', countyObj.id);
-            } else {
-                this.$store.dispatch('createCounty', county);
-            }
         }
     }
 });
@@ -40766,7 +40687,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "keyup": function($event) {
-        if (!('button' in $event) && _vm._k($event.keyCode, "enter,")) { return null; }
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.cubsNumberEntered($event)
       },
       "blur": _vm.cubsNumberEntered,
       "input": function($event) {

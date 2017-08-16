@@ -120,12 +120,6 @@ const mutations = {
     createContact(state, contact) {
         getters.getSelectedCounty(state).contacts.push(contact);
     },
-    findOrCreateCounty(state, {dispatch})
-    {
-        console.log(dispatch)
-        console.log(state)
-
-    }
 
 };
 

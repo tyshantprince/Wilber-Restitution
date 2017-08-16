@@ -12,6 +12,7 @@ class County extends Model
     protected $table = 'counties';
 
     protected $fillable = [
+        'state_id',
         'name',
     ];
 
