@@ -32,6 +32,8 @@ Route::post('/state/{state}/counties',         'StateCountiesController@store')-
 Route::patch('/state/{state}/counties/{county}', 'StateCountiesController@update')->name('state.counties.update');
 Route::delete('/state/{state}/counties/{county}', 'StateCountiesController@destroy')->name('state.counties.destroy');
 
+Route::get('CubsCountyLookup/{cubsNumber}', 'CubsSearchController@find')->name('cubs.county.search');
+
 
 
 
