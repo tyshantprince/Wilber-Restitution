@@ -40,7 +40,6 @@ class State extends Model
     public function addCounty(array $data)
     {
         $county = new County($data);
-        $county->state_id = $this->id;
         $this->counties()->save($county);
         return $county;
     }

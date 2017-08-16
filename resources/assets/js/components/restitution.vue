@@ -52,81 +52,89 @@
         },
         methods: {
             cubsNumberEntered(){
-                // Three possible errors
-                // 1. Can't find cubs number
-                // 2. Claim doesn't have a loss location
-                // 3. Google can't find the county
-                this.callToCubs()
-                        // LOOKUP STATE BY ABBREVIATION AND SET THE FREAKING STATE
-                    .then((location) => this.setStateFromAbbr(location))
-                        // get the city and state
-                        // set the current state to be the returned value (this is async)
-                    .then((location) => this.cubsCountyLookup(location))
-                        // go grab the county from google, and look to see if it exists
-                        // PROBLEM is that the state ajax hasn't yet returned
-                        // County is duplicated as a result
-
-//                    .catch((error) => this.displayError(error))
-                    .then((county) => this.findOrCreateCounty(county));
-            },
-
-            callToCubs(){
-                return new Promise((resolve, reject) => {
-                    axios.get('https://capi.wilbergroup.com/v1/get_claim_details?wilber_file_number=' + this.cubsNumber)
-                        .then(({data:{data}}) => {
-                            // delay the resoving of this until
-                            // the state is ajaxed in
-
-                            let location = {
-                                city: data.meta.loss_location_city,
-                                state: data.meta.loss_location_state,
-                            };
-                            resolve(location);
-                        }).
-                        catch(() => {
-                            reject('Cubs number not found.');
-                        });
-                })
-            },
-            cubsCountyLookup(location) {
-                return new Promise((resolve, reject) => {
-                    axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + location.city + ',' + location.state + '&key=' + this.apiKey)
-                        .then((response) => {
-                            var county = response.data.results[0].address_components.filter((info) => {
-                                return info.types[0] === 'administrative_area_level_2';
-                            })[0].long_name;
-                            resolve(county);
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        });
-                })
-
-            },
-            setStateFromAbbr(location){
-                return new Promise((resolve, reject) => {
-                    let state= _.find(this.stateList, {abbr: location.state});
-
-                    if (state === null) {
-                        reject('Invalid state abbreviation in loss location.')
-                    }
-
-                    this.$store.commit('setSelectedStateId', state.id);
-                    this.$store.dispatch('setCurrentState').then(() => resolve(location));
-                    this.selectedState = state.id;
-                });
-            },
-
-            findOrCreateCounty(county) {
-                let countyObj = _.find(this.$store.getters.getCurrentState.counties, {name: county});
-                if(countyObj != null){
-                    this.$store.commit('setSelectedCountyId', countyObj.id)
-                }
-                else
-                {
-                    this.$store.dispatch('createCounty', county);
-                }
+                        axios.get('CubsCountyLookup/' + this.cubsNumber)
+                            .then( ({data}) => {
+                                this.selectedState = data.stateID;
+                                this.$store.commit('setSelectedCountyId', data.countyID);
+                            })
+                            .catch(error => console.log(error));
             }
+//            cubsNumberEntered(){
+//                // Three possible errors
+//                // 1. Can't find cubs number
+//                // 2. Claim doesn't have a loss location
+//                // 3. Google can't find the county
+//                this.callToCubs()
+//                        // LOOKUP STATE BY ABBREVIATION AND SET THE FREAKING STATE
+//                    .then((location) => this.setStateFromAbbr(location))
+//                        // get the city and state
+//                        // set the current state to be the returned value (this is async)
+//                    .then((location) => this.cubsCountyLookup(location))
+//                        // go grab the county from google, and look to see if it exists
+//                        // PROBLEM is that the state ajax hasn't yet returned
+//                        // County is duplicated as a result
+//
+////                    .catch((error) => this.displayError(error))
+//                    .then((county) => this.findOrCreateCounty(county));
+//            },
+//
+//            callToCubs(){
+//                return new Promise((resolve, reject) => {
+//                    axios.get('https://capi.wilbergroup.com/v1/get_claim_details?wilber_file_number=' + this.cubsNumber)
+//                        .then(({data:{data}}) => {
+//                            // delay the resoving of this until
+//                            // the state is ajaxed in
+//
+//                            let location = {
+//                                city: data.meta.loss_location_city,
+//                                state: data.meta.loss_location_state,
+//                            };
+//                            resolve(location);
+//                        }).
+//                        catch(() => {
+//                            reject('Cubs number not found.');
+//                        });
+//                })
+//            },
+//            cubsCountyLookup(location) {
+//                return new Promise((resolve, reject) => {
+//                    axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + location.city + ',' + location.state + '&key=' + this.apiKey)
+//                        .then((response) => {
+//                            var county = response.data.results[0].address_components.filter((info) => {
+//                                return info.types[0] === 'administrative_area_level_2';
+//                            })[0].long_name;
+//                            resolve(county);
+//                        })
+//                        .catch((error) => {
+//                            console.log(error);
+//                        });
+//                })
+//
+//            },
+//            setStateFromAbbr(location){
+//                return new Promise((resolve, reject) => {
+//                    let state= _.find(this.stateList, {abbr: location.state});
+//
+//                    if (state === null) {
+//                        reject('Invalid state abbreviation in loss location.')
+//                    }
+//
+//                    this.$store.commit('setSelectedStateId', state.id);
+//                    this.$store.dispatch('setCurrentState').then(() => resolve(location));
+//                    this.selectedState = state.id;
+//                });
+//            },
+//
+//            findOrCreateCounty(county) {
+//                let countyObj = _.find(this.$store.getters.getCurrentState.counties, {name: county});
+//                if(countyObj != null){
+//                    this.$store.commit('setSelectedCountyId', countyObj.id)
+//                }
+//                else
+//                {
+//                    this.$store.dispatch('createCounty', county);
+//                }
+//            }
         },
     }
 </script>

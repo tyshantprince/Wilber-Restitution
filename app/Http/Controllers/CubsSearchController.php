@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\County;
 use App\State;
 use Illuminate\Http\Request;
 use GuzzleHttp\Exception\GuzzleException;
@@ -17,37 +18,16 @@ class CubsSearchController extends Controller
 
     public function find($cubsNumber)
     {
-
         //Cubs Search
         $location = $this->searchCubs($cubsNumber);
 
-        // Set state objects based on cubs state
-        $state = State::where('abbr', $location['state'])->first();
+        // Set state object based on cubs state
+        $state = State::where('abbr', $location['state'])->firstOrFail();
 
         //Google County Lookup
         $cubsCounty = $this->searchGoogleForCounty($location);
 
-        //create county if it doesn't exist
-        if($state->counties->contains('name', $cubsCounty ))
-        {
-        $county = $state->counties->filter(function ($item) use ($cubsCounty) {
-            return $item->name == $cubsCounty;
-        })->first();
-
-            return [
-                'stateID' => $state->id,
-                'countyID' => $county->id
-
-            ];
-        }
-        else{
-            $state->addCounty(['name' => $cubsCounty ]);
-            dd($state->counties->last()->id);
-            return [
-                'stateID' => $state->id,
-                'countyID' => $state->counties->last()->id
-            ];
-        }
+        return $this->findOrCreateCounty($state, $cubsCounty);
 
     }
 
@@ -66,6 +46,19 @@ class CubsSearchController extends Controller
           return array_filter(json_decode($googleSearch->getBody())->results[0]->address_components, function ($address_components) {
             return $address_components->types[0] === 'administrative_area_level_2' ;
         })[1]->long_name;
+    }
+
+    private function findOrCreateCounty($state, $cubsCounty)
+    {
+        $county = County::firstOrCreate([
+            'state_id' => $state->id,
+            'name' => $cubsCounty,
+        ]);
+
+        return [
+            'stateID' => $state->id,
+            'countyID' => $county->id,
+        ];
     }
 
 }
