@@ -40766,9 +40766,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "keyup": function($event) {
-        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
-        _vm.cubsNumberEntered($event)
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter,")) { return null; }
       },
+      "blur": _vm.cubsNumberEntered,
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.cubsNumber = $event.target.value

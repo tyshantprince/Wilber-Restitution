@@ -2,7 +2,7 @@
     <div class="world">
         <div class="search-area">
             <div class="cubsNumber">
-                <input id="cubs" @keyup.enter="cubsNumberEntered" v-model="cubsNumber" class="form" type="text" placeholder="Cubs #">
+                <input id="cubs" @keyup.enter, @blur = "cubsNumberEntered" v-model="cubsNumber" class="form" type="text" placeholder="Cubs #">
             </div>
             <div class="select-state">
                 <select class="" name="stateDropdown" v-model="selectedState">
