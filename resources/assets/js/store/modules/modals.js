@@ -6,6 +6,7 @@ const state = {
     addContact: false,
     editContact: false,
     deleteContact: false,
+    searching: false
 }
 
 const getters = {
@@ -38,6 +39,10 @@ const mutations = {
     toggleDeleteContact(state){
         state.deleteContact = !state.deleteContact;
     },
+    toggleSearching(state){
+        state.searching = !state.searching;
+    },
+
 }
 
 export default {

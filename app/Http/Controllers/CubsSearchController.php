@@ -9,13 +9,21 @@ use App\State;
 use Illuminate\Http\Request;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Mockery\Exception;
 
 class CubsSearchController extends Controller
 {
     public function find(CubsApiGateway $cubsapi, GoogleApiGateway $googleApi, $cubsNumber)
     {
         //Cubs Search
-        $location = $cubsapi->getLocationInfo($cubsNumber);
+        if (is_array($cubsapi->getLocationInfo($cubsNumber)))
+        {
+            $location = $cubsapi->getLocationInfo($cubsNumber);
+        }
+        else{
+            throw new Exception($cubsapi->getLocationInfo($cubsNumber));
+        }
+
 
         // Set state object based on cubs state
         $state = State::where('abbr', $location['state'])->firstOrFail();

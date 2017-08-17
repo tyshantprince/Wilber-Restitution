@@ -17,9 +17,18 @@ class GoogleApiGateway extends Gateway
     {
         $response = $this->client->get('https://maps.googleapis.com/maps/api/geocode/json?address=' . $location['city'] . ',' . $location['state'] . '&key=' . $this->apikey);
 
-        return array_filter(json_decode($response->getBody())->results[0]->address_components, function ($address_components) {
-            return $address_components->types[0] === 'administrative_area_level_2' ;
-        })[1]->long_name;
+        $address_data = collect(json_decode($response->getBody())->results[0]->address_components);
+
+
+         $countyLevel = $address_data->first(function($value, $key){
+           if(collect($value)->flatten()->contains('administrative_area_level_2'))
+            {
+                return $value;
+            }
+        });
+
+
+         return $countyLevel->long_name;
     }
 
 }
