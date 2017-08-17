@@ -1,20 +1,26 @@
 .world{
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 25% 50% ;
-  grid-template-areas: "search-area"
+  grid-template-rows: 25% 25% 50% ;
+  grid-template-areas: "title"
+                      "search-area"
                         "main";
   grid-gap: 20px 10px;
+}
+
+.title{
+  grid-area: title;
+  justify-self: center;
+
 }
 
 .search-area{
   width: 100%;
   grid-area: search-area;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: auto;
-  grid-template-areas: "cubs"
-                        "select-state";
+  grid-template-areas: "select-state . . cubs";
   grid-gap: 20px;
 }
 .main{
@@ -32,10 +38,14 @@
   align-self: center;
 }
 .cubsNumber{
-  margin-top: 20px;
   grid-area: cubs;
   justify-self: center;
   align-self: center;
+  font-size: 1.5em;
+  border-radius: 4px;
+  border: 1px solid #AAA;
+  outline: none;
+  color: #363B4E;
 }
 .state-notes{
   width: 100%;

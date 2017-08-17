@@ -1,5 +1,8 @@
 <template>
     <div class="world">
+        <div class="title">
+            <h1>Restitution Helper</h1>
+        </div>
         <div class="search-area">
             <div class="cubsNumber">
                 <input id="cubs" @keyup.enter ="cubsNumberEntered" @blur = "cubsNumberEntered" v-model="cubsNumber" class="form" type="text" placeholder="Cubs #">
@@ -9,6 +12,7 @@
                     <option value="">Please Select State</option>
                     <option v-for="state in stateList" :value="state.id" >{{state.name}}</option>
                 </select>
+                <searching></searching>
             </div>
         </div>
         <div class="main">
@@ -39,7 +43,6 @@
         data() {
             return{
                 selectedState: '',
-                apiKey : 'AIzaSyAAK-Blg6TN6PMjZdPkahbMs-CKRx-aXbY',
                 cubsNumber: ''
             }
         },
@@ -52,13 +55,22 @@
         },
         methods: {
             cubsNumberEntered(){
-                axios.get('CubsCountyLookup/' + this.cubsNumber)
-                    .then( ({data}) => {
-                        this.selectedState = data.stateID;
-                        this.$store.commit('setSelectedCountyId', data.countyID);
-                    })
-                    .catch(error => console.log(error));
-            }
+                if(this.cubsNumber)
+                {
+                    this.$store.commit('toggleSearching');
+                    axios.get('CubsCountyLookup/' + this.cubsNumber)
+                        .then( ({data}) => {
+                            this.selectedState = data.stateID;
+                            this.$store.commit('setSelectedCountyId', data.countyID);
+                            this.$store.commit('toggleSearching');
+                        })
+                        .catch(error => {
+                            console.log();
+                            this.$store.commit('toggleSearching');
+                            toastr.error(error.response.data.error);
+                        });
+                    }
+                }
         },
     }
 </script>

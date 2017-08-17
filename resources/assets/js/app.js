@@ -9,6 +9,9 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+window.toastr = require('toastr');
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -28,6 +31,8 @@ Vue.component('delete-contact', require('./components/county-contacts/delete-con
 Vue.component('edit-contact', require('./components/county-contacts/edit-contact.vue'));
 Vue.component('add-county', require('./components/state-counties/add-county.vue'));
 Vue.component('add-contact', require('./components/county-contacts/create.vue'));
+Vue.component('searching', require('./components/searching-modal.vue'));
+
 
 const app = new Vue({
     store,

@@ -3,27 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\County;
+use App\Exceptions\CountyLookupException;
 use App\Gateways\CubsApiGateway;
 use App\Gateways\GoogleApiGateway;
 use App\State;
 use Illuminate\Http\Request;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Mockery\Exception;
 
 class CubsSearchController extends Controller
 {
     public function find(CubsApiGateway $cubsapi, GoogleApiGateway $googleApi, $cubsNumber)
     {
-        //Cubs Search
-        $location = $cubsapi->getLocationInfo($cubsNumber);
+        try {
+            $location = $cubsapi->getLocationInfo($cubsNumber);
 
-        // Set state object based on cubs state
-        $state = State::where('abbr', $location['state'])->firstOrFail();
+            $cubsCounty = $googleApi->getCounty($location);
 
-        $cubsCounty = $googleApi->getCounty($location);
+            $state = State::where('abbr', $location['state'])->firstOrFail();
 
-        return $this->findOrCreateCounty($state, $cubsCounty);
+            return $this->findOrCreateCounty($state, $cubsCounty);
 
+        } catch (CountyLookupException $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+
+        }
     }
 
 
