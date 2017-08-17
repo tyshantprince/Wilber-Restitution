@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\County;
+use App\Exceptions\CountyLookupException;
 use App\Gateways\CubsApiGateway;
 use App\Gateways\GoogleApiGateway;
 use App\State;
@@ -15,23 +16,20 @@ class CubsSearchController extends Controller
 {
     public function find(CubsApiGateway $cubsapi, GoogleApiGateway $googleApi, $cubsNumber)
     {
-        //Cubs Search
-        if (is_array($cubsapi->getLocationInfo($cubsNumber)))
-        {
+        try {
             $location = $cubsapi->getLocationInfo($cubsNumber);
+
+            $cubsCounty = $googleApi->getCounty($location);
+
+            $state = State::where('abbr', $location['state'])->firstOrFail();
+
+            return $this->findOrCreateCounty($state, $cubsCounty);
+
+        } catch (CountyLookupException $e) {
+
+            return response()->json(['error' => $e->getMessage()], 404);
+
         }
-        else{
-            throw new Exception($cubsapi->getLocationInfo($cubsNumber));
-        }
-
-
-        // Set state object based on cubs state
-        $state = State::where('abbr', $location['state'])->firstOrFail();
-
-        $cubsCounty = $googleApi->getCounty($location);
-
-        return $this->findOrCreateCounty($state, $cubsCounty);
-
     }
 
 
