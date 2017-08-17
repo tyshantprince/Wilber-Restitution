@@ -40998,15 +40998,19 @@ var mutations = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(93)
+}
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(43),
   /* template */
-  __webpack_require__(44),
+  __webpack_require__(95),
   /* styles */
-  null,
+  injectStyle,
   /* scopeId */
-  null,
+  "data-v-6f489e88",
   /* moduleIdentifier (server only) */
   null
 )
@@ -41077,6 +41081,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -41108,7 +41134,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.$store.commit('setSelectedCountyId', data.countyID);
                     _this.$store.commit('toggleSearching');
                 }).catch(function (error) {
-                    console.log();
                     _this.$store.commit('toggleSearching');
                     toastr.error(error.response.data.error);
                 });
@@ -41118,133 +41143,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "world"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "search-area"
-  }, [_c('div', {
-    staticClass: "cubsNumber"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.cubsNumber),
-      expression: "cubsNumber"
-    }],
-    staticClass: "form",
-    attrs: {
-      "id": "cubs",
-      "type": "text",
-      "placeholder": "Cubs #"
-    },
-    domProps: {
-      "value": (_vm.cubsNumber)
-    },
-    on: {
-      "keyup": function($event) {
-        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
-        _vm.cubsNumberEntered($event)
-      },
-      "blur": _vm.cubsNumberEntered,
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.cubsNumber = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "select-state"
-  }, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.selectedState),
-      expression: "selectedState"
-    }],
-    attrs: {
-      "name": "stateDropdown"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.selectedState = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": ""
-    }
-  }, [_vm._v("Please Select State")]), _vm._v(" "), _vm._l((_vm.stateList), function(state) {
-    return _c('option', {
-      domProps: {
-        "value": state.id
-      }
-    }, [_vm._v(_vm._s(state.name))])
-  })], 2), _vm._v(" "), _c('searching')], 1)]), _vm._v(" "), _c('div', {
-    staticClass: "main"
-  }, [_c('div', {
-    staticClass: "state-notes"
-  }, [_c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_c('state-notes', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.selectedState),
-      expression: "selectedState"
-    }]
-  }), _vm._v(" "), _c('h1', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (!_vm.selectedState),
-      expression: "!selectedState"
-    }]
-  }, [_vm._v("Please Select a State")])], 1)])]), _vm._v(" "), _c('div', {
-    staticClass: "state-counties"
-  }, [_c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_c('state-counties', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.selectedState),
-      expression: "selectedState"
-    }]
-  }), _vm._v(" "), _c('h1', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (!_vm.selectedState),
-      expression: "!selectedState"
-    }]
-  }, [_vm._v("Please Select a State")])], 1)])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "title"
-  }, [_c('h1', [_vm._v("Restitution Helper")])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-6f489e88", module.exports)
-  }
-}
-
-/***/ }),
+/* 44 */,
 /* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -41340,7 +41239,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, _vm._l((_vm.currentState.notes), function(note) {
     return _c('div', {
-      staticClass: "panel panel-default"
+      staticClass: "panel panel-default",
+      staticStyle: {
+        "border-color": "orange"
+      }
     }, [_c('div', {
       staticClass: "panel-body",
       staticStyle: {
@@ -41455,7 +41357,7 @@ if(false) {
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(51)(undefined);
+exports = module.exports = __webpack_require__(92)(undefined);
 // imports
 
 
@@ -41466,88 +41368,7 @@ exports.push([module.i, "\n.collapse[data-v-43b41520] {\n    height: 0;\n}\n", "
 
 
 /***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
+/* 51 */,
 /* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -41915,7 +41736,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, _vm._l((_vm.currentState.counties), function(county) {
     return _c('div', [_c('button', {
-      staticClass: "btn btn-primary block mb075 w100p",
+      staticClass: "btn block w100p",
+      staticStyle: {
+        "background-color": "#ddd",
+        "margin-bottom": "2%"
+      },
       attrs: {
         "id": county.id
       },
@@ -41924,7 +41749,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.countyClicked(county.id)
         }
       }
-    }, [_vm._v(_vm._s(county.name))]), _vm._v(" "), (county.contacts) ? _c('div', {
+    }, [_c('h4', {
+      staticStyle: {
+        "font-weight": "700",
+        "color": "black"
+      }
+    }, [_vm._v(_vm._s(county.name))])]), _vm._v(" "), (county.contacts) ? _c('div', {
       staticClass: "contacts-container",
       class: {
         collapse: county.id !== _vm.currentCountyID
@@ -42109,6 +41939,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('button', {
     staticClass: "btn btn-link",
+    staticStyle: {
+      "color": "gray"
+    },
     on: {
       "click": _vm.toggleEditNote
     }
@@ -42285,6 +42118,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('button', {
     staticClass: "btn btn-link",
+    staticStyle: {
+      "color": "gray"
+    },
     on: {
       "click": _vm.toggleDeleteNote
     }
@@ -42452,12 +42288,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('button', {
     staticClass: "btn btn-link",
+    staticStyle: {
+      "color": "gray"
+    },
     on: {
       "click": _vm.toggleShowAddNote
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-plus"
-  })]), _vm._v(" "), _c('transition', {
+  }), _vm._v(" Add Note")]), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "modal"
     }
@@ -43216,12 +43055,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('button', {
     staticClass: "btn btn-link",
+    staticStyle: {
+      "color": "gray"
+    },
     on: {
       "click": _vm.toggleAddCounty
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-plus"
-  })]), _vm._v(" "), _c('transition', {
+  }), _vm._v("Add County")]), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "modal"
     }
@@ -43337,6 +43179,7 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_form_reset__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_form_reset___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_form_reset__);
 //
 //
 //
@@ -43398,7 +43241,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['countyId'],
-    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_form_reset__["a" /* default */]],
+    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_form_reset___default.a],
     data: function data() {
         return {
             showAddNote: false,
@@ -43432,9 +43275,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         saveContact: function saveContact() {
-            this.$store.dispatch('createContact', this.contact);
-            this.formReset(this.contact);
-            this.contact.county_id = this.countyId;
+            var _this = this;
+
+            this.$store.dispatch('createContact', this.contact).then(function () {
+                Object.keys(_this.contact).forEach(function (input) {
+                    return _this.contact[input] = '';
+                });
+                _this.contact.county_id = _this.countyId;
+            });
         },
         toggleAddCounty: function toggleAddCounty() {
             this.$store.commit('toggleAddContact');
@@ -43444,18 +43292,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 /* 76 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-    methods: {
-        formReset: function formReset(form) {
-            form.map(function (field) {
-                field = '';
-            });
-        }
-    }
-});
+
 
 /***/ }),
 /* 77 */
@@ -43464,12 +43303,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('button', {
     staticClass: "btn btn-link",
+    staticStyle: {
+      "color": "gray"
+    },
     on: {
       "click": _vm.toggleAddCounty
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-plus"
-  })]), _vm._v(" "), _c('transition', {
+  }), _vm._v("Add Contact")]), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "modal"
     }
@@ -43849,6 +43691,331 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(94);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(52)("2af1cbc9", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6f489e88\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./restitution.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6f489e88\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./restitution.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(92)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.list-group > button[data-v-6f489e88]{\n    border-color: #dddddd;\n    font-size: 24px;\n    font-weight: 500;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "world"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "search-area"
+  }, [_c('div', {
+    staticClass: "cubsNumber"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.cubsNumber),
+      expression: "cubsNumber"
+    }],
+    staticClass: "form",
+    attrs: {
+      "id": "cubs",
+      "type": "text",
+      "placeholder": "Cubs #"
+    },
+    domProps: {
+      "value": (_vm.cubsNumber)
+    },
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.cubsNumberEntered($event)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.cubsNumber = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "select-state"
+  }, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.selectedState),
+      expression: "selectedState"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "stateDropdown"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.selectedState = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": ""
+    }
+  }, [_vm._v("Please Select State")]), _vm._v(" "), _vm._l((_vm.stateList), function(state) {
+    return _c('option', {
+      domProps: {
+        "value": state.id
+      }
+    }, [_vm._v(_vm._s(state.name))])
+  })], 2), _vm._v(" "), _c('searching')], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "main"
+  }, [_c('div', {
+    staticClass: "state-notes"
+  }, [_c('state-notes', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.selectedState),
+      expression: "selectedState"
+    }]
+  }), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.selectedState),
+      expression: "!selectedState"
+    }]
+  }, [_c('h1', {
+    staticClass: "text-center",
+    staticStyle: {
+      "padding": "50px 50px"
+    }
+  }, [_vm._v("Ready, Set, Restitution")])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "state-counties"
+  }, [_c('state-counties', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.selectedState),
+      expression: "selectedState"
+    }]
+  }), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.selectedState),
+      expression: "!selectedState"
+    }],
+    staticClass: "top-states"
+  }, [_c('h4', {
+    staticClass: "text-center"
+  }, [_vm._v("Top States")]), _vm._v(" "), _c('div', {
+    staticClass: "list-group"
+  }, [_c('button', {
+    staticClass: "list-group-item",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.selectedState = 45
+      }
+    }
+  }, [_vm._v("Texas")]), _vm._v(" "), _c('button', {
+    staticClass: "list-group-item",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.selectedState = 26
+      }
+    }
+  }, [_vm._v("Missouri")]), _vm._v(" "), _c('button', {
+    staticClass: "list-group-item",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.selectedState = 11
+      }
+    }
+  }, [_vm._v("Georgia")]), _vm._v(" "), _c('button', {
+    staticClass: "list-group-item",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.selectedState = 48
+      }
+    }
+  }, [_vm._v("Virginia")]), _vm._v(" "), _c('button', {
+    staticClass: "list-group-item",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.selectedState = 14
+      }
+    }
+  }, [_vm._v("Illinois")])])])], 1)]), _vm._v(" "), _vm._m(1)])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "title"
+  }, [_c('h1', [_vm._v("Restitution "), _c('span', {
+    staticClass: "helper"
+  }, [_vm._v("Helper")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "footer"
+  }, [_c('h5', {
+    staticClass: "text-left"
+  }, [_vm._v("v.1.0")]), _vm._v(" "), _c('h5', {
+    staticClass: "text-right"
+  }, [_vm._v("© 2017 | Wilber & Associates | Restitution "), _c('span', {
+    staticStyle: {
+      "color": "orange"
+    }
+  }, [_vm._v("Helper")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-6f489e88", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

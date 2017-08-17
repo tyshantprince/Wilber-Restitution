@@ -8,7 +8,7 @@
         </div>
 
         <div id="notes-container">
-            <div v-for="note in currentState.notes" class="panel panel-default">
+            <div v-for="note in currentState.notes" class="panel panel-default" style="border-color: orange">
                 <div class="panel-body" style="display: flex; align-items: baseline">
                     <p style="flex: 4">{{note.body}}</p>
                     <edit-note :note="note"></edit-note>

@@ -15,7 +15,7 @@
 
         <div id="notes-container">
             <div v-for="county in currentState.counties">
-                <button @click="countyClicked(county.id)" class="btn btn-primary block mb075 w100p" :id="county.id">{{ county.name}}</button>
+                <button @click="countyClicked(county.id)" class="btn block w100p" style="background-color: #ddd; margin-bottom: 2%" :id="county.id"><h4 style="font-weight: 700; color: black; ">{{ county.name}}</h4></button>
                 <div v-if="county.contacts" class="contacts-container" :class="{collapse: county.id !== currentCountyID}">
                     <add-contact class="text-center" :county-id="currentCountyID"></add-contact>
                     <hr>

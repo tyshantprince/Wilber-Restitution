@@ -522,67 +522,6 @@ p.large {
   transform: scale(1.1);
 }
 
-.world {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 25% 25% 50%;
-  grid-template-areas: "title" "search-area" "main";
-  grid-gap: 20px 10px;
-}
-
-.title {
-  grid-area: title;
-  justify-self: center;
-}
-
-.search-area {
-  width: 100%;
-  grid-area: search-area;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: auto;
-  grid-template-areas: "select-state . . cubs";
-  grid-gap: 20px;
-}
-
-.main {
-  grid-area: main;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-  grid-template-areas: "state-notes state-counties";
-  grid-gap: 20px;
-}
-
-.select-state {
-  grid-area: select-state;
-  justify-self: center;
-  -ms-flex-item-align: center;
-      align-self: center;
-}
-
-.cubsNumber {
-  grid-area: cubs;
-  justify-self: center;
-  -ms-flex-item-align: center;
-      align-self: center;
-  font-size: 1.5em;
-  border-radius: 4px;
-  border: 1px solid #AAA;
-  outline: none;
-  color: #363B4E;
-}
-
-.state-notes {
-  width: 100%;
-  grid-area: state-notes;
-}
-
-.state-counties {
-  width: 100%;
-  grid-area: state-counties;
-}
-
 .toast-title {
   font-weight: bold;
 }
@@ -9160,5 +9099,98 @@ button.close {
   .hidden-print {
     display: none !important;
   }
+}
+
+body {
+  background-color: white;
+}
+
+.world {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: "title" "search-area" "main" "footer";
+  grid-gap: 20px 10px;
+}
+
+.title {
+  grid-area: title;
+  justify-self: start;
+}
+
+.helper {
+  color: orange;
+  font-weight: lighter;
+}
+
+.search-area {
+  padding: 15px 10px;
+  border-radius: 10px;
+  width: 100%;
+  grid-area: search-area;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: "select-state . . cubs";
+  grid-gap: 20px;
+  background-color: #dddddd;
+}
+
+.main {
+  grid-area: main;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: "state-notes state-counties";
+  grid-gap: 20px;
+}
+
+.footer {
+  padding: 15px 10px;
+  border-radius: 10px;
+  width: 100%;
+  background-color: #dddddd;
+  grid-area: footer;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.select-state {
+  grid-area: select-state;
+  justify-self: center;
+  -ms-flex-item-align: center;
+      align-self: center;
+  font-size: 1.5em;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #AAA;
+  outline: none;
+  color: #363B4E;
+}
+
+#cubs {
+  width: 100%;
+}
+
+.cubsNumber {
+  grid-area: cubs;
+  justify-self: center;
+  -ms-flex-item-align: center;
+      align-self: center;
+  width: 100%;
+  font-size: 1.5em;
+  border: 1px solid #AAA;
+  outline: none;
+  color: #363B4E;
+}
+
+.state-notes {
+  width: 100%;
+  grid-area: state-notes;
+}
+
+.state-counties {
+  width: 100%;
+  grid-area: state-counties;
 }
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="toggleAddCounty" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span></button>
+        <button @click="toggleAddCounty" class="btn btn-link" style="color: gray"><span class="glyphicon glyphicon-plus"></span>Add County</button>
 
         <transition name="modal">
             <div class="modal-mask" @click="toggleAddCounty" v-if="active">

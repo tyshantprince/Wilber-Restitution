@@ -1,6 +1,6 @@
 <template>
     <div>
-            <button @click="toggleShowAddNote" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span></button>
+            <button @click="toggleShowAddNote" class="btn btn-link" style="color: gray"><span class="glyphicon glyphicon-plus"></span> Add Note</button>
 
         <transition name="modal">
             <div class="modal-mask" @click="toggleShowAddNote" v-if="active">

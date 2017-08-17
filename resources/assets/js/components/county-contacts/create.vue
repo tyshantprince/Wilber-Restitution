@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="toggleAddCounty" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span></button>
+        <button @click="toggleAddCounty" class="btn btn-link" style="color: gray"><span class="glyphicon glyphicon-plus"></span>Add Contact</button>
 
         <transition name="modal">
             <div class="modal-mask" @click="toggleAddCounty" v-if="active">
@@ -92,9 +92,12 @@
         },
         methods: {
                 saveContact() {
-                    this.$store.dispatch('createContact', this.contact);
-                    this.formReset(this.contact);
-                    this.contact.county_id = this.countyId
+                    this.$store.dispatch('createContact', this.contact)
+                        .then(() => {
+                            Object.keys(this.contact).forEach(input => this.contact[input] = '');
+                            this.contact.county_id = this.countyId
+                        });
+
                 },
                 toggleAddCounty() {
                     this.$store.commit('toggleAddContact');
