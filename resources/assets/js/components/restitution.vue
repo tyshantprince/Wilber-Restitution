@@ -65,9 +65,9 @@
                             this.$store.commit('toggleSearching');
                         })
                         .catch(error => {
-                            console.log(error);
+                            console.log();
                             this.$store.commit('toggleSearching');
-                            toastr.error('Cubs County Could Not Be Found');
+                            toastr.error(error.response.data.error);
                         });
                     }
                 }

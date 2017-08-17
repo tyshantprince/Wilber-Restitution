@@ -26,7 +26,6 @@ class CubsSearchController extends Controller
             return $this->findOrCreateCounty($state, $cubsCounty);
 
         } catch (CountyLookupException $e) {
-
             return response()->json(['error' => $e->getMessage()], 404);
 
         }

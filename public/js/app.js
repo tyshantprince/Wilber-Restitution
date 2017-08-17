@@ -41108,9 +41108,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.$store.commit('setSelectedCountyId', data.countyID);
                     _this.$store.commit('toggleSearching');
                 }).catch(function (error) {
-                    console.log(error);
+                    console.log();
                     _this.$store.commit('toggleSearching');
-                    toastr.error('Cubs County Could Not Be Found');
+                    toastr.error(error.response.data.error);
                 });
             }
         }
