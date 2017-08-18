@@ -6,7 +6,7 @@
             <div class="modal-mask" @click="toggleAddCounty" v-if="active">
                 <div class="modal-container" @click.stop>
                     <div class="modal-header">
-                        <h3 class="text-center">New Contact</h3>
+                        <h3 class="text-center" style="color: orange;">New Contact</h3>
                     </div>
                     <div class="modal-body">
                         <label>Name</label>
@@ -41,10 +41,10 @@
 
                     </div>
                     <div class="modal-footer" style="display: flex; justify-content: space-between">
-                        <button class="btn btn-default" @click="toggleAddCounty">
+                        <button class="btn" style="background-color: transparent" @click="toggleAddCounty">
                             Close
                         </button>
-                        <button class="btn btn-primary" @click="saveContact();toggleAddCounty()">
+                        <button class="btn" style="background-color: transparent; color: orange" @click="saveContact();toggleAddCounty()">
                             Save
                         </button>
                     </div>
@@ -59,7 +59,6 @@
 
     export default {
         props: ['countyId'],
-        mixins: [FormReset],
         data() {
             return {
                 showAddNote: false,

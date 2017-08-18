@@ -6,16 +6,16 @@
             <div class="modal-mask" @click="toggleAddCounty" v-if="active">
                 <div class="modal-container" @click.stop>
                     <div class="modal-header">
-                        <h3 class="text-center">New County</h3>
+                        <h3 class="text-center" style="color: orange">New County</h3>
                     </div>
                     <div class="modal-body">
                             <input class="center-block" type="text" name="county" v-model="createdCounty" placeholder="Enter County Name">
                     </div>
                     <div class="modal-footer flex fl-jc-sb">
-                        <button class="btn btn-default" @click="toggleAddCounty">
+                        <button class="btn" style="background-color: transparent" @click="toggleAddCounty">
                             Close
                         </button>
-                        <button class="btn btn-primary" @click="newCounty();toggleAddCounty()">
+                        <button class="btn" style="color: orange; background-color: transparent" @click="newCounty();toggleAddCounty()">
                             Save
                         </button>
                     </div>
@@ -45,11 +45,6 @@
             toggleAddCounty(){
                 this.$store.commit('toggleAddCounty');
             },
-            inputFocus(){
-                $("#newNote").on('shown.bs.modal', function(){
-                    $(this).find('textarea[name=note]').focus();
-                });
-            }
         }
 
     }

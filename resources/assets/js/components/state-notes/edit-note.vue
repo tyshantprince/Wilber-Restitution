@@ -5,7 +5,7 @@
             <div class="modal-mask" @click="toggleEditNote" v-if="active">
                 <div class="modal-container" @click.stop>
                     <div class="modal-header">
-                        <h3 class="text-center">Edit Note</h3>
+                        <h3 class="text-center" style="color: orange;">Edit Note</h3>
                     </div>
                     <div class="modal-body">
                         <label class="form-label text-center">
@@ -14,10 +14,10 @@
                         </label>
                     </div>
                     <div class="modal-footer" style="display: flex; justify-content: space-between">
-                        <button class="btn btn-default" @click="toggleEditNote">
+                        <button class="btn" style="background-color: transparent" @click="toggleEditNote">
                             Close
                         </button>
-                        <button class="btn btn-primary" @click="editNote();toggleEditNote()">
+                        <button class="btn" style="color: orange; background-color: transparent" @click="editNote();toggleEditNote()">
                             Save
                         </button>
                     </div>

@@ -5,16 +5,16 @@
             <div class="modal-mask" @click="toggleDeleteNote" v-if="active">
                 <div class="modal-container" @click.stop>
                     <div class="modal-header">
-                        <h3 class="text-center">Delete Note</h3>
+                        <h3 class="text-center" style="color: orange">Delete Note</h3>
                     </div>
                     <div class="modal-body">
                         <h5 class="text-center">Are you sure you want to delete this note ?</h5>
                     </div>
                     <div class="modal-footer" style="display: flex; justify-content: space-between">
-                        <button class="btn btn-default" @click="toggleDeleteNote">
+                        <button class="btn"  style="background-color: transparent" @click="toggleDeleteNote">
                             Close
                         </button>
-                        <button class="btn btn-danger" @click="deleteNote();toggleDeleteNote()">
+                        <button class="btn"  style="color: red; background-color: transparent" @click="deleteNote();toggleDeleteNote()">
                             Delete
                         </button>
                     </div>

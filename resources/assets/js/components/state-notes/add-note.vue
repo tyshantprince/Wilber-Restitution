@@ -5,8 +5,8 @@
         <transition name="modal">
             <div class="modal-mask" @click="toggleShowAddNote" v-if="active">
                 <div class="modal-container" @click.stop>
-                    <div class="modal-header">
-                        <h3 class="text-center">New Note</h3>
+                    <div class="modal-header" >
+                        <h3 class="text-center" style="color: orange">New Note</h3>
                     </div>
                     <div class="modal-body">
                         <label class="form-label text-center">
@@ -15,10 +15,10 @@
                         </label>
                     </div>
                     <div class="modal-footer" style="display: flex; justify-content: space-between">
-                        <button class="btn btn-default" @click="toggleShowAddNote">
+                        <button class="btn" style="background-color: transparent" @click="toggleShowAddNote">
                             Close
                         </button>
-                        <button class="btn btn-primary" @click="addNote();toggleShowAddNote()">
+                        <button class="btn" style="color: orange; background-color: transparent" @click="addNote();toggleShowAddNote()">
                             Save
                         </button>
                     </div>

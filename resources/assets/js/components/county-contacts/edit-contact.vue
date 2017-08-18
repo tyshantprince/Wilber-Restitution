@@ -1,12 +1,12 @@
 <<template>
     <div>
-        <button @click="toggleEditContact" class="btn btn-link"><span class="glyphicon glyphicon-pencil"></span></button>
+        <button @click="toggleEditContact" class="btn btn-link" style="color: gray"><span class="glyphicon glyphicon-pencil"></span></button>
 
         <transition name="modal">
             <div class="modal-mask" @click="toggleEditContact" v-if="active">
                 <div class="modal-container" @click.stop>
                     <div class="modal-header">
-                        <h3 class="text-center">New County</h3>
+                        <h3 class="text-center" style="color: orange">New County</h3>
                     </div>
                     <div class="modal-body">
                         <label>Name</label>
@@ -41,10 +41,10 @@
 
                     </div>
                     <div class="modal-footer" style="display: flex; justify-content: space-between">
-                        <button class="btn btn-default" @click="toggleEditContact">
+                        <button class="btn" style="background-color: transparent" @click="toggleEditContact">
                             Close
                         </button>
-                        <button class="btn btn-primary" @click="editContact();toggleEditContact()">
+                        <button class="btn" style="background-color: transparent; color: orange" @click="editContact();toggleEditContact()">
                             Save
                         </button>
                     </div>
