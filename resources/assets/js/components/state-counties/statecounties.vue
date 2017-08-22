@@ -17,8 +17,6 @@
         display: grid;
         grid-template-rows: 1fr ;
     }
-
-    /* On mouse-over, add a deeper shadow */
     .card:hover {
         box-shadow: 8px 16px 32px rgba(0,0,0,0.2);
     }

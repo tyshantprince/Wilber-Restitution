@@ -31,6 +31,7 @@ class CubsApiGateway extends Gateway
             return $location;
 
         } catch (BadResponseException $e) {
+            Storage::append('bad_cubs_numbers.txt', implode('|', $cubsNumber));
             throw new CountyLookupException('Cubs number was not found.');
         }
 
