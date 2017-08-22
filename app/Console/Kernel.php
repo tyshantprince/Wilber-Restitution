@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\cubs_location_test;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        cubs_location_test::class,
     ];
 
     /**
@@ -36,5 +37,6 @@ class Kernel extends ConsoleKernel
     protected function commands()
     {
         require base_path('routes/console.php');
+
     }
 }

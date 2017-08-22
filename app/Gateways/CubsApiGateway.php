@@ -26,7 +26,7 @@ class CubsApiGateway extends Gateway
                 'state' => trim($meta->loss_location_state),
             ];
 
-            $this->checkForMissingLocation($location);
+//            $this->checkForMissingLocation($location);
 
             return $location;
 

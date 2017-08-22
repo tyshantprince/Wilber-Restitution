@@ -22,9 +22,12 @@ class GoogleApiGateway extends Gateway
 
             $payload = json_decode($response->getBody());
 
+            dd($payload);
+
             if(empty($payload->results)) {
                 throw new CountyLookupException('County could not be found');
             }
+
 
              return collect($payload->results[0]->address_components)
                                 ->first(function($value, $key){
