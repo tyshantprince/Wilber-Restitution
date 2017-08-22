@@ -10,9 +10,10 @@
         grid-column-gap: 5px;
     }
     .card {
-        /* Add shadows to create the "card" effect */
-        border-color: black;
-        box-shadow: 4px 8px 16px rgba(0,0,0,0.2);
+        border: solid gray;
+        border-width: 1px;
+        padding: 8px 8px;
+        margin: 4px;
         transition: 0.3s;
         display: grid;
         grid-template-rows: 1fr ;
@@ -42,8 +43,12 @@
                 <div v-if="county.contacts" class="contacts-container" :class="{collapse: county.id !== currentCountyID}">
                     <add-contact class="text-center" :county-id="currentCountyID"></add-contact>
                     <div class="contact-grid">
-                        <div class="card text-center" v-for="contact in county.contacts">
-                            <h5><b>{{contact.contact_name}}</b></h5>
+                        <div class="card text-left" v-for="contact in county.contacts">
+                            <div style="display: flex;">
+                                <h5 style="flex: 6"><b>{{contact.contact_name}}</b></h5>
+                                <button @click="selectedContact = contact; toggleEditContact()" class="btn btn-link" style="color: gray; flex: .1"><span class="glyphicon glyphicon-pencil"></span></button>
+                                <button @click="selectedContact = contact; toggleDeleteContact()" class="btn btn-link" style="color: gray; flex: .1"><span class="glyphicon glyphicon-trash"></span></button>
+                            </div>
                             <p v-if="contact.phone" >Phone Number: {{contact.phone}}</p>
                             <p v-if="contact.address1" >Address: {{contact.address1}}</p>
                             <p v-if="contact.city" >City: {{contact.city}}</p>
@@ -53,29 +58,9 @@
                             <p v-if="contact.website" >website: <a :href="contact.website">{{contact.city}}</a></p>
                             <p v-if="contact.notes" style="">Notes: {{contact.notes}}</p>
                         </div>
+                        <edit-contact :contact="selectedContact"></edit-contact>
+                        <delete-contact :contact="selectedContact"></delete-contact>
                     </div>
-
-                            <!--<div class="row">-->
-                                <!--<div class="col-sm-12">-->
-                                    <!--<div style="display: flex; flex-direction: column">-->
-                                        <!--<div class="panel panel-default text-center">-->
-                                            <!--<div class="panel-heading flex" style="align-items: baseline">-->
-                                                <!--<h5 class="panel-heading" style="flex: 3;">{{contact.contact_name}}</h5>-->
-                                                <!--<edit-contact :contact="contact"></edit-contact>-->
-                                                <!--<delete-contact :contact="contact"></delete-contact>-->
-                                            <!--</div>-->
-                                            <!--<p v-if="contact.phone" >Phone Number: {{contact.phone}}</p>-->
-                                            <!--<p v-if="contact.address1" >Address: {{contact.address1}}</p>-->
-                                            <!--<p v-if="contact.city" >City: {{contact.city}}</p>-->
-                                            <!--<p v-if="contact.zip" >ZipCode: {{contact.zip}}</p>-->
-                                            <!--<p v-if="contact.fax" >Fax: {{contact.fax}}</p>-->
-                                            <!--<p v-if="contact.email" >Email: {{contact.email}}</p>-->
-                                            <!--<p v-if="contact.website" >website: <a :href="contact.website">{{contact.city}}</a></p>-->
-                                            <!--<p v-if="contact.notes" style="">Notes: {{contact.notes}}</p>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
                 </div>
                 <div v-else="county.contacts == ''" :class="{collapse: county.id !== currentCountyID}">
                     <a @click="newContact"  :id="'addButton' + county.id" data-toggle="modal" :data-target="'#createContact' + county.id" style="margin-right: auto; padding-right: 8px">Add Contact</a>
@@ -118,6 +103,12 @@
             currentContact(contact){
                 this.selectedContact = contact;
             },
+            toggleDeleteContact(){
+                this.$store.commit('toggleDeleteContact')
+            },
+            toggleEditContact() {
+                this.$store.commit('toggleEditContact');
+            }
         }
     }
 </script>

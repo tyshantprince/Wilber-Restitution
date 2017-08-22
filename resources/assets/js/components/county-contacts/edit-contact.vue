@@ -1,6 +1,5 @@
 <<template>
     <div>
-        <button @click="toggleEditContact" class="btn btn-link" style="color: gray"><span class="glyphicon glyphicon-pencil"></span></button>
 
         <transition name="modal">
             <div class="modal-mask" @click="toggleEditContact" v-if="active">

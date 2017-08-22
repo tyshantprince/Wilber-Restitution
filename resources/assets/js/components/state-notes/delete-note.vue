@@ -1,6 +1,5 @@
 <template>
     <div>
-        <button @click="toggleDeleteNote" class="btn btn-link" style="color: gray"><span class="glyphicon glyphicon-trash"></span></button>
         <transition name="modal">
             <div class="modal-mask" @click="toggleDeleteNote" v-if="active">
                 <div class="modal-container" @click.stop>

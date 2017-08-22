@@ -11,10 +11,13 @@
             <div v-for="note in currentState.notes" class="panel panel-default" style="border-color: orange">
                 <div class="panel-body" style="display: flex; align-items: baseline">
                     <p style="flex: 4">{{note.body}}</p>
-                    <edit-note :note="note"></edit-note>
-                    <delete-note :note="note" ></delete-note>
+                    <button @click="selectedNote = note; toggleEditNote()" class="btn btn-link" style="color: gray"><span class="glyphicon glyphicon-pencil"></span></button>
+                    <button @click="selectedNote = note; toggleDeleteNote()" class="btn btn-link" style="color: gray"><span class="glyphicon glyphicon-trash"></span></button>
                 </div>
             </div>
+            <edit-note :note="selectedNote"></edit-note>
+            <delete-note :note="selectedNote" ></delete-note>
+
         </div>
     </div>
 
@@ -22,10 +25,23 @@
 
 <script>
     export default {
+        data(){
+            return{
+                selectedNote: ''
+            }
+        },
         computed:{
             currentState(){
                 return this.$store.getters.getCurrentState;
             }
         },
+        methods:{
+            toggleEditNote(){
+                this.$store.commit('toggleEditNote')
+            },
+            toggleDeleteNote(){
+                this.$store.commit('toggleDeleteNote')
+            }
+        }
     }
 </script>

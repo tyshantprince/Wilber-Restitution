@@ -19,16 +19,17 @@ class CubsApiGateway extends Gateway
         try {
             $response = $this->client->get('https://capi.wilbergroup.com/v1/get_claim_details?wilber_file_number=' . $cubsNumber);
 
-            $meta = json_decode($response->getBody())->data->meta;
-
-            $location = [
-                'city' => trim($meta->loss_location_city),
-                'state' => trim($meta->loss_location_state),
-            ];
-
-            $this->checkForMissingLocation($location);
-
-            return $location;
+            return json_decode($response->getBody());
+//            $meta = json_decode($response->getBody())->data->meta;
+//
+//            $location = [
+//                'city' => trim($meta->loss_location_city),
+//                'state' => trim($meta->loss_location_state),
+//            ];
+//
+//            $this->checkForMissingLocation($location);
+//
+//            return $location;
 
         } catch (BadResponseException $e) {
             throw new CountyLookupException('Cubs number was not found.');

@@ -2,7 +2,6 @@
 
     <div>
 
-        <button @click="toggleDeleteContact" class="btn btn-link" style="color: gray"><span class="glyphicon glyphicon-trash"></span></button>
 
         <transition name="modal">
             <div class="modal-mask" @click="toggleDeleteContact" v-if="active">

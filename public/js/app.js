@@ -41779,11 +41779,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            selectedNote: ''
+        };
+    },
+
     computed: {
         currentState: function currentState() {
             return this.$store.getters.getCurrentState;
+        }
+    },
+    methods: {
+        toggleEditNote: function toggleEditNote() {
+            this.$store.commit('toggleEditNote');
+        },
+        toggleDeleteNote: function toggleDeleteNote() {
+            this.$store.commit('toggleDeleteNote');
         }
     }
 });
@@ -41805,7 +41822,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "notes-container"
     }
-  }, _vm._l((_vm.currentState.notes), function(note) {
+  }, [_vm._l((_vm.currentState.notes), function(note) {
     return _c('div', {
       staticClass: "panel panel-default",
       staticStyle: {
@@ -41821,16 +41838,42 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticStyle: {
         "flex": "4"
       }
-    }, [_vm._v(_vm._s(note.body))]), _vm._v(" "), _c('edit-note', {
-      attrs: {
-        "note": note
+    }, [_vm._v(_vm._s(note.body))]), _vm._v(" "), _c('button', {
+      staticClass: "btn btn-link",
+      staticStyle: {
+        "color": "gray"
+      },
+      on: {
+        "click": function($event) {
+          _vm.selectedNote = note;
+          _vm.toggleEditNote()
+        }
       }
-    }), _vm._v(" "), _c('delete-note', {
-      attrs: {
-        "note": note
+    }, [_c('span', {
+      staticClass: "glyphicon glyphicon-pencil"
+    })]), _vm._v(" "), _c('button', {
+      staticClass: "btn btn-link",
+      staticStyle: {
+        "color": "gray"
+      },
+      on: {
+        "click": function($event) {
+          _vm.selectedNote = note;
+          _vm.toggleDeleteNote()
+        }
       }
-    })], 1)])
-  }))])
+    }, [_c('span', {
+      staticClass: "glyphicon glyphicon-trash"
+    })])])])
+  }), _vm._v(" "), _c('edit-note', {
+    attrs: {
+      "note": _vm.selectedNote
+    }
+  }), _vm._v(" "), _c('delete-note', {
+    attrs: {
+      "note": _vm.selectedNote
+    }
+  })], 2)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
     staticClass: "state-notes-header"
@@ -41930,7 +41973,7 @@ exports = module.exports = __webpack_require__(11)(undefined);
 
 
 // module
-exports.push([module.i, "\n.collapse[data-v-43b41520] {\n    height: 0;\n}\n.contact-grid[data-v-43b41520]{\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    grid-template-rows: auto;\n    align-items: start;\n    grid-column-gap: 5px;\n}\n.card[data-v-43b41520] {\n    /* Add shadows to create the \"card\" effect */\n    border-color: black;\n    box-shadow: 4px 8px 16px rgba(0,0,0,0.2);\n    transition: 0.3s;\n    display: grid;\n    grid-template-rows: 1fr ;\n}\n\n/* On mouse-over, add a deeper shadow */\n.card[data-v-43b41520]:hover {\n    box-shadow: 8px 16px 32px rgba(0,0,0,0.2);\n}\ndiv > p[data-v-43b41520] {\n    font-family: Avenir, Helvetica, sans-serif\n}\n", ""]);
+exports.push([module.i, "\n.collapse[data-v-43b41520] {\n    height: 0;\n}\n.contact-grid[data-v-43b41520]{\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    grid-template-rows: auto;\n    align-items: start;\n    grid-column-gap: 5px;\n}\n.card[data-v-43b41520] {\n    /* Add shadows to create the \"card\" effect */\n    border-color: black;\n\n    transition: 0.3s;\n    display: grid;\n    grid-template-rows: 1fr ;\n}\n\n/* On mouse-over, add a deeper shadow */\n.card[data-v-43b41520]:hover {\n    box-shadow: 8px 16px 32px rgba(0,0,0,0.2);\n}\ndiv > p[data-v-43b41520] {\n    font-family: Avenir, Helvetica, sans-serif\n}\n", ""]);
 
 // exports
 
@@ -41941,22 +41984,6 @@ exports.push([module.i, "\n.collapse[data-v-43b41520] {\n    height: 0;\n}\n.con
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -42060,6 +42087,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         currentContact: function currentContact(contact) {
             this.selectedContact = contact;
+        },
+        toggleDeleteContact: function toggleDeleteContact() {
+            this.$store.commit('toggleDeleteContact');
+        },
+        toggleEditContact: function toggleEditContact() {
+            this.$store.commit('toggleEditContact');
         }
     }
 });
@@ -42113,15 +42146,59 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }), _vm._v(" "), _c('div', {
       staticClass: "contact-grid"
-    }, _vm._l((county.contacts), function(contact) {
+    }, [_vm._l((county.contacts), function(contact) {
       return _c('div', {
-        staticClass: "card text-center"
-      }, [_c('h5', [_c('b', [_vm._v(_vm._s(contact.contact_name))])]), _vm._v(" "), (contact.phone) ? _c('p', [_vm._v("Phone Number: " + _vm._s(contact.phone))]) : _vm._e(), _vm._v(" "), (contact.address1) ? _c('p', [_vm._v("Address: " + _vm._s(contact.address1))]) : _vm._e(), _vm._v(" "), (contact.city) ? _c('p', [_vm._v("City: " + _vm._s(contact.city))]) : _vm._e(), _vm._v(" "), (contact.zip) ? _c('p', [_vm._v("ZipCode: " + _vm._s(contact.zip))]) : _vm._e(), _vm._v(" "), (contact.fax) ? _c('p', [_vm._v("Fax: " + _vm._s(contact.fax))]) : _vm._e(), _vm._v(" "), (contact.email) ? _c('p', [_vm._v("Email: " + _vm._s(contact.email))]) : _vm._e(), _vm._v(" "), (contact.website) ? _c('p', [_vm._v("website: "), _c('a', {
+        staticClass: "card text-left"
+      }, [_c('div', {
+        staticStyle: {
+          "display": "flex"
+        }
+      }, [_c('h5', {
+        staticStyle: {
+          "flex": "6"
+        }
+      }, [_c('b', [_vm._v(_vm._s(contact.contact_name))])]), _vm._v(" "), _c('button', {
+        staticClass: "btn btn-link",
+        staticStyle: {
+          "color": "gray",
+          "flex": ".1"
+        },
+        on: {
+          "click": function($event) {
+            _vm.selectedContact = contact;
+            _vm.toggleEditContact()
+          }
+        }
+      }, [_c('span', {
+        staticClass: "glyphicon glyphicon-pencil"
+      })]), _vm._v(" "), _c('button', {
+        staticClass: "btn btn-link",
+        staticStyle: {
+          "color": "gray",
+          "flex": ".1"
+        },
+        on: {
+          "click": function($event) {
+            _vm.selectedContact = contact;
+            _vm.toggleDeleteContact()
+          }
+        }
+      }, [_c('span', {
+        staticClass: "glyphicon glyphicon-trash"
+      })])]), _vm._v(" "), (contact.phone) ? _c('p', [_vm._v("Phone Number: " + _vm._s(contact.phone))]) : _vm._e(), _vm._v(" "), (contact.address1) ? _c('p', [_vm._v("Address: " + _vm._s(contact.address1))]) : _vm._e(), _vm._v(" "), (contact.city) ? _c('p', [_vm._v("City: " + _vm._s(contact.city))]) : _vm._e(), _vm._v(" "), (contact.zip) ? _c('p', [_vm._v("ZipCode: " + _vm._s(contact.zip))]) : _vm._e(), _vm._v(" "), (contact.fax) ? _c('p', [_vm._v("Fax: " + _vm._s(contact.fax))]) : _vm._e(), _vm._v(" "), (contact.email) ? _c('p', [_vm._v("Email: " + _vm._s(contact.email))]) : _vm._e(), _vm._v(" "), (contact.website) ? _c('p', [_vm._v("website: "), _c('a', {
         attrs: {
           "href": contact.website
         }
       }, [_vm._v(_vm._s(contact.city))])]) : _vm._e(), _vm._v(" "), (contact.notes) ? _c('p', {}, [_vm._v("Notes: " + _vm._s(contact.notes))]) : _vm._e()])
-    }))], 1) : _c('div', {
+    }), _vm._v(" "), _c('edit-contact', {
+      attrs: {
+        "contact": _vm.selectedContact
+      }
+    }), _vm._v(" "), _c('delete-contact', {
+      attrs: {
+        "contact": _vm.selectedContact
+      }
+    })], 2)], 1) : _c('div', {
       class: {
         collapse: county.id !== _vm.currentCountyID
       }
@@ -42234,7 +42311,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['note'],
@@ -42259,17 +42335,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('button', {
-    staticClass: "btn btn-link",
-    staticStyle: {
-      "color": "gray"
-    },
-    on: {
-      "click": _vm.toggleEditNote
-    }
-  }, [_c('span', {
-    staticClass: "glyphicon glyphicon-pencil"
-  })]), _vm._v(" "), _c('transition', {
+  return _c('div', [_c('transition', {
     attrs: {
       "name": "modal"
     }
@@ -42423,7 +42489,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['note'],
@@ -42448,17 +42513,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('button', {
-    staticClass: "btn btn-link",
-    staticStyle: {
-      "color": "gray"
-    },
-    on: {
-      "click": _vm.toggleDeleteNote
-    }
-  }, [_c('span', {
-    staticClass: "glyphicon glyphicon-trash"
-  })]), _vm._v(" "), _c('transition', {
+  return _c('div', [_c('transition', {
     attrs: {
       "name": "modal"
     }
@@ -42795,7 +42850,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['contact'],
@@ -42826,17 +42880,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('button', {
-    staticClass: "btn btn-link",
-    staticStyle: {
-      "color": "gray"
-    },
-    on: {
-      "click": _vm.toggleDeleteContact
-    }
-  }, [_c('span', {
-    staticClass: "glyphicon glyphicon-trash"
-  })]), _vm._v(" "), _c('transition', {
+  return _c('div', [_c('transition', {
     attrs: {
       "name": "modal"
     }
@@ -43000,7 +43044,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['contact'],
@@ -43038,17 +43081,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('button', {
-    staticClass: "btn btn-link",
-    staticStyle: {
-      "color": "gray"
-    },
-    on: {
-      "click": _vm.toggleEditContact
-    }
-  }, [_c('span', {
-    staticClass: "glyphicon glyphicon-pencil"
-  })]), _vm._v(" "), _c('transition', {
+  return _c('div', [_c('transition', {
     attrs: {
       "name": "modal"
     }
