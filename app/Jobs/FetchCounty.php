@@ -11,7 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Storage;
 
-class FetchCounty
+class FetchCounty implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -42,9 +42,10 @@ class FetchCounty
     private function saveCounty($county)
     {
         if ($county) {
-            Storage::append('good_cubs_numbers_counties.txt', $this->cubsNumber.'|'.$county);
+            Storage::append('CountyLookupData.txt', $this->cubsNumber . '|' . $this->location['city'] . ',' . $this->location['state'] . '|' . $county);
         }
-
-        Storage::append('good_cubs_numbers_counties.txt', $this->cubsNumber);
+        else{
+            Storage::append('CountyLookupData.txt', $this->cubsNumber . '|' . $this->location['city'] . ',' . $this->location['state'] . '| No County Was Found' );
+        }
     }
 }
