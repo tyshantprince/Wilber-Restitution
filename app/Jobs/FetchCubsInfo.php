@@ -34,8 +34,8 @@ class FetchCubsInfo implements ShouldQueue
 
     private function saveNumber($city, $state)
     {
-        if ($city&& $state) {
-            Storage::append('good_cubs_numbers.txt', $this->cubsNumber.'|'.$city.'|'.$state);
+        if ($city && $state) {
+            Storage::append('bad_county.txt', $this->cubsNumber.'|'.$city.'|'.$state);
         }
     }
 }

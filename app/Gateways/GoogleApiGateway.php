@@ -11,7 +11,7 @@ class GoogleApiGateway extends Gateway
     public function __construct()
     {
         $this->client = new Client();
-        $this->apikey = 'AIzaSyAAK-Blg6TN6PMjZdPkahbMs-CKRx-aXbY';
+        $this->apikey = 'AIzaSyCpCTe72evOBvCfdU5Gno2JOiaLZeXipf0';
     }
 
     public function getCounty($location)
@@ -25,7 +25,6 @@ class GoogleApiGateway extends Gateway
             if(empty($payload->results)) {
                 throw new CountyLookupException('County could not be found');
             }
-
 
              return collect($payload->results[0]->address_components)
                                 ->first(function($value, $key){

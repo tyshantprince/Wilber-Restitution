@@ -42,10 +42,10 @@ class FetchCounty implements ShouldQueue
     private function saveCounty($county)
     {
         if ($county) {
-            Storage::append('CountyLookupData.txt', $this->cubsNumber . '|' . $this->location['city'] . ',' . $this->location['state'] . '|' . $county);
+            Storage::append('return_county.txt', $this->cubsNumber . '|' . $this->location['city'] . '|' . $this->location['state'] . '|' . $county);
         }
         else{
-            Storage::append('CountyLookupData.txt', $this->cubsNumber . '|' . $this->location['city'] . ',' . $this->location['state'] . '| No County Was Found' );
+            Storage::append('return_county.txt', $this->cubsNumber . '|' . $this->location['city'] . '|' . $this->location['state'] . '| No County Was Found' );
         }
     }
 }
